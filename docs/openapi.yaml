@@ -1,0 +1,2560 @@
+openapi: 3.0.3
+
+info:
+  title: 慢知 · 慢性病智能知识服务平台 API
+  version: 1.0.0
+  description: |
+    毕业设计《基于知识图谱与 RAG 的慢性病智能知识服务系统》后端接口契约。
+
+    **约定**
+    - 统一前缀 `/api`，请求与响应均为 `application/json; charset=utf-8`。
+    - 除登录接口外，全部需要请求头 `Authorization: Bearer <token>`。
+    - 统一响应包：`{ code, message, data }`，`code = 0` 表示成功，非 0 见「错误码」。
+    - 分页参数：`page`（从 1 开始，默认 1）、`pageSize`（默认 10，最大 100）；
+      分页数据：`{ list, total, page, pageSize }`。
+    - 时间统一为 `YYYY-MM-DD HH:mm:ss` 字符串（本地时区），日期为 `YYYY-MM-DD`。
+
+    **错误码**
+    | code | HTTP | 含义 |
+    |------|------|------|
+    | 0 | 200 | 成功 |
+    | 40001 | 400 | 参数校验失败 |
+    | 40100 | 401 | 未登录或 token 失效 |
+    | 40300 | 403 | 无权限 |
+    | 40400 | 404 | 资源不存在 |
+    | 40900 | 409 | 状态冲突（如重复审核、重复账号） |
+    | 50000 | 500 | 服务内部异常 |
+    | 50300 | 503 | 依赖服务不可用（Neo4j / Milvus / LLM） |
+
+    **说明**：本契约为前端原型的 `src/mock` 层反推而来，字段名与前端页面一一对应，
+    后端按此实现即可直接替换 mock，无需改动页面代码。
+  contact:
+    name: 马春静
+    email: 2168426389@qq.com
+
+servers:
+  - url: http://127.0.0.1:8000/api
+    description: 本地开发
+  - url: http://127.0.0.1:8000/api
+    description: 测试环境
+
+security:
+  - bearerAuth: []
+
+tags:
+  - name: 认证
+    description: 登录、登出、当前用户
+  - name: 首页
+    description: 总览看板
+  - name: 用户
+    description: 用户与角色管理
+  - name: 数据资源
+    description: 知识库规模与分布统计
+  - name: 文献
+    description: 文献与指南的检索、元数据维护、文本切片
+  - name: 采集任务
+    description: 数据采集任务的创建与调度
+  - name: 数据质量
+    description: 质量问题清单与批量处理
+  - name: 知识图谱
+    description: 子图查询、实体与关系维护
+  - name: 关系审核
+    description: 候选关系的人工审核流转
+  - name: 智能问答
+    description: GraphRAG 问答与历史会话
+  - name: 关联分析
+    description: 关联网络、路径、PageRank 与统计
+  - name: 系统管理
+    description: 系统统计、日志、配置与健康检查
+
+paths:
+  # ============================ 认证 ============================
+  /auth/login:
+    post:
+      tags: [认证]
+      summary: 账号密码登录
+      operationId: login
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [account, password]
+              properties:
+                account:
+                  type: string
+                  example: admin
+                password:
+                  type: string
+                  format: password
+                  example: "demo1234"
+                remember:
+                  type: boolean
+                  default: false
+      responses:
+        '200':
+          description: 登录成功
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Ok'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          token:
+                            type: string
+                            example: eyJhbGciOiJIUzI1NiIs...
+                          expiresIn:
+                            type: integer
+                            description: 有效期（秒）
+                            example: 86400
+                          profile:
+                            $ref: '#/components/schemas/UserProfile'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          description: 账号或密码错误
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /auth/logout:
+    post:
+      tags: [认证]
+      summary: 退出登录
+      operationId: logout
+      responses:
+        '200':
+          description: 已退出
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ok'
+
+  /auth/me:
+    get:
+      tags: [认证]
+      summary: 获取当前登录用户
+      operationId: getMe
+      responses:
+        '200':
+          description: 当前用户
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Ok'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/UserProfile'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  # ============================ 首页 ============================
+  /dashboard/overview:
+    get:
+      tags: [首页]
+      summary: 首页总览数据
+      description: 一次返回首页所需的统计卡、图谱缩略数据、趋势与近期列表，减少首屏请求数。
+      operationId: getDashboardOverview
+      responses:
+        '200':
+          description: 总览数据
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Ok'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/DashboardOverview'
+
+  # ============================ 用户 ============================
+  /users:
+    get:
+      tags: [用户]
+      summary: 用户列表
+      operationId: listUsers
+      parameters:
+        - name: keyword
+          in: query
+          description: 姓名 / 账号 / 邮箱模糊匹配
+          schema: { type: string }
+        - name: role
+          in: query
+          schema:
+            type: string
+            enum: [管理员, 医学审核员, 普通用户]
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [启用, 禁用]
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PageSize'
+      responses:
+        '200':
+          description: 用户分页
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Ok'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/UserPage'
+    post:
+      tags: [用户]
+      summary: 新增用户
+      operationId: createUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserInput'
+      responses:
+        '200':
+          description: 新增成功
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Ok'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/User'
+        '409':
+          description: 账号已存在
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /users/{id}:
+    put:
+      tags: [用户]
+      summary: 编辑用户
+      operationId: updateUser
+      parameters:
+        - $ref: '#/components/parameters/IdPath'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserInput'
+      responses:
+        '200':
+          description: 更新成功
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Ok'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/User'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      tags: [用户]
+      summary: 删除用户
+      operationId: deleteUser
+      parameters:
+        - $ref: '#/components/parameters/IdPath'
+      responses:
+        '200':
+          description: 删除成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ok'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /users/{id}/status:
+    patch:
+      tags: [用户]
+      summary: 启用 / 停用用户
+      operationId: updateUserStatus
+      parameters:
+        - $ref: '#/components/parameters/IdPath'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [status]
+              properties:
+                status:
+                  type: string
+                  enum: [启用, 禁用]
+      responses:
+        '200':
+          description: 状态已更新
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ok'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /users/{id}/reset-password:
+    post:
+      tags: [用户]
+      summary: 重置用户密码
+      operationId: resetUserPassword
+      parameters:
+        - $ref: '#/components/parameters/IdPath'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                password:
+                  type: string
+                  format: password
+                  description: 不传则重置为系统默认初始密码
+      responses:
+        '200':
+          description: 已重置
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Ok'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          password:
+                            type: string
+                            description: 重置后的密码（仅本次返回）
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  # ============================ 数据资源 ============================
+  /stats/resources:
+    get:
+      tags: [数据资源]
+      summary: 数据资源总览
+      description: 实体、三元组、文本块、字符数四项规模 + 类型分布 + 来源分布 + 年发文量 + 待审核量。
+      operationId: getResourceStats
+      parameters:
+        - name: startYear
+          in: query
+          schema: { type: integer, example: 2020 }
+        - name: endYear
+          in: query
+          schema: { type: integer, example: 2026 }
+      responses:
+        '200':
+          description: 资源统计
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Ok'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/ResourceStats'
+
+  # ============================ 文献 ============================
+  /documents:
+    get:
+      tags: [文献]
+      summary: 文献列表
+      operationId: listDocuments
+      parameters:
+        - name: keyword
+          in: query
+          description: 标题 / 作者 / PMID 模糊匹配
+          schema: { type: string }
+        - name: disease
+          in: query
+          schema: { type: string, enum: [2型糖尿病, 高血压, 血脂异常] }
+        - name: source
+          in: query
+          schema: { type: string, example: PubMed }
+        - name: docType
+          in: query
+          schema: { type: string, enum: [期刊论文, 临床指南, 科普资料, 图谱来源] }
+        - name: year
+          in: query
+          schema: { type: integer }
+        - name: status
+          in: query
+          schema: { type: string, enum: [已入库, 处理中, 解析失败] }
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PageSize'
+      responses:
+        '200':
+          description: 文献分页
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Ok'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/DocumentPage'
+
+  /documents/{id}:
+    get:
+      tags: [文献]
+      summary: 文献详情
+      operationId: getDocument
+      parameters:
+        - $ref: '#/components/parameters/IdPath'
+      responses:
+        '200':
+          description: 文献元数据
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Ok'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/Document'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      tags: [文献]
+      summary: 编辑文献元数据
+      operationId: updateDocument
+      parameters:
+        - $ref: '#/components/parameters/IdPath'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title: { type: string }
+                authors: { type: string }
+                journal: { type: string }
+                disease: { type: string }
+                docType: { type: string }
+                publishDate: { type: string, format: date }
+                doi: { type: string }
+                url: { type: string }
+      responses:
+        '200':
+          description: 更新成功
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Ok'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/Document'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      tags: [文献]
+      summary: 删除文献
+      description: 同时删除该文献的文本块与向量，属危险操作，前端需二次确认。
+      operationId: deleteDocument
+      parameters:
+        - $ref: '#/components/parameters/IdPath'
+      responses:
+        '200':
+          description: 删除成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ok'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /documents/{id}/chunks:
+    get:
+      tags: [文献]
+      summary: 文献文本切片
+      description: 按 300 字 / 重叠 50 切分，返回切片正文与序号，用于详情页「文本切片」页签。
+      operationId: listDocumentChunks
+      parameters:
+        - $ref: '#/components/parameters/IdPath'
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PageSize'
+      responses:
+        '200':
+          description: 切片分页
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Ok'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/ChunkPage'
+
+  /documents/{id}/reprocess:
+    post:
+      tags: [文献]
+      summary: 重新解析与切块
+      description: 异步任务，立即返回任务号，前端轮询 `GET /collect/tasks/{id}` 获取进度。
+      operationId: reprocessDocument
+      parameters:
+        - $ref: '#/components/parameters/IdPath'
+      responses:
+        '200':
+          description: 已提交
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Ok'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          taskId: { type: string, example: T2026011 }
+
+  # ============================ 采集任务 ============================
+  /collect/tasks:
+    get:
+      tags: [采集任务]
+      summary: 采集任务列表
+      operationId: listCollectTasks
+      parameters:
+        - name: status
+          in: query
+          schema: { type: string, enum: [排队中, 运行中, 已完成, 已暂停, 失败] }
+        - name: source
+          in: query
+          schema: { type: string, example: PubMed }
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PageSize'
+      responses:
+        '200':
+          description: 任务分页
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Ok'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/CollectTaskPage'
+    post:
+      tags: [采集任务]
+      summary: 新建采集任务
+      operationId: createCollectTask
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CollectTaskInput'
+      responses:
+        '200':
+          description: 已创建
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Ok'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/CollectTask'
+
+  /collect/tasks/{id}/pause:
+    post:
+      tags: [采集任务]
+      summary: 暂停任务
+      operationId: pauseCollectTask
+      parameters:
+        - $ref: '#/components/parameters/IdPath'
+      responses:
+        '200':
+          description: 已暂停
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ok'
+        '409':
+          $ref: '#/components/responses/Conflict'
+
+  /collect/tasks/{id}/resume:
+    post:
+      tags: [采集任务]
+      summary: 继续任务
+      operationId: resumeCollectTask
+      parameters:
+        - $ref: '#/components/parameters/IdPath'
+      responses:
+        '200':
+          description: 已继续
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ok'
+        '409':
+          $ref: '#/components/responses/Conflict'
+
+  /collect/tasks/{id}/retry:
+    post:
+      tags: [采集任务]
+      summary: 重试失败任务
+      operationId: retryCollectTask
+      parameters:
+        - $ref: '#/components/parameters/IdPath'
+      responses:
+        '200':
+          description: 已重新排队
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ok'
+        '409':
+          $ref: '#/components/responses/Conflict'
+
+  /collect/tasks/{id}/logs:
+    get:
+      tags: [采集任务]
+      summary: 任务运行日志
+      operationId: listCollectTaskLogs
+      parameters:
+        - $ref: '#/components/parameters/IdPath'
+      responses:
+        '200':
+          description: 日志行（按时间正序）
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Ok'
+                  - type: object
+                    properties:
+                      data:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            time: { type: string }
+                            level: { type: string, enum: [INFO, WARN, ERROR] }
+                            message: { type: string }
+
+  # ============================ 数据质量 ============================
+  /quality/summary:
+    get:
+      tags: [数据质量]
+      summary: 质量指标汇总
+      operationId: getQualitySummary
+      responses:
+        '200':
+          description: 六项质量指标与问题分布
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Ok'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/QualitySummary'
+
+  /quality/entities:
+    get:
+      tags: [数据质量]
+      summary: 实体质量问题清单
+      operationId: listQualityEntities
+      parameters:
+        - name: issueType
+          in: query
+          description: 问题类型，如 重复实体、别名缺失、类型冲突
+          schema: { type: string }
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PageSize'
+      responses:
+        '200':
+          description: 问题分页
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Ok'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/QualityIssuePage'
+
+  /quality/relations:
+    get:
+      tags: [数据质量]
+      summary: 关系质量问题清单
+      description: 返回证据缺失、置信度偏低、断言与原文不符等问题关系。
+      operationId: listQualityRelations
+      parameters:
+        - name: issueType
+          in: query
+          schema: { type: string }
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PageSize'
+      responses:
+        '200':
+          description: 问题分页
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Ok'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/QualityIssuePage'
+
+  /quality/chunks:
+    get:
+      tags: [数据质量]
+      summary: 文本块质量问题清单
+      operationId: listQualityChunks
+      parameters:
+        - name: issueType
+          in: query
+          schema: { type: string }
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PageSize'
+      responses:
+        '200':
+          description: 问题分页
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Ok'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/QualityIssuePage'
+
+  /quality/sources:
+    get:
+      tags: [数据质量]
+      summary: 数据来源质量问题清单
+      operationId: listQualitySources
+      parameters:
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PageSize'
+      responses:
+        '200':
+          description: 问题分页
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Ok'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/QualityIssuePage'
+
+  /relations/batch-approve:
+    post:
+      tags: [数据质量, 关系审核]
+      summary: 批量审核通过关系
+      description: 危险操作，前端需二次确认；单次最多 100 条，任一条状态不是「待审核」则整批回滚。
+      operationId: batchApproveRelations
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [ids]
+              properties:
+                ids:
+                  type: array
+                  maxItems: 100
+                  items: { type: string, example: R0001 }
+                comment:
+                  type: string
+      responses:
+        '200':
+          description: 审核结果
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Ok'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          success: { type: integer, example: 12 }
+                          failed: { type: integer, example: 0 }
+                          failedIds: { type: array, items: { type: string } }
+        '409':
+          $ref: '#/components/responses/Conflict'
+
+  # ============================ 知识图谱 ============================
+  /kg/graph:
+    get:
+      tags: [知识图谱]
+      summary: 查询子图
+      description: 按疾病、实体类型、关系类型与审核状态过滤，返回节点与边，用于 ECharts 渲染。
+      operationId: getGraph
+      parameters:
+        - name: disease
+          in: query
+          schema: { type: string, example: 2型糖尿病 }
+        - name: keyword
+          in: query
+          schema: { type: string }
+        - name: entityTypes
+          in: query
+          description: 逗号分隔，如 `疾病,危险因素,并发症`
+          schema: { type: string }
+        - name: relationTypes
+          in: query
+          description: 逗号分隔，如 `共病,导致,危险因素`
+          schema: { type: string }
+        - name: status
+          in: query
+          description: 逗号分隔，如 `已审核,待审核`
+          schema: { type: string }
+        - name: limit
+          in: query
+          description: 节点上限
+          schema: { type: integer, default: 55, minimum: 10, maximum: 500 }
+      responses:
+        '200':
+          description: 子图
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Ok'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/GraphData'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+
+  /kg/entities:
+    get:
+      tags: [知识图谱]
+      summary: 实体列表
+      operationId: listEntities
+      parameters:
+        - name: keyword
+          in: query
+          schema: { type: string }
+        - name: type
+          in: query
+          schema: { type: string, example: 疾病 }
+        - name: status
+          in: query
+          schema: { type: string, enum: [候选, 待审核, 已审核, 已驳回] }
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PageSize'
+      responses:
+        '200':
+          description: 实体分页
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Ok'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/EntityPage'
+    post:
+      tags: [知识图谱]
+      summary: 新增实体
+      operationId: createEntity
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EntityInput'
+      responses:
+        '200':
+          description: 新增成功
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Ok'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/Entity'
+
+  /kg/entities/merge:
+    post:
+      tags: [知识图谱]
+      summary: 合并重复实体
+      description: 把 sourceId 合并到 targetId，所有关系改挂到 target，source 标记为已合并。
+      operationId: mergeEntities
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [targetId, sourceIds]
+              properties:
+                targetId: { type: string, example: E0001 }
+                sourceIds:
+                  type: array
+                  items: { type: string, example: E0002 }
+      responses:
+        '200':
+          description: 合并结果
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Ok'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          movedRelations: { type: integer, example: 7 }
+
+  /kg/entities/{id}:
+    put:
+      tags: [知识图谱]
+      summary: 编辑实体
+      operationId: updateEntity
+      parameters:
+        - $ref: '#/components/parameters/IdPath'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EntityInput'
+      responses:
+        '200':
+          description: 更新成功
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Ok'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/Entity'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      tags: [知识图谱]
+      summary: 删除实体
+      operationId: deleteEntity
+      parameters:
+        - $ref: '#/components/parameters/IdPath'
+      responses:
+        '200':
+          description: 删除成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ok'
+        '409':
+          $ref: '#/components/responses/Conflict'
+
+  /kg/entities/{id}/relations:
+    get:
+      tags: [知识图谱]
+      summary: 实体的关联关系
+      operationId: listEntityRelations
+      parameters:
+        - $ref: '#/components/parameters/IdPath'
+      responses:
+        '200':
+          description: 关系列表
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Ok'
+                  - type: object
+                    properties:
+                      data:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Relation'
+
+  /kg/relations:
+    get:
+      tags: [知识图谱]
+      summary: 关系列表
+      operationId: listRelations
+      parameters:
+        - name: keyword
+          in: query
+          schema: { type: string }
+        - name: relation
+          in: query
+          description: 关系类型
+          schema: { type: string, example: 危险因素 }
+        - name: status
+          in: query
+          schema: { type: string, enum: [候选, 待审核, 已审核, 已驳回] }
+        - name: disease
+          in: query
+          schema: { type: string }
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PageSize'
+      responses:
+        '200':
+          description: 关系分页
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Ok'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/RelationPage'
+
+  /kg/relations/{id}:
+    get:
+      tags: [知识图谱]
+      summary: 关系详情与证据
+      operationId: getRelation
+      parameters:
+        - $ref: '#/components/parameters/IdPath'
+      responses:
+        '200':
+          description: 关系详情
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Ok'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/Relation'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  # ============================ 关系审核 ============================
+  /kg/review/queue:
+    get:
+      tags: [关系审核]
+      summary: 待审核队列
+      operationId: listReviewQueue
+      parameters:
+        - name: status
+          in: query
+          description: 默认只返回待审核
+          schema: { type: string, enum: [候选, 待审核, 已审核, 已驳回], default: 待审核 }
+        - name: keyword
+          in: query
+          schema: { type: string }
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PageSize'
+      responses:
+        '200':
+          description: 审核队列分页
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Ok'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/ReviewItemPage'
+
+  /kg/review/{id}/approve:
+    post:
+      tags: [关系审核]
+      summary: 审核通过
+      operationId: approveRelation
+      parameters:
+        - $ref: '#/components/parameters/IdPath'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                comment: { type: string }
+      responses:
+        '200':
+          description: 已通过
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ok'
+        '409':
+          $ref: '#/components/responses/Conflict'
+
+  /kg/review/{id}/reject:
+    post:
+      tags: [关系审核]
+      summary: 驳回
+      operationId: rejectRelation
+      parameters:
+        - $ref: '#/components/parameters/IdPath'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [reason]
+              properties:
+                reason:
+                  type: string
+                  description: 驳回原因，前端弹窗必填
+      responses:
+        '200':
+          description: 已驳回
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ok'
+        '409':
+          $ref: '#/components/responses/Conflict'
+
+  /kg/review/{id}/revise:
+    post:
+      tags: [关系审核]
+      summary: 修改后通过
+      operationId: reviseRelation
+      parameters:
+        - $ref: '#/components/parameters/IdPath'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [claim]
+              properties:
+                claim:
+                  type: string
+                  description: 修改后的断言表述
+                comment: { type: string }
+      responses:
+        '200':
+          description: 已修改并通过
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ok'
+        '409':
+          $ref: '#/components/responses/Conflict'
+
+  /kg/review/{id}/defer:
+    post:
+      tags: [关系审核]
+      summary: 暂缓审核
+      operationId: deferRelation
+      parameters:
+        - $ref: '#/components/parameters/IdPath'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                comment: { type: string }
+      responses:
+        '200':
+          description: 已暂缓
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ok'
+
+  /kg/review/{id}/records:
+    get:
+      tags: [关系审核]
+      summary: 审核操作记录
+      operationId: listReviewRecords
+      parameters:
+        - $ref: '#/components/parameters/IdPath'
+      responses:
+        '200':
+          description: 操作记录（按时间倒序）
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Ok'
+                  - type: object
+                    properties:
+                      data:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/ReviewRecord'
+
+  # ============================ 智能问答 ============================
+  /qa/ask:
+    post:
+      tags: [智能问答]
+      summary: 提问（GraphRAG 全链路）
+      description: |
+        同步返回完整结果，用于前端一次性渲染「检索过程 + 答案 + 引用 + 图谱路径」。
+        若需要逐字输出，使用 `Accept: text/event-stream`，服务端按
+        `event: step` / `event: delta` / `event: done` 推送，字段与同步响应一致。
+      operationId: ask
+      parameters:
+        - name: Accept
+          in: header
+          schema: { type: string, example: application/json }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AskRequest'
+      responses:
+        '200':
+          description: 问答结果
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Ok'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/AskResult'
+            text/event-stream:
+              schema:
+                type: string
+                description: SSE 流，事件类型 step / delta / done
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+
+  /qa/sessions:
+    get:
+      tags: [智能问答]
+      summary: 会话列表
+      operationId: listQaSessions
+      parameters:
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PageSize'
+      responses:
+        '200':
+          description: 会话分页
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Ok'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/QaSessionPage'
+
+  /qa/sessions/{id}/messages:
+    get:
+      tags: [智能问答]
+      summary: 会话消息
+      operationId: listQaMessages
+      parameters:
+        - $ref: '#/components/parameters/IdPath'
+      responses:
+        '200':
+          description: 消息列表（按时间正序）
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Ok'
+                  - type: object
+                    properties:
+                      data:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/QaMessage'
+
+  /qa/sessions/{id}:
+    delete:
+      tags: [智能问答]
+      summary: 删除会话
+      operationId: deleteQaSession
+      parameters:
+        - $ref: '#/components/parameters/IdPath'
+      responses:
+        '200':
+          description: 已删除
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ok'
+
+  /qa/history:
+    get:
+      tags: [智能问答]
+      summary: 问答历史
+      operationId: listQaHistory
+      parameters:
+        - name: keyword
+          in: query
+          schema: { type: string }
+        - name: disease
+          in: query
+          schema: { type: string }
+        - name: startDate
+          in: query
+          schema: { type: string, format: date }
+        - name: endDate
+          in: query
+          schema: { type: string, format: date }
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PageSize'
+      responses:
+        '200':
+          description: 历史分页
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Ok'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/QaHistoryPage'
+
+  # ============================ 关联分析 ============================
+  /analysis/network:
+    get:
+      tags: [关联分析]
+      summary: 疾病关联网络
+      description: 以中心疾病做 1~3 跳扩展，返回节点、边与分层信息（hop）。
+      operationId: getDiseaseNetwork
+      parameters:
+        - name: center
+          in: query
+          required: true
+          schema: { type: string, example: 2型糖尿病 }
+        - name: hops
+          in: query
+          schema: { type: integer, enum: [1, 2, 3], default: 2 }
+        - name: relationTypes
+          in: query
+          description: 逗号分隔
+          schema: { type: string, example: "共病,导致,危险因素,并发症" }
+        - name: focus
+          in: query
+          description: 需要高亮的关联疾病，逗号分隔
+          schema: { type: string }
+      responses:
+        '200':
+          description: 网络数据
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Ok'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/AnalysisNetwork'
+
+  /analysis/path:
+    get:
+      tags: [关联分析]
+      summary: 最短关联路径
+      description: BFS 求解，仅使用图谱中真实存在的关系，逐段返回证据。
+      operationId: getShortestPath
+      parameters:
+        - name: from
+          in: query
+          required: true
+          schema: { type: string, example: 肥胖 }
+        - name: to
+          in: query
+          required: true
+          schema: { type: string, example: 脑卒中 }
+        - name: maxLen
+          in: query
+          schema: { type: integer, default: 5, minimum: 1, maximum: 6 }
+      responses:
+        '200':
+          description: 路径结果，未找到时 data 为 null
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Ok'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/PathResult'
+
+  /analysis/pagerank:
+    get:
+      tags: [关联分析]
+      summary: PageRank 节点排名
+      description: 加权 PageRank（damping=0.85，迭代 30 轮），返回 Top-N 与类型分布。
+      operationId: getPagerank
+      parameters:
+        - name: topN
+          in: query
+          schema: { type: integer, default: 20, maximum: 200 }
+        - name: type
+          in: query
+          schema: { type: string }
+      responses:
+        '200':
+          description: 排名结果
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Ok'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/PagerankResult'
+
+  /analysis/stats:
+    get:
+      tags: [关联分析]
+      summary: 疾病关联统计
+      description: 关联数量、关系类型堆叠、三高关联热力、实体类型分布、置信度分布。
+      operationId: getAnalysisStats
+      parameters:
+        - name: disease
+          in: query
+          schema: { type: string }
+        - name: startDate
+          in: query
+          schema: { type: string, format: date }
+        - name: endDate
+          in: query
+          schema: { type: string, format: date }
+      responses:
+        '200':
+          description: 统计结果
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Ok'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/AnalysisStats'
+
+  # ============================ 系统管理 ============================
+  /system/stats:
+    get:
+      tags: [系统管理]
+      summary: 系统数据统计
+      operationId: getSystemStats
+      responses:
+        '200':
+          description: 统计结果
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Ok'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/SystemStats'
+
+  /system/logs:
+    get:
+      tags: [系统管理]
+      summary: 操作日志
+      operationId: listSystemLogs
+      parameters:
+        - name: keyword
+          in: query
+          schema: { type: string }
+        - name: module
+          in: query
+          schema: { type: string, example: 关系审核 }
+        - name: user
+          in: query
+          schema: { type: string }
+        - name: result
+          in: query
+          schema: { type: string, enum: [成功, 失败] }
+        - name: startDate
+          in: query
+          schema: { type: string, format: date }
+        - name: endDate
+          in: query
+          schema: { type: string, format: date }
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PageSize'
+      responses:
+        '200':
+          description: 日志分页
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Ok'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/LogPage'
+
+  /system/config:
+    get:
+      tags: [系统管理]
+      summary: 读取系统配置
+      operationId: getSystemConfig
+      responses:
+        '200':
+          description: 配置
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Ok'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/SystemConfig'
+    put:
+      tags: [系统管理]
+      summary: 保存系统配置
+      description: 只传需要修改的分组即可，未传字段保持不变。
+      operationId: updateSystemConfig
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SystemConfig'
+      responses:
+        '200':
+          description: 已保存
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ok'
+
+  /system/health:
+    get:
+      tags: [系统管理]
+      summary: 组件健康检查
+      operationId: getSystemHealth
+      security: []
+      responses:
+        '200':
+          description: 各组件状态
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Ok'
+                  - type: object
+                    properties:
+                      data:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/HealthItem'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: "登录后获得的 token，放在请求头 Authorization: Bearer <token>"
+
+  parameters:
+    Page:
+      name: page
+      in: query
+      description: 页码，从 1 开始
+      schema: { type: integer, default: 1, minimum: 1 }
+    PageSize:
+      name: pageSize
+      in: query
+      description: 每页条数
+      schema: { type: integer, default: 10, minimum: 1, maximum: 100 }
+    IdPath:
+      name: id
+      in: path
+      required: true
+      description: 资源 ID
+      schema: { type: string }
+
+  responses:
+    BadRequest:
+      description: 参数校验失败
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: 未登录或 token 失效
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Forbidden:
+      description: 无权限
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: 资源不存在
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Conflict:
+      description: 状态冲突
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    ServiceUnavailable:
+      description: 依赖服务不可用
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+  schemas:
+    # ---------- 通用 ----------
+    Ok:
+      type: object
+      properties:
+        code:
+          type: integer
+          example: 0
+        message:
+          type: string
+          example: ok
+
+    Error:
+      type: object
+      properties:
+        code:
+          type: integer
+          example: 40001
+        message:
+          type: string
+          example: 参数 pageSize 超过上限 100
+        data:
+          type: object
+          nullable: true
+          example: null
+
+    PageResult:
+      type: object
+      properties:
+        total: { type: integer, example: 5026 }
+        page: { type: integer, example: 1 }
+        pageSize: { type: integer, example: 10 }
+
+    UserProfile:
+      type: object
+      properties:
+        name: { type: string, example: 马春静 }
+        account: { type: string, example: admin }
+        role:
+          type: string
+          enum: [管理员, 医学审核员, 普通用户]
+        dept: { type: string, example: 知识工程组 }
+        avatar: { type: string, example: 马 }
+
+    # ---------- 首页 ----------
+    DashboardOverview:
+      type: object
+      properties:
+        cards:
+          type: array
+          description: 首页四张统计卡
+          items:
+            type: object
+            properties:
+              key: { type: string, example: entityTotal }
+              label: { type: string, example: 知识图谱实体 }
+              value: { type: integer, example: 4793 }
+              unit: { type: string, example: 个 }
+              hint: { type: string, example: "真实 MeSH 有效实体 4,793 个" }
+        graph:
+          $ref: '#/components/schemas/GraphData'
+        diseaseCount:
+          type: object
+          additionalProperties: { type: integer }
+          example: { 2型糖尿病: 1677, 高血压: 1645, 血脂异常: 1704 }
+        relationTypeCount:
+          type: object
+          additionalProperties: { type: integer }
+        sourceCount:
+          type: object
+          additionalProperties: { type: integer }
+        yearly:
+          type: array
+          items:
+            type: object
+            properties:
+              year: { type: integer, example: 2024 }
+              count: { type: integer, example: 708 }
+        recentTasks:
+          type: array
+          items:
+            $ref: '#/components/schemas/CollectTask'
+        recentQa:
+          type: array
+          items:
+            $ref: '#/components/schemas/QaHistoryItem'
+        health:
+          type: array
+          items:
+            $ref: '#/components/schemas/HealthItem'
+
+    # ---------- 用户 ----------
+    User:
+      type: object
+      properties:
+        id: { type: string, example: U0001 }
+        avatar: { type: string, example: 赵 }
+        name: { type: string, example: 赵子涵 }
+        account: { type: string, example: admin }
+        role:
+          type: string
+          enum: [管理员, 医学审核员, 普通用户]
+        phone: { type: string, example: 13****1000 }
+        email: { type: string, example: admin@manzhi.edu.cn }
+        dept: { type: string, example: 知识工程组 }
+        createdAt: { type: string, example: 2026-01-01 08:00 }
+        lastLogin: { type: string, example: 2026-11-01 07:00 }
+        status:
+          type: string
+          enum: [启用, 禁用]
+
+    UserInput:
+      type: object
+      required: [name, account, role]
+      properties:
+        name: { type: string }
+        account: { type: string }
+        password: { type: string, format: password, description: 仅新增时必填 }
+        role:
+          type: string
+          enum: [管理员, 医学审核员, 普通用户]
+        phone: { type: string }
+        email: { type: string }
+        dept: { type: string }
+        status:
+          type: string
+          enum: [启用, 禁用]
+
+    UserPage:
+      allOf:
+        - $ref: '#/components/schemas/PageResult'
+        - type: object
+          properties:
+            list:
+              type: array
+              items:
+                $ref: '#/components/schemas/User'
+
+    # ---------- 数据资源 ----------
+    ResourceStats:
+      type: object
+      properties:
+        entityTotal: { type: integer, example: 4793, description: 有效 MeSH 实体 }
+        tripleTotal: { type: integer, example: 36619 }
+        chunkTotal: { type: integer, example: 32078 }
+        charTotal: { type: integer, example: 7669660 }
+        docTotal: { type: integer, example: 5026 }
+        docWithAbstract: { type: integer, example: 4611 }
+        journalTotal: { type: integer, example: 1259 }
+        kgEntityTotal: { type: integer, example: 264, description: 演示子集节点数 }
+        kgRelationTotal: { type: integer, example: 263 }
+        entityStatus:
+          type: object
+          additionalProperties: { type: integer }
+          example: { 已审核: 180, 待审核: 55, 候选: 11, 已驳回: 18 }
+        relationStatus:
+          type: object
+          additionalProperties: { type: integer }
+          example: { 已审核: 175, 待审核: 41, 候选: 26, 已驳回: 21 }
+        entityTypeCount:
+          type: object
+          additionalProperties: { type: integer }
+        relationTypeCount:
+          type: object
+          additionalProperties: { type: integer }
+        sourceCount:
+          type: object
+          additionalProperties: { type: integer }
+        yearly:
+          type: array
+          items:
+            type: object
+            properties:
+              year: { type: integer }
+              count: { type: integer }
+        baseline:
+          type: object
+          description: 开题报告口径，用于页面「口径说明」并列展示
+          properties:
+            entity: { type: integer, example: 3931 }
+            triple: { type: integer, example: 24731 }
+            chunk: { type: integer, example: 21002 }
+            char: { type: integer, example: 5019000 }
+
+    # ---------- 文献 ----------
+    Document:
+      type: object
+      properties:
+        id: { type: string, example: DOC-P0001 }
+        pmid: { type: string, example: "42828937" }
+        title: { type: string }
+        titleEn: { type: string }
+        authors: { type: string }
+        journal: { type: string }
+        docType:
+          type: string
+          enum: [期刊论文, 临床指南, 科普资料, 图谱来源]
+        disease: { type: string }
+        source: { type: string, example: PubMed }
+        publishDate: { type: string, format: date }
+        chunkCount: { type: integer, example: 427 }
+        collectedAt: { type: string, example: 2026-11-04 09:12 }
+        status:
+          type: string
+          enum: [已入库, 处理中, 解析失败]
+        doi: { type: string }
+        url: { type: string }
+        abstract: { type: string }
+        mesh:
+          type: array
+          items: { type: string }
+
+    DocumentPage:
+      allOf:
+        - $ref: '#/components/schemas/PageResult'
+        - type: object
+          properties:
+            list:
+              type: array
+              items:
+                $ref: '#/components/schemas/Document'
+
+    Chunk:
+      type: object
+      properties:
+        id: { type: string, example: C00001 }
+        docId: { type: string, example: DOC-P0001 }
+        source: { type: string, example: PubMed }
+        pmid: { type: string }
+        disease: { type: string }
+        chunkIdx: { type: integer, example: 0 }
+        textLen: { type: integer, example: 300 }
+        text: { type: string }
+        score:
+          type: number
+          format: float
+          description: 检索得分，仅问答与溯源场景返回
+          example: 0.778
+
+    ChunkPage:
+      allOf:
+        - $ref: '#/components/schemas/PageResult'
+        - type: object
+          properties:
+            list:
+              type: array
+              items:
+                $ref: '#/components/schemas/Chunk'
+
+    # ---------- 采集任务 ----------
+    CollectTask:
+      type: object
+      properties:
+        id: { type: string, example: T2026001 }
+        name: { type: string, example: 2型糖尿病 · PubMed 文献采集 }
+        source: { type: string, enum: [PubMed, MedlinePlus, 指南PDF, DiaKG, OpenCMKG] }
+        collectType: { type: string, example: API 接口采集 }
+        disease: { type: string }
+        startAt: { type: string }
+        endAt: { type: string, nullable: true }
+        count: { type: integer, example: 716 }
+        status:
+          type: string
+          enum: [排队中, 运行中, 已完成, 已暂停, 失败]
+        progress: { type: integer, minimum: 0, maximum: 100 }
+        keyword: { type: string }
+        operator: { type: string }
+
+    CollectTaskInput:
+      type: object
+      required: [name, source, disease]
+      properties:
+        name: { type: string }
+        source:
+          type: string
+          enum: [PubMed, MedlinePlus, 指南PDF, DiaKG, OpenCMKG]
+        collectType: { type: string }
+        disease: { type: string }
+        keyword: { type: string }
+        limit:
+          type: integer
+          description: 单次采集条数上限
+          example: 500
+        dateRange:
+          type: object
+          properties:
+            start: { type: string, format: date }
+            end: { type: string, format: date }
+
+    CollectTaskPage:
+      allOf:
+        - $ref: '#/components/schemas/PageResult'
+        - type: object
+          properties:
+            list:
+              type: array
+              items:
+                $ref: '#/components/schemas/CollectTask'
+
+    # ---------- 数据质量 ----------
+    QualitySummary:
+      type: object
+      properties:
+        metrics:
+          type: array
+          items:
+            type: object
+            properties:
+              key: { type: string, example: completeness }
+              label: { type: string, example: 字段完整性 }
+              value: { type: number, example: 96.4 }
+              unit: { type: string, example: "%" }
+        issueCount:
+          type: object
+          additionalProperties: { type: integer }
+          example: { 实体: 23, 关系: 41, 文本: 12, 来源: 5 }
+        pendingReview: { type: integer, example: 41 }
+        anomalies:
+          type: array
+          items: { type: string }
+
+    QualityIssue:
+      type: object
+      properties:
+        id: { type: string, example: QI0001 }
+        targetType: { type: string, enum: [实体, 关系, 文本, 来源] }
+        targetId: { type: string, example: R0012 }
+        issueType: { type: string, example: 证据缺失 }
+        level: { type: string, enum: [高, 中, 低] }
+        detail: { type: string }
+        suggestion: { type: string }
+        createdAt: { type: string }
+
+    QualityIssuePage:
+      allOf:
+        - $ref: '#/components/schemas/PageResult'
+        - type: object
+          properties:
+            list:
+              type: array
+              items:
+                $ref: '#/components/schemas/QualityIssue'
+
+    # ---------- 知识图谱 ----------
+    Entity:
+      type: object
+      properties:
+        id: { type: string, example: E0001 }
+        name: { type: string, example: 2型糖尿病 }
+        type:
+          type: string
+          enum: [疾病, 危险因素, 症状, 并发症, 药物类别, 检查指标, 生活方式, 其他]
+        standardName: { type: string }
+        aliases:
+          type: array
+          items: { type: string }
+        diseases:
+          type: array
+          items: { type: string }
+        source: { type: string, example: 指南抽取 }
+        status:
+          type: string
+          enum: [候选, 待审核, 已审核, 已驳回]
+        confidence: { type: number, format: float, example: 0.973 }
+        relCount: { type: integer, example: 61 }
+        createdAt: { type: string, format: date }
+
+    EntityInput:
+      type: object
+      required: [name, type]
+      properties:
+        name: { type: string }
+        type: { type: string }
+        standardName: { type: string }
+        aliases:
+          type: array
+          items: { type: string }
+        diseases:
+          type: array
+          items: { type: string }
+        source: { type: string }
+        status:
+          type: string
+          enum: [候选, 待审核, 已审核, 已驳回]
+
+    EntityPage:
+      allOf:
+        - $ref: '#/components/schemas/PageResult'
+        - type: object
+          properties:
+            list:
+              type: array
+              items:
+                $ref: '#/components/schemas/Entity'
+
+    Relation:
+      type: object
+      properties:
+        id: { type: string, example: R0001 }
+        headId: { type: string, example: E0001 }
+        head: { type: string, example: 2型糖尿病 }
+        tailId: { type: string, example: E0010 }
+        tail: { type: string, example: 超重与肥胖 }
+        relation:
+          type: string
+          enum: [危险因素, 临床表现, 并发症, 常用药物, 监测指标, 干预措施, 共病, 关联疾病, 导致]
+        disease: { type: string }
+        source: { type: string, example: 《中国2型糖尿病防治指南（2024年版）》 }
+        section: { type: string, example: 第1章 }
+        evidenceLevel: { type: string, example: 指南A级 }
+        confidence: { type: number, format: float, example: 0.92 }
+        status:
+          type: string
+          enum: [候选, 待审核, 已审核, 已驳回]
+        snippet: { type: string, description: 证据原文片段 }
+        reviewer: { type: string }
+        createdAt: { type: string, format: date }
+
+    RelationPage:
+      allOf:
+        - $ref: '#/components/schemas/PageResult'
+        - type: object
+          properties:
+            list:
+              type: array
+              items:
+                $ref: '#/components/schemas/Relation'
+
+    GraphNode:
+      type: object
+      properties:
+        id: { type: string, example: E0001 }
+        name: { type: string, example: 2型糖尿病 }
+        type: { type: string, example: 疾病 }
+        category: { type: integer, example: 0 }
+        symbolSize: { type: number, example: 34 }
+        value: { type: integer, description: 关联数量, example: 44 }
+        hop: { type: integer, description: 距中心节点的跳数, example: 0 }
+        isCenter: { type: boolean }
+
+    GraphEdge:
+      type: object
+      properties:
+        id: { type: string, example: R0001 }
+        source: { type: string, example: E0001 }
+        target: { type: string, example: E0010 }
+        name: { type: string, example: 危险因素 }
+        relation: { type: string, example: 危险因素 }
+        status: { type: string, example: 已审核 }
+        value: { type: number, description: 置信度, example: 0.92 }
+
+    GraphData:
+      type: object
+      properties:
+        nodes:
+          type: array
+          items:
+            $ref: '#/components/schemas/GraphNode'
+        edges:
+          type: array
+          items:
+            $ref: '#/components/schemas/GraphEdge'
+        stats:
+          type: object
+          properties:
+            nodeCount: { type: integer, example: 264 }
+            edgeCount: { type: integer, example: 263 }
+            diseaseCount: { type: integer, example: 9 }
+
+    # ---------- 关系审核 ----------
+    ReviewItem:
+      allOf:
+        - $ref: '#/components/schemas/Relation'
+        - type: object
+          properties:
+            claim:
+              type: string
+              description: 断言表述，如「2型糖尿病 —危险因素→ 超重与肥胖」
+              example: 2型糖尿病 —危险因素→ 超重与肥胖
+            entityCheck:
+              type: object
+              properties:
+                headExists: { type: boolean }
+                tailExists: { type: boolean }
+                duplicated: { type: boolean }
+
+    ReviewItemPage:
+      allOf:
+        - $ref: '#/components/schemas/PageResult'
+        - type: object
+          properties:
+            list:
+              type: array
+              items:
+                $ref: '#/components/schemas/ReviewItem'
+
+    ReviewRecord:
+      type: object
+      properties:
+        id: { type: string, example: RR0001 }
+        relationId: { type: string }
+        action:
+          type: string
+          enum: [提交审核, 审核通过, 驳回, 修改后通过, 暂缓审核]
+        operator: { type: string }
+        comment: { type: string }
+        createdAt: { type: string }
+
+    # ---------- 智能问答 ----------
+    AskRequest:
+      type: object
+      required: [question]
+      properties:
+        question:
+          type: string
+          example: 2型糖尿病与高血压有哪些关联？
+        sessionId:
+          type: string
+          description: 不传则新建会话
+        topK:
+          type: integer
+          default: 5
+          description: 最终保留的证据片段数
+
+    AskResult:
+      type: object
+      properties:
+        sessionId: { type: string, example: Q0001 }
+        messageId: { type: string, example: M0002 }
+        intent:
+          type: object
+          properties:
+            key: { type: string, example: dm-htn }
+            label: { type: string, example: 疾病关联查询 }
+            diseases:
+              type: array
+              items: { type: string }
+            confidence: { type: number, format: float, example: 0.91 }
+        steps:
+          type: array
+          description: 检索链路五步，前端按序展示并显示耗时
+          items:
+            $ref: '#/components/schemas/RetrievalStep'
+        answer:
+          type: string
+          description: 完整答案，引用处用 `[1]` `[2]` 标记
+        paragraphs:
+          type: array
+          items: { type: string }
+        citations:
+          type: array
+          items:
+            $ref: '#/components/schemas/Citation'
+        chunks:
+          type: array
+          description: 证据片段，用于右侧溯源面板
+          items:
+            $ref: '#/components/schemas/Chunk'
+        path:
+          type: array
+          items:
+            $ref: '#/components/schemas/GraphPathItem'
+        related:
+          type: array
+          description: 相关疾病标签
+          items: { type: string }
+        followups:
+          type: array
+          description: 推荐追问
+          items: { type: string }
+
+    RetrievalStep:
+      type: object
+      properties:
+        name: { type: string, example: 知识检索 }
+        detail: { type: string, example: 图谱检索命中 13 个实体关系；BM25 召回 40 篇；BGE-M3 向量召回 Top-20 }
+        ms: { type: integer, example: 284 }
+        extra: { type: string, example: 图谱 + BM25 + 向量 }
+
+    Citation:
+      allOf:
+        - $ref: '#/components/schemas/Document'
+        - type: object
+          properties:
+            citeNo:
+              type: integer
+              description: 角标序号，与答案中的 `[n]` 对应
+              example: 1
+
+    GraphPathItem:
+      type: object
+      properties:
+        head: { type: string, example: 2型糖尿病 }
+        relation: { type: string, example: 共病 }
+        tail: { type: string, example: 高血压 }
+        relId: { type: string, example: R0007 }
+
+    QaSession:
+      type: object
+      properties:
+        id: { type: string, example: Q0001 }
+        title: { type: string, example: 2型糖尿病与高血压有哪些关联？ }
+        disease: { type: string }
+        rounds: { type: integer, example: 6 }
+        createdAt: { type: string }
+        user: { type: string }
+
+    QaSessionPage:
+      allOf:
+        - $ref: '#/components/schemas/PageResult'
+        - type: object
+          properties:
+            list:
+              type: array
+              items:
+                $ref: '#/components/schemas/QaSession'
+
+    QaMessage:
+      type: object
+      properties:
+        id: { type: string }
+        role:
+          type: string
+          enum: [user, assistant]
+        content: { type: string }
+        createdAt: { type: string }
+        result:
+          $ref: '#/components/schemas/AskResult'
+          description: assistant 消息附带的完整结果，用于回放
+
+    QaHistoryItem:
+      type: object
+      properties:
+        id: { type: string, example: Q0001 }
+        question: { type: string }
+        intent: { type: string, example: 疾病关联查询 }
+        disease: { type: string }
+        citations: { type: integer, example: 4 }
+        steps: { type: integer, example: 5 }
+        ms: { type: integer, example: 1075 }
+        createdAt: { type: string }
+        feedback:
+          type: string
+          enum: [有帮助, 无帮助, 未评价]
+
+    QaHistoryPage:
+      allOf:
+        - $ref: '#/components/schemas/PageResult'
+        - type: object
+          properties:
+            list:
+              type: array
+              items:
+                $ref: '#/components/schemas/QaHistoryItem'
+
+    # ---------- 关联分析 ----------
+    AnalysisNetwork:
+      type: object
+      properties:
+        center: { type: string, example: 2型糖尿病 }
+        nodes:
+          type: array
+          items:
+            $ref: '#/components/schemas/GraphNode'
+        edges:
+          type: array
+          items:
+            $ref: '#/components/schemas/GraphEdge'
+        stats:
+          type: object
+          properties:
+            nodes: { type: integer, example: 44 }
+            edges: { type: integer, example: 105 }
+            diseases: { type: integer, example: 9 }
+
+    PathStep:
+      type: object
+      properties:
+        from: { type: string, example: 肥胖 }
+        to: { type: string, example: 2型糖尿病 }
+        relation: { type: string, example: 危险因素 }
+        relationId: { type: string, example: R0002 }
+        confidence: { type: number, format: float, example: 0.93 }
+        source: { type: string }
+        snippet: { type: string }
+
+    PathResult:
+      type: object
+      nullable: true
+      properties:
+        from: { type: string, example: 肥胖 }
+        to: { type: string, example: 脑卒中 }
+        hops: { type: integer, example: 2 }
+        nodes:
+          type: array
+          items: { type: string }
+          example: [肥胖, 2型糖尿病, 脑卒中]
+        steps:
+          type: array
+          items:
+            $ref: '#/components/schemas/PathStep'
+
+    PagerankResult:
+      type: object
+      properties:
+        algorithm: { type: string, example: 加权 PageRank（damping = 0.85，迭代 30 轮） }
+        computedAt: { type: string, example: 2026-11-04 09:48:12 }
+        nodeCount: { type: integer, example: 264 }
+        avgScore: { type: number, format: float, example: 0.38 }
+        list:
+          type: array
+          items:
+            type: object
+            properties:
+              rank: { type: integer, example: 1 }
+              id: { type: string, example: E0001 }
+              name: { type: string, example: 2型糖尿病 }
+              type: { type: string, example: 疾病 }
+              score: { type: number, format: float, example: 8.8889 }
+              degree: { type: integer, example: 44 }
+              relCount: { type: integer, example: 61 }
+        typeCount:
+          type: object
+          additionalProperties: { type: integer }
+
+    AnalysisStats:
+      type: object
+      properties:
+        relationCountByDisease:
+          type: array
+          items:
+            type: object
+            properties:
+              disease: { type: string }
+              total: { type: integer }
+              approved: { type: integer }
+        relationTypeByDisease:
+          type: array
+          items:
+            type: object
+            properties:
+              disease: { type: string }
+              counts:
+                type: object
+                additionalProperties: { type: integer }
+        heatmap:
+          type: array
+          description: 三高疾病 × 关系类型 的 [xIndex, yIndex, value]
+          items:
+            type: array
+            items: { type: number }
+        entityTypeCount:
+          type: object
+          additionalProperties: { type: integer }
+        confidenceBins:
+          type: array
+          items:
+            type: object
+            properties:
+              range: { type: string, example: 0.8-0.9 }
+              count: { type: integer, example: 63 }
+        detail:
+          type: array
+          items:
+            type: object
+            properties:
+              disease: { type: string }
+              literature: { type: integer }
+              entities: { type: integer }
+              relations: { type: integer }
+              approved: { type: integer }
+              pending: { type: integer }
+
+    # ---------- 系统管理 ----------
+    SystemStats:
+      type: object
+      properties:
+        cards:
+          type: array
+          items:
+            type: object
+            properties:
+              label: { type: string }
+              value: { type: number }
+              unit: { type: string }
+        growth:
+          type: array
+          items:
+            type: object
+            properties:
+              month: { type: string, example: 2026-06 }
+              entity: { type: integer }
+              relation: { type: integer }
+        entityTypeCount:
+          type: object
+          additionalProperties: { type: integer }
+        relationTypeCount:
+          type: object
+          additionalProperties: { type: integer }
+        sourceCount:
+          type: object
+          additionalProperties: { type: integer }
+        diseaseCount:
+          type: object
+          additionalProperties: { type: integer }
+        qaTrend:
+          type: array
+          items:
+            type: object
+            properties:
+              date: { type: string }
+              count: { type: integer }
+        pipeline:
+          type: array
+          description: 数据处理状态
+          items:
+            type: object
+            properties:
+              name: { type: string, example: 文献解析 }
+              progress: { type: integer, example: 100 }
+              status: { type: string, enum: [已完成, 进行中, 未开始, 失败] }
+
+    LogItem:
+      type: object
+      properties:
+        id: { type: string, example: L00060 }
+        user: { type: string, example: 秦雨欣 }
+        module: { type: string, example: 关系审核 }
+        action: { type: string, example: 修改后通过 }
+        ip: { type: string, example: 10.11.59.59 }
+        time: { type: string, example: 2026-11-04 19:53:47 }
+        result:
+          type: string
+          enum: [成功, 失败]
+        detail: { type: string, example: 操作对象：T2026004；耗时 204ms }
+
+    LogPage:
+      allOf:
+        - $ref: '#/components/schemas/PageResult'
+        - type: object
+          properties:
+            list:
+              type: array
+              items:
+                $ref: '#/components/schemas/LogItem'
+
+    SystemConfig:
+      type: object
+      properties:
+        basic:
+          type: object
+          properties:
+            name: { type: string, example: 慢知 · 慢性病智能知识服务平台 }
+            shortName: { type: string, example: 慢知 }
+            org: { type: string, example: 内蒙古师范大学 计算机科学技术学院 }
+            version: { type: string, example: v1.4.2 }
+            owner: { type: string, example: 马春静 }
+            contact: { type: string, example: admin@manzhi.edu.cn }
+            desc: { type: string }
+        permissions:
+          type: array
+          items:
+            type: object
+            properties:
+              role: { type: string, example: 管理员 }
+              modules:
+                type: array
+                items: { type: string }
+              scope: { type: string, example: 全部数据 }
+              canReview: { type: boolean }
+              canDelete: { type: boolean }
+        sources:
+          type: array
+          items:
+            type: object
+            properties:
+              name: { type: string }
+              type: { type: string, enum: [API, 文件, 图谱] }
+              url: { type: string }
+              enabled: { type: boolean }
+        models:
+          type: array
+          items:
+            type: object
+            properties:
+              label: { type: string, example: 大语言模型 }
+              value: { type: string, example: 智谱 GLM-4 }
+              note: { type: string }
+        retrieval:
+          type: object
+          properties:
+            vectorTopK: { type: integer, example: 20 }
+            rerankTopK: { type: integer, example: 5 }
+            rrfK: { type: integer, example: 60 }
+            chunkSize: { type: integer, example: 300 }
+            chunkOverlap: { type: integer, example: 50 }
+            temperature: { type: number, format: float, example: 0.2 }
+
+    HealthItem:
+      type: object
+      properties:
+        name: { type: string, example: MySQL }
+        status:
+          type: string
+          enum: [正常, 异常, 演示状态]
+        detail: { type: string, example: 连接正常 · 12 张表 }
+        latencyMs: { type: integer, example: 8 }
