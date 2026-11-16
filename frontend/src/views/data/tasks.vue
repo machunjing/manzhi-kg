@@ -84,7 +84,7 @@ function submitCreate() {
     status: '运行中',
     progress: 5,
     keyword: createDlg.form.keyword,
-    operator: '马春静'
+    operator: '演示管理员'
   }
   list.value.unshift(t)
   total.value++

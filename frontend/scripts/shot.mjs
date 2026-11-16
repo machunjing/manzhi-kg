@@ -79,7 +79,7 @@ await send('Emulation.setDeviceMetricsOverride', { width: W, height: H, deviceSc
 await send('Page.navigate', { url: BASE + '/#/login' })
 await sleep(2500)
 await send('Runtime.evaluate', {
-  expression: `localStorage.setItem('mz-token','demo');localStorage.setItem('mz-profile', JSON.stringify({name:'马春静',account:'admin',role:'管理员',dept:'知识工程组'}));`
+  expression: `localStorage.setItem('mz-token','demo');localStorage.setItem('mz-profile', JSON.stringify({name:'演示管理员',account:'admin',role:'管理员',dept:'知识工程组'}));`
 })
 
 const logs = []

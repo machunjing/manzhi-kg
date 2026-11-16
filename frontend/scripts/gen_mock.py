@@ -301,7 +301,7 @@ def add_rel(head, rtype, tail, disease, snippet, gl, level="指南A级"):
         "snippet": snippet,
         "section": "第%d章" % (1 + seed % 9),
         "createdAt": "2026-%02d-%02d" % (4 + seed % 7, 1 + seed % 28),
-        "reviewer": "马春静" if seed % 3 else "",
+        "reviewer": "演示管理员" if seed % 3 else "",
     })
 
 

@@ -9,9 +9,9 @@ const saving = ref(false)
 const basic = reactive({
   name: '慢知 · 慢性病智能知识服务平台',
   shortName: '慢知',
-  org: '内蒙古师范大学 计算机科学技术学院',
+  org: '慢知知识工程组',
   version: 'v1.4.2',
-  owner: '马春静',
+  owner: '慢知团队',
   contact: 'admin@manzhi.edu.cn',
   desc: '面向 2 型糖尿病、高血压与血脂异常的慢性病知识服务与科研辅助平台'
 })

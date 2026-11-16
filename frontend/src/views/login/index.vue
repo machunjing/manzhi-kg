@@ -163,7 +163,7 @@ const features = [
           <span>演示账号：<b>admin</b> ／ 密码：<b>demo1234</b></span>
         </div>
 
-        <div class="form-foot">内蒙古师范大学 · 计算机科学技术学院 · 数据科学与大数据技术</div>
+        <div class="form-foot">慢知 · 慢性病智能知识服务平台</div>
       </div>
     </section>
   </div>

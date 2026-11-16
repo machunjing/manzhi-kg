@@ -26,7 +26,7 @@ export const useUserStore = defineStore('user', {
         throw new Error('账号或密码错误，请使用演示账号 admin / demo1234')
       }
       this.token = 'demo-token-' + Date.now()
-      this.profile = { name: '马春静', account: 'admin', role: '管理员', dept: '知识工程组' }
+      this.profile = { name: '演示管理员', account: 'admin', role: '管理员', dept: '知识工程组' }
       if (remember) {
         localStorage.setItem(KEY, this.token)
         localStorage.setItem(PROFILE, JSON.stringify(this.profile))

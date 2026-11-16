@@ -4,7 +4,7 @@ info:
   title: 慢知 · 慢性病智能知识服务平台 API
   version: 1.0.0
   description: |
-    毕业设计《基于知识图谱与 RAG 的慢性病智能知识服务系统》后端接口契约。
+    「慢知」慢性病智能知识服务平台 —— 后端接口契约。
 
     **约定**
     - 统一前缀 `/api`，请求与响应均为 `application/json; charset=utf-8`。
@@ -29,7 +29,7 @@ info:
     **说明**：本契约为前端原型的 `src/mock` 层反推而来，字段名与前端页面一一对应，
     后端按此实现即可直接替换 mock，无需改动页面代码。
   contact:
-    name: 马春静
+    name: machunjing
     email: 2168426389@qq.com
 
 servers:
@@ -1687,7 +1687,7 @@ components:
     UserProfile:
       type: object
       properties:
-        name: { type: string, example: 马春静 }
+        name: { type: string, example: 演示管理员 }
         account: { type: string, example: admin }
         role:
           type: string
@@ -2505,9 +2505,9 @@ components:
           properties:
             name: { type: string, example: 慢知 · 慢性病智能知识服务平台 }
             shortName: { type: string, example: 慢知 }
-            org: { type: string, example: 内蒙古师范大学 计算机科学技术学院 }
+            org: { type: string, example: 慢知知识工程组 }
             version: { type: string, example: v1.4.2 }
-            owner: { type: string, example: 马春静 }
+            owner: { type: string, example: 慢知团队 }
             contact: { type: string, example: admin@manzhi.edu.cn }
             desc: { type: string }
         permissions:

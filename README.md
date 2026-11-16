@@ -195,7 +195,7 @@ npm run dev                      # http://127.0.0.1:5173
 
 ## 关于
 
-内蒙古师范大学 · 2023 级毕业设计 · 作者：马春静
+个人项目，持续迭代中。想解决的是「慢病资料查得到、却不知道信不信得过」这件事。
 
 数据来源：[PubMed](https://pubmed.ncbi.nlm.nih.gov/) · [OpenCMKG](https://github.com/OpenKG-ORG/OpenCMKG) · 公开诊疗指南
 

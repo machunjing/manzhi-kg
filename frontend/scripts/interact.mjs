@@ -33,7 +33,7 @@ await send('Runtime.enable')
 await send('Emulation.setDeviceMetricsOverride', { width: W, height: H, deviceScaleFactor: 1, mobile: false })
 await send('Page.navigate', { url: BASE + '/#/login' })
 await sleep(2200)
-await send('Runtime.evaluate', { expression: `localStorage.setItem('mz-token','demo');localStorage.setItem('mz-profile', JSON.stringify({name:'马春静',account:'admin',role:'管理员',dept:'知识工程组'}));` })
+await send('Runtime.evaluate', { expression: `localStorage.setItem('mz-token','demo');localStorage.setItem('mz-profile', JSON.stringify({name:'演示管理员',account:'admin',role:'管理员',dept:'知识工程组'}));` })
 await send('Page.navigate', { url: `${BASE}/?r=${Date.now()}/#/${route}` })
 await sleep(3600)
 if (script) {
