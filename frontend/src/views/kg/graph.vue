@@ -19,9 +19,9 @@ const sel = reactive({
 const picked = reactive({ type: '' as '' | 'node' | 'edge', node: {} as any, edge: {} as any })
 const stat = reactive({ nodes: 0, edges: 0 })
 
-function build() {
+async function build() {
   loading.value = true
-  const g = buildGraph({
+  const g = await buildGraph({
     disease: sel.disease || undefined,
     entityTypes: sel.entityTypes,
     relationTypes: sel.relationTypes,
@@ -29,16 +29,17 @@ function build() {
     keyword: sel.keyword || undefined,
     limit: sel.limit
   })
-  pinDiseases(g.nodes, 150)
+  // 真接口的中心节点已钉在原点，不需要 mock 那套环形钉法
+  if (!(g as any).real) pinDiseases(g.nodes, 150)
   stat.nodes = g.nodes.length
   stat.edges = g.edges.length
   option.value = {
     tooltip: {
       formatter: (p: any) => {
         if (p.dataType === 'edge') {
-          const s = getEntity(p.data.source)
-          const t = getEntity(p.data.target)
-          return `${s?.name} → <b>${p.data.name}</b> → ${t?.name}<br/><span style="color:#9CA3AF">点击查看证据</span>`
+          const s = p.data.sourceName || getEntity(p.data.source)?.name
+          const t = p.data.targetName || getEntity(p.data.target)?.name
+          return `${s} → <b>${p.data.name}</b> → ${t}<br/><span style="color:#9CA3AF">点击查看证据</span>`
         }
         return `<b>${p.data.name}</b><br/>类型：${p.data.type}<br/>关联数：${p.data.value}`
       }
@@ -48,11 +49,13 @@ function build() {
     series: [
       {
         type: 'graph',
-        layout: 'force',
-        left: 56,
-        right: 84,
-        top: 28,
-        bottom: 28,
+        // 真接口已经算好等角星形坐标，用 none 直接落位；
+        // mock 走力导向
+        layout: (g as any).real ? 'none' : 'force',
+        left: 92,
+        right: 132,
+        top: 40,
+        bottom: 40,
         roam: true,
         draggable: true,
         scaleLimit: { min: 0.3, max: 4 },
@@ -98,7 +101,11 @@ function onChartClick(p: any) {
   } else if (p.dataType === 'edge') {
     picked.type = 'edge'
     const rel = getRelation(p.data.id) || p.data
-    picked.edge = { ...rel, headName: getEntity(rel.headId)?.name, tailName: getEntity(rel.tailId)?.name }
+    picked.edge = {
+      ...rel,
+      headName: rel.headName || rel.sourceName || getEntity(rel.headId)?.name,
+      tailName: rel.tailName || rel.targetName || getEntity(rel.tailId)?.name
+    }
   }
 }
 

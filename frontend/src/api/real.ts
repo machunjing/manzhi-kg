@@ -2,12 +2,13 @@
  * 真实后端适配层
  * ------------------------------------------------------------------
  * 把 Flask 接口的返回结构，转成页面已经在用的数据结构。
- * 页面代码一行都不用改 —— 形状转换全部收敛在这个文件里。
+ * 形状转换全部收敛在这个文件里，页面只做必要的异步改造。
  *
- * 已接真接口：问答、系统健康、总览统计
- * 仍走 mock：图谱、文献、审核、用户、日志等（后端接口尚未补齐）
+ * 已接真接口：问答、知识图谱、系统健康、总览统计
+ * 仍走 mock：文献、审核、用户、日志等（后端接口尚未补齐）
  */
 import http from './request'
+import { ENTITY_TYPES, TYPE_COLOR, RELATION_COLOR } from '@/mock'
 
 type Envelope<T> = { code: number; message: string; data: T }
 
@@ -27,6 +28,115 @@ export function fetchSystemHealth() {
 
 export function fetchOverview() {
   return unwrap(http.get('/stats/overview'))
+}
+
+/* ---------------------------------------------------------------- 图谱 */
+
+/** 后端实体类型 → 前端分类。两边枚举不完全一致，必须映射，否则 category 会是 -1 */
+const TYPE_MAP: Record<string, string> = {
+  疾病: '疾病',
+  症状: '症状',
+  危险因素: '危险因素',
+  并发症: '并发症',
+  药物: '药物类别',
+  检查: '检查指标',
+  指标: '检查指标',
+  科室: '其他',
+  其他: '其他'
+}
+
+/** 屏幕上能看清的节点上限。再多标签就会糊成一片。 */
+const MAX_NODES = 28
+
+export async function buildGraph(q: any = {}) {
+  // 页面不选疾病时传 undefined；真库 3 万多实体不能全画，兜底到「糖尿病」
+  const entity = q.disease || q.keyword || q.entity || '糖尿病'
+  const depth = q.depth ?? 1
+  const d: any = await unwrap(
+    http.get('/kg/graph', { params: { entity, depth, limit: q.limit ?? 55 } })
+  )
+
+  const allNodes: any[] = d.nodes || []
+  const allLinks: any[] = d.links || []
+  if (!allNodes.length) return { nodes: [], edges: [], real: true }
+
+  // 度数：既决定节点大小，也用来筛掉噪声
+  const deg: Record<string, number> = {}
+  for (const l of allLinks) {
+    deg[l.source] = (deg[l.source] || 0) + 1
+    deg[l.target] = (deg[l.target] || 0) + 1
+  }
+
+  // OpenCMKG 里有大量只出现一次的实体（老年肺炎、肠道菌群失调症…），
+  // 按度数排序能把「糖尿病肾病」这类真正的核心概念排到前面。
+  const center = allNodes.find((n) => n.depth === 0) || allNodes[0]
+  let keep = allNodes
+  if (allNodes.length > MAX_NODES) {
+    const rest = allNodes
+      .filter((n) => n.id !== center.id)
+      .sort((a, b) => (deg[b.id] || 0) - (deg[a.id] || 0))
+      .slice(0, MAX_NODES - 1)
+    keep = [center, ...rest]
+  }
+  const keepIds = new Set(keep.map((n) => n.id))
+  const links = allLinks.filter((l) => keepIds.has(l.source) && keepIds.has(l.target))
+
+  // 一跳子图是标准星形，等角分布比力导向干净得多；
+  // 两跳以上结构复杂，交给力导向自己排。
+  const star = depth <= 1
+  const leaves = keep.filter((n) => n.id !== center.id)
+  const radius = 100 + leaves.length * 2.2
+  const posOf: Record<string, { x: number; y: number; side: 'left' | 'right' }> = {}
+  leaves.forEach((n, i) => {
+    const a = (Math.PI * 2 * i) / Math.max(1, leaves.length) - Math.PI / 2
+    posOf[n.id] = {
+      x: Math.cos(a) * radius,
+      y: Math.sin(a) * radius,
+      side: Math.cos(a) >= 0 ? 'right' : 'left'
+    }
+  })
+
+  const nodes = keep.map((n: any) => {
+    const cat = TYPE_MAP[n.type] || '其他'
+    const dd = deg[n.id] || 1
+    const isCenter = n.id === center.id
+    const pos = star ? (isCenter ? { x: 0, y: 0, side: 'right' as const } : posOf[n.id]) : null
+    return {
+      id: n.id,
+      name: n.name,
+      type: cat,
+      category: ENTITY_TYPES.indexOf(cat),
+      symbolSize: isCenter ? 34 : 9 + Math.min(9, Math.sqrt(dd) * 2.2),
+      value: dd,
+      itemStyle: { color: TYPE_COLOR[cat] || '#94A3B8', borderColor: '#fff', borderWidth: 1.2 },
+      label: { show: true, position: pos?.side || 'right' },
+      ...(pos ? { x: pos.x, y: pos.y, fixed: true } : {})
+    }
+  })
+
+  const nameOf: Record<string, string> = {}
+  for (const n of allNodes) nameOf[n.id] = n.name
+
+  const edges = links.map((l: any, i: number) => ({
+    id: `${l.source}-${l.relation}-${l.target}-${i}`,
+    source: l.source,
+    target: l.target,
+    name: l.relation,
+    value: 0.9,
+    relation: l.relation,
+    status: '已审核',
+    sourceName: nameOf[l.source],
+    targetName: nameOf[l.target],
+    lineStyle: {
+      color: RELATION_COLOR[l.relation] || '#CBD5E1',
+      width: l.relation === '导致' ? 2 : 1.2,
+      curveness: 0.06
+    },
+    label: { show: false, formatter: l.relation }
+  }))
+
+  // real 标记用于让页面跳过 mock 专用的 pinDiseases 布局
+  return { nodes, edges, real: true }
 }
 
 /* ---------------------------------------------------------------- 问答 */

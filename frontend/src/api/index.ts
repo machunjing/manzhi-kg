@@ -10,4 +10,4 @@
 export * from '@/mock'
 
 /* ---------------- 已接真实后端 ---------------- */
-export { askQuestion, fetchOverview, fetchSystemHealth } from './real'
+export { askQuestion, buildGraph, fetchOverview, fetchSystemHealth } from './real'
