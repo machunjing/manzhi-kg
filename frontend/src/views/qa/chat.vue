@@ -146,8 +146,8 @@ const allCitations = computed(() => activeResult.value?.citations || [])
         </div>
       </div>
       <div class="side-foot">
-        <div class="sf-line">当前为演示模式</div>
-        <div class="sf-line">未接入真实 GLM-4 接口</div>
+        <div class="sf-line">检索：真实语料 + 知识图谱</div>
+        <div class="sf-line">答案：模板生成（未接 LLM）</div>
       </div>
     </aside>
 
@@ -161,7 +161,7 @@ const allCitations = computed(() => activeResult.value?.citations || [])
             <div class="hb-desc">基于慢性病知识图谱与检索增强生成技术，为用户提供可追溯的健康知识服务</div>
           </div>
         </div>
-        <el-tag size="small" type="warning" effect="light" round>模拟问答 · 非真实模型</el-tag>
+        <el-tag size="small" type="success" effect="light" round>图谱 + 文献检索驱动</el-tag>
       </div>
 
       <div ref="scrollBox" class="chat-scroll">
@@ -301,7 +301,7 @@ const allCitations = computed(() => activeResult.value?.citations || [])
           @keydown.enter.exact.prevent="send()"
         />
         <div class="input-bar">
-          <span class="input-tip">Enter 发送 · Shift + Enter 换行 · 当前为模拟问答，答案由预设知识模板生成</span>
+          <span class="input-tip">Enter 发送 · Shift + Enter 换行 · 三路召回 + RRF 融合，答案附原文引用</span>
           <div class="input-btns">
             <el-button size="small" @click="input = ''">清空</el-button>
             <el-button type="primary" size="small" :loading="sending" @click="send()">

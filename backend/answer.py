@@ -41,6 +41,20 @@ def _sent(text, n=110):
     return out[:n]
 
 
+def _dedupe(vals, limit=5):
+    """同组内去掉被更完整词包含的短词。
+
+    OpenCMKG 里有「糖尿」这类截断实体，和「糖尿病乳酸性酸中毒」一起出现时很突兀。
+    规则：如果某个值是组内另一个值的子串，就丢掉它。
+    """
+    out = []
+    for v in vals:
+        if any(v != o and v in o for o in vals):
+            continue
+        out.append(v)
+    return out[:limit]
+
+
 def compose(question, entities, facts, chunks, intent=None, max_cite=6):
     intent = intent or detect_intent(question)
     steps = []
@@ -68,7 +82,7 @@ def compose(question, entities, facts, chunks, intent=None, max_cite=6):
         order = ([prefer] if prefer and prefer in grouped else []) + \
                 [r for r in REL_ORDER if r in grouped and r != prefer] + \
                 [r for r in grouped if r not in REL_ORDER and r != prefer]
-        parts = ["%s包括%s" % (rel, "、".join(grouped[rel][:5])) for rel in order if grouped.get(rel)]
+        parts = ["%s包括%s" % (rel, "、".join(_dedupe(grouped[rel]))) for rel in order if grouped.get(rel)]
         if parts:
             lines.append("【%s】%s。" % (f["entity"], "；".join(parts[:3])))
     if not lines:

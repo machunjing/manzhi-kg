@@ -31,13 +31,20 @@ src/
 
 ## mock 与真接口怎么切
 
-所有页面只从 `src/api/index.ts` 取数据，不直接写请求。目前这个文件只有一行：
+所有页面只从 `src/api/index.ts` 取数据，不直接写请求。这个文件做两件事：
 
 ```ts
-export * from '@/mock'
+export * from '@/mock'                                    // 全量铺开 mock 能力
+export { askQuestion, fetchOverview, fetchSystemHealth }  // 具名导出覆盖成真接口
+  from './real'
 ```
 
-接入后端时新增 `src/api/http.ts`，导出与 mock 同名的方法，再把上面这行改成
-`export * from './http'` —— 页面代码一行都不用动。
+ES 规范里**具名导出优先于星号导出**，所以后面这三行会把 mock 里的同名函数顶掉。
+「哪几个能力已经接了真后端」，看这个文件最后几行就知道。
+
+形状转换全部收敛在 `src/api/real.ts`：后端返回的是整段 `answer`、扁平 `citations`，
+页面要的是 `intent.paragraphs`、`citeNo`、`rel.source`——都在适配层里转，页面代码一行不动。
+
+开发时 `/api` 由 Vite 代理到 `http://127.0.0.1:5001`（见 `vite.config.ts`），不用配跨域。
 
 接口契约见 [`../docs/openapi.yaml`](../docs/openapi.yaml)，58 个操作、50 个 schema。
