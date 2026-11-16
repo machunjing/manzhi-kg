@@ -1,0 +1,74 @@
+[
+ {
+  "disease": "2型糖尿病",
+  "literature": 1677,
+  "entities": 41,
+  "relations": 47,
+  "approved": 32,
+  "pending": 8
+ },
+ {
+  "disease": "高血压",
+  "literature": 1645,
+  "entities": 41,
+  "relations": 47,
+  "approved": 34,
+  "pending": 3
+ },
+ {
+  "disease": "血脂异常",
+  "literature": 1704,
+  "entities": 33,
+  "relations": 38,
+  "approved": 25,
+  "pending": 7
+ },
+ {
+  "disease": "冠心病",
+  "literature": 0,
+  "entities": 22,
+  "relations": 25,
+  "approved": 14,
+  "pending": 7
+ },
+ {
+  "disease": "脑卒中",
+  "literature": 0,
+  "entities": 21,
+  "relations": 24,
+  "approved": 14,
+  "pending": 1
+ },
+ {
+  "disease": "慢性肾脏病",
+  "literature": 0,
+  "entities": 19,
+  "relations": 21,
+  "approved": 16,
+  "pending": 3
+ },
+ {
+  "disease": "肥胖",
+  "literature": 0,
+  "entities": 20,
+  "relations": 22,
+  "approved": 12,
+  "pending": 6
+ },
+ {
+  "disease": "脂肪肝",
+  "literature": 0,
+  "entities": 16,
+  "relations": 18,
+  "approved": 14,
+  "pending": 2
+ },
+ {
+  "disease": "动脉粥样硬化",
+  "literature": 0,
+  "entities": 19,
+  "relations": 21,
+  "approved": 14,
+  "pending": 4
+ }
+]

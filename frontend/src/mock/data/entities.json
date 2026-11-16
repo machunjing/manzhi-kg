@@ -1,0 +1,3712 @@
+[
+ {
+  "id": "E0001",
+  "name": "2型糖尿病",
+  "type": "疾病",
+  "standardName": "2型糖尿病",
+  "aliases": [
+   "T2DM",
+   "2型糖尿病 mellitus",
+   "成人糖尿病"
+  ],
+  "diseases": [
+   "2型糖尿病",
+   "血脂异常",
+   "冠心病",
+   "脑卒中",
+   "慢性肾脏病",
+   "肥胖",
+   "脂肪肝",
+   "动脉粥样硬化"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.973,
+  "createdAt": "2026-08-10"
+ },
+ {
+  "id": "E0002",
+  "name": "高血压",
+  "type": "疾病",
+  "standardName": "高血压",
+  "aliases": [
+   "原发性高血压",
+   "血压升高",
+   "Hypertension"
+  ],
+  "diseases": [
+   "高血压",
+   "2型糖尿病",
+   "血脂异常",
+   "冠心病",
+   "脑卒中",
+   "慢性肾脏病",
+   "肥胖",
+   "动脉粥样硬化"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.806,
+  "createdAt": "2026-09-03"
+ },
+ {
+  "id": "E0003",
+  "name": "血脂异常",
+  "type": "疾病",
+  "standardName": "血脂异常",
+  "aliases": [
+   "高脂血症",
+   "血脂紊乱",
+   "Dyslipidemia"
+  ],
+  "diseases": [
+   "血脂异常",
+   "2型糖尿病",
+   "冠心病",
+   "脑卒中",
+   "肥胖",
+   "脂肪肝",
+   "动脉粥样硬化"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.959,
+  "createdAt": "2026-10-20"
+ },
+ {
+  "id": "E0004",
+  "name": "冠心病",
+  "type": "疾病",
+  "standardName": "冠心病",
+  "aliases": [
+   "冠状动脉粥样硬化性心脏病",
+   "缺血性心脏病",
+   "CHD"
+  ],
+  "diseases": [
+   "冠心病",
+   "2型糖尿病",
+   "高血压",
+   "血脂异常",
+   "动脉粥样硬化"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.796,
+  "createdAt": "2026-03-25"
+ },
+ {
+  "id": "E0005",
+  "name": "脑卒中",
+  "type": "疾病",
+  "standardName": "脑卒中",
+  "aliases": [
+   "中风",
+   "脑血管意外",
+   "Stroke"
+  ],
+  "diseases": [
+   "脑卒中",
+   "2型糖尿病",
+   "高血压",
+   "血脂异常",
+   "动脉粥样硬化"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.842,
+  "createdAt": "2026-09-11"
+ },
+ {
+  "id": "E0006",
+  "name": "慢性肾脏病",
+  "type": "疾病",
+  "standardName": "慢性肾脏病",
+  "aliases": [
+   "慢性肾功能不全",
+   "CKD"
+  ],
+  "diseases": [
+   "慢性肾脏病",
+   "高血压"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.893,
+  "createdAt": "2026-04-26"
+ },
+ {
+  "id": "E0007",
+  "name": "肥胖",
+  "type": "疾病",
+  "standardName": "肥胖",
+  "aliases": [
+   "肥胖症",
+   "Obesity"
+  ],
+  "diseases": [
+   "肥胖"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.864,
+  "createdAt": "2026-03-21"
+ },
+ {
+  "id": "E0008",
+  "name": "脂肪肝",
+  "type": "疾病",
+  "standardName": "脂肪肝",
+  "aliases": [
+   "非酒精性脂肪性肝病",
+   "NAFLD"
+  ],
+  "diseases": [
+   "脂肪肝",
+   "血脂异常",
+   "肥胖"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.971,
+  "createdAt": "2026-10-16"
+ },
+ {
+  "id": "E0009",
+  "name": "动脉粥样硬化",
+  "type": "疾病",
+  "standardName": "动脉粥样硬化",
+  "aliases": [
+   "动脉硬化",
+   "Atherosclerosis"
+  ],
+  "diseases": [
+   "动脉粥样硬化",
+   "血脂异常"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.755,
+  "createdAt": "2026-06-16"
+ },
+ {
+  "id": "E0010",
+  "name": "超重与肥胖",
+  "type": "危险因素",
+  "standardName": "超重与肥胖",
+  "aliases": [],
+  "diseases": [
+   "2型糖尿病",
+   "高血压",
+   "血脂异常",
+   "冠心病",
+   "脂肪肝"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.916,
+  "createdAt": "2026-03-01"
+ },
+ {
+  "id": "E0011",
+  "name": "糖尿病家族史",
+  "type": "危险因素",
+  "standardName": "糖尿病家族史",
+  "aliases": [],
+  "diseases": [
+   "2型糖尿病"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.89,
+  "createdAt": "2026-09-03"
+ },
+ {
+  "id": "E0012",
+  "name": "年龄≥40岁",
+  "type": "危险因素",
+  "standardName": "年龄≥40岁",
+  "aliases": [],
+  "diseases": [
+   "2型糖尿病"
+  ],
+  "source": "指南抽取",
+  "status": "待审核",
+  "confidence": 0.919,
+  "createdAt": "2026-06-20"
+ },
+ {
+  "id": "E0013",
+  "name": "缺乏身体活动",
+  "type": "危险因素",
+  "standardName": "缺乏身体活动",
+  "aliases": [],
+  "diseases": [
+   "2型糖尿病",
+   "高血压",
+   "血脂异常",
+   "肥胖"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.813,
+  "createdAt": "2026-08-18"
+ },
+ {
+  "id": "E0014",
+  "name": "妊娠期糖尿病史",
+  "type": "危险因素",
+  "standardName": "妊娠期糖尿病史",
+  "aliases": [],
+  "diseases": [
+   "2型糖尿病"
+  ],
+  "source": "指南抽取",
+  "status": "候选",
+  "confidence": 0.74,
+  "createdAt": "2026-07-01"
+ },
+ {
+  "id": "E0015",
+  "name": "多囊卵巢综合征",
+  "type": "危险因素",
+  "standardName": "多囊卵巢综合征",
+  "aliases": [],
+  "diseases": [
+   "2型糖尿病"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.905,
+  "createdAt": "2026-08-26"
+ },
+ {
+  "id": "E0016",
+  "name": "多饮",
+  "type": "症状",
+  "standardName": "多饮",
+  "aliases": [],
+  "diseases": [
+   "2型糖尿病"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.806,
+  "createdAt": "2026-09-11"
+ },
+ {
+  "id": "E0017",
+  "name": "多尿",
+  "type": "症状",
+  "standardName": "多尿",
+  "aliases": [],
+  "diseases": [
+   "2型糖尿病"
+  ],
+  "source": "指南抽取",
+  "status": "候选",
+  "confidence": 0.777,
+  "createdAt": "2026-04-10"
+ },
+ {
+  "id": "E0018",
+  "name": "多食",
+  "type": "症状",
+  "standardName": "多食",
+  "aliases": [],
+  "diseases": [
+   "2型糖尿病"
+  ],
+  "source": "指南抽取",
+  "status": "待审核",
+  "confidence": 0.838,
+  "createdAt": "2026-09-15"
+ },
+ {
+  "id": "E0019",
+  "name": "体重下降",
+  "type": "症状",
+  "standardName": "体重下降",
+  "aliases": [],
+  "diseases": [
+   "2型糖尿病"
+  ],
+  "source": "指南抽取",
+  "status": "已驳回",
+  "confidence": 0.837,
+  "createdAt": "2026-08-02"
+ },
+ {
+  "id": "E0020",
+  "name": "乏力",
+  "type": "症状",
+  "standardName": "乏力",
+  "aliases": [],
+  "diseases": [
+   "2型糖尿病",
+   "慢性肾脏病",
+   "肥胖",
+   "脂肪肝"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.969,
+  "createdAt": "2026-04-14"
+ },
+ {
+  "id": "E0021",
+  "name": "视物模糊",
+  "type": "症状",
+  "standardName": "视物模糊",
+  "aliases": [],
+  "diseases": [
+   "2型糖尿病",
+   "高血压",
+   "脑卒中"
+  ],
+  "source": "指南抽取",
+  "status": "待审核",
+  "confidence": 0.723,
+  "createdAt": "2026-10-16"
+ },
+ {
+  "id": "E0022",
+  "name": "皮肤瘙痒",
+  "type": "症状",
+  "standardName": "皮肤瘙痒",
+  "aliases": [],
+  "diseases": [
+   "2型糖尿病"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.869,
+  "createdAt": "2026-04-02"
+ },
+ {
+  "id": "E0023",
+  "name": "肢体麻木",
+  "type": "症状",
+  "standardName": "肢体麻木",
+  "aliases": [],
+  "diseases": [
+   "2型糖尿病",
+   "脑卒中"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.902,
+  "createdAt": "2026-05-19"
+ },
+ {
+  "id": "E0024",
+  "name": "糖尿病肾病",
+  "type": "并发症",
+  "standardName": "糖尿病肾病",
+  "aliases": [],
+  "diseases": [
+   "2型糖尿病"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.744,
+  "createdAt": "2026-07-01"
+ },
+ {
+  "id": "E0025",
+  "name": "糖尿病视网膜病变",
+  "type": "并发症",
+  "standardName": "糖尿病视网膜病变",
+  "aliases": [],
+  "diseases": [
+   "2型糖尿病"
+  ],
+  "source": "指南抽取",
+  "status": "待审核",
+  "confidence": 0.906,
+  "createdAt": "2026-09-07"
+ },
+ {
+  "id": "E0026",
+  "name": "糖尿病周围神经病变",
+  "type": "并发症",
+  "standardName": "糖尿病周围神经病变",
+  "aliases": [],
+  "diseases": [
+   "2型糖尿病"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.813,
+  "createdAt": "2026-08-10"
+ },
+ {
+  "id": "E0027",
+  "name": "糖尿病足",
+  "type": "并发症",
+  "standardName": "糖尿病足",
+  "aliases": [],
+  "diseases": [
+   "2型糖尿病"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.942,
+  "createdAt": "2026-09-11"
+ },
+ {
+  "id": "E0028",
+  "name": "双胍类",
+  "type": "药物类别",
+  "standardName": "双胍类",
+  "aliases": [],
+  "diseases": [
+   "2型糖尿病"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.93,
+  "createdAt": "2026-05-27"
+ },
+ {
+  "id": "E0029",
+  "name": "磺脲类",
+  "type": "药物类别",
+  "standardName": "磺脲类",
+  "aliases": [],
+  "diseases": [
+   "2型糖尿病"
+  ],
+  "source": "指南抽取",
+  "status": "待审核",
+  "confidence": 0.877,
+  "createdAt": "2026-04-22"
+ },
+ {
+  "id": "E0030",
+  "name": "DPP-4抑制剂",
+  "type": "药物类别",
+  "standardName": "DPP-4抑制剂",
+  "aliases": [],
+  "diseases": [
+   "2型糖尿病"
+  ],
+  "source": "指南抽取",
+  "status": "已驳回",
+  "confidence": 0.921,
+  "createdAt": "2026-04-18"
+ },
+ {
+  "id": "E0031",
+  "name": "SGLT2抑制剂",
+  "type": "药物类别",
+  "standardName": "SGLT2抑制剂",
+  "aliases": [],
+  "diseases": [
+   "2型糖尿病",
+   "慢性肾脏病"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.763,
+  "createdAt": "2026-06-24"
+ },
+ {
+  "id": "E0032",
+  "name": "GLP-1受体激动剂",
+  "type": "药物类别",
+  "standardName": "GLP-1受体激动剂",
+  "aliases": [],
+  "diseases": [
+   "2型糖尿病",
+   "肥胖"
+  ],
+  "source": "指南抽取",
+  "status": "已驳回",
+  "confidence": 0.916,
+  "createdAt": "2026-07-09"
+ },
+ {
+  "id": "E0033",
+  "name": "胰岛素",
+  "type": "药物类别",
+  "standardName": "胰岛素",
+  "aliases": [],
+  "diseases": [
+   "2型糖尿病"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.925,
+  "createdAt": "2026-08-22"
+ },
+ {
+  "id": "E0034",
+  "name": "噻唑烷二酮类",
+  "type": "药物类别",
+  "standardName": "噻唑烷二酮类",
+  "aliases": [],
+  "diseases": [
+   "2型糖尿病"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.848,
+  "createdAt": "2026-07-13"
+ },
+ {
+  "id": "E0035",
+  "name": "空腹血糖",
+  "type": "检查指标",
+  "standardName": "空腹血糖",
+  "aliases": [],
+  "diseases": [
+   "2型糖尿病"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.799,
+  "createdAt": "2026-06-20"
+ },
+ {
+  "id": "E0036",
+  "name": "餐后2小时血糖",
+  "type": "检查指标",
+  "standardName": "餐后2小时血糖",
+  "aliases": [],
+  "diseases": [
+   "2型糖尿病"
+  ],
+  "source": "指南抽取",
+  "status": "已驳回",
+  "confidence": 0.873,
+  "createdAt": "2026-04-22"
+ },
+ {
+  "id": "E0037",
+  "name": "糖化血红蛋白(HbA1c)",
+  "type": "检查指标",
+  "standardName": "糖化血红蛋白(HbA1c)",
+  "aliases": [
+   "HbA1c",
+   "糖化血红蛋白"
+  ],
+  "diseases": [
+   "2型糖尿病"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.9,
+  "createdAt": "2026-03-17"
+ },
+ {
+  "id": "E0038",
+  "name": "口服葡萄糖耐量试验(OGTT)",
+  "type": "检查指标",
+  "standardName": "口服葡萄糖耐量试验(OGTT)",
+  "aliases": [],
+  "diseases": [
+   "2型糖尿病"
+  ],
+  "source": "指南抽取",
+  "status": "候选",
+  "confidence": 0.934,
+  "createdAt": "2026-09-11"
+ },
+ {
+  "id": "E0039",
+  "name": "C肽",
+  "type": "检查指标",
+  "standardName": "C肽",
+  "aliases": [],
+  "diseases": [
+   "2型糖尿病"
+  ],
+  "source": "指南抽取",
+  "status": "候选",
+  "confidence": 0.912,
+  "createdAt": "2026-07-25"
+ },
+ {
+  "id": "E0040",
+  "name": "尿微量白蛋白/肌酐比值",
+  "type": "检查指标",
+  "standardName": "尿微量白蛋白/肌酐比值",
+  "aliases": [],
+  "diseases": [
+   "2型糖尿病",
+   "高血压",
+   "慢性肾脏病"
+  ],
+  "source": "指南抽取",
+  "status": "候选",
+  "confidence": 0.933,
+  "createdAt": "2026-08-02"
+ },
+ {
+  "id": "E0041",
+  "name": "医学营养治疗",
+  "type": "生活方式",
+  "standardName": "医学营养治疗",
+  "aliases": [],
+  "diseases": [
+   "2型糖尿病"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.733,
+  "createdAt": "2026-08-18"
+ },
+ {
+  "id": "E0042",
+  "name": "规律有氧运动",
+  "type": "生活方式",
+  "standardName": "规律有氧运动",
+  "aliases": [],
+  "diseases": [
+   "2型糖尿病",
+   "高血压",
+   "血脂异常",
+   "冠心病",
+   "脑卒中",
+   "肥胖",
+   "动脉粥样硬化"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.921,
+  "createdAt": "2026-04-02"
+ },
+ {
+  "id": "E0043",
+  "name": "血糖自我监测",
+  "type": "生活方式",
+  "standardName": "血糖自我监测",
+  "aliases": [],
+  "diseases": [
+   "2型糖尿病"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.97,
+  "createdAt": "2026-05-15"
+ },
+ {
+  "id": "E0044",
+  "name": "减重",
+  "type": "生活方式",
+  "standardName": "减重",
+  "aliases": [],
+  "diseases": [
+   "2型糖尿病",
+   "高血压",
+   "血脂异常",
+   "肥胖",
+   "脂肪肝"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.931,
+  "createdAt": "2026-10-04"
+ },
+ {
+  "id": "E0045",
+  "name": "戒烟",
+  "type": "生活方式",
+  "standardName": "戒烟",
+  "aliases": [],
+  "diseases": [
+   "2型糖尿病",
+   "高血压",
+   "冠心病",
+   "脑卒中",
+   "动脉粥样硬化"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.833,
+  "createdAt": "2026-08-18"
+ },
+ {
+  "id": "E0046",
+  "name": "高钠低钾饮食",
+  "type": "危险因素",
+  "standardName": "高钠低钾饮食",
+  "aliases": [],
+  "diseases": [
+   "高血压"
+  ],
+  "source": "指南抽取",
+  "status": "待审核",
+  "confidence": 0.796,
+  "createdAt": "2026-07-09"
+ },
+ {
+  "id": "E0047",
+  "name": "过量饮酒",
+  "type": "危险因素",
+  "standardName": "过量饮酒",
+  "aliases": [],
+  "diseases": [
+   "高血压",
+   "血脂异常",
+   "脂肪肝"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.906,
+  "createdAt": "2026-09-11"
+ },
+ {
+  "id": "E0048",
+  "name": "长期精神紧张",
+  "type": "危险因素",
+  "standardName": "长期精神紧张",
+  "aliases": [],
+  "diseases": [
+   "高血压"
+  ],
+  "source": "指南抽取",
+  "status": "已驳回",
+  "confidence": 0.728,
+  "createdAt": "2026-03-01"
+ },
+ {
+  "id": "E0049",
+  "name": "年龄增长",
+  "type": "危险因素",
+  "standardName": "年龄增长",
+  "aliases": [],
+  "diseases": [
+   "高血压",
+   "慢性肾脏病",
+   "动脉粥样硬化"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.931,
+  "createdAt": "2026-10-16"
+ },
+ {
+  "id": "E0050",
+  "name": "高血压家族史",
+  "type": "危险因素",
+  "standardName": "高血压家族史",
+  "aliases": [],
+  "diseases": [
+   "高血压"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.844,
+  "createdAt": "2026-03-17"
+ },
+ {
+  "id": "E0051",
+  "name": "睡眠呼吸暂停综合征",
+  "type": "危险因素",
+  "standardName": "睡眠呼吸暂停综合征",
+  "aliases": [],
+  "diseases": [
+   "高血压",
+   "肥胖"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.783,
+  "createdAt": "2026-10-24"
+ },
+ {
+  "id": "E0052",
+  "name": "吸烟",
+  "type": "危险因素",
+  "standardName": "吸烟",
+  "aliases": [],
+  "diseases": [
+   "高血压",
+   "血脂异常",
+   "冠心病",
+   "脑卒中",
+   "动脉粥样硬化"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.933,
+  "createdAt": "2026-04-22"
+ },
+ {
+  "id": "E0053",
+  "name": "头晕",
+  "type": "症状",
+  "standardName": "头晕",
+  "aliases": [],
+  "diseases": [
+   "高血压"
+  ],
+  "source": "指南抽取",
+  "status": "已驳回",
+  "confidence": 0.871,
+  "createdAt": "2026-10-28"
+ },
+ {
+  "id": "E0054",
+  "name": "头痛",
+  "type": "症状",
+  "standardName": "头痛",
+  "aliases": [],
+  "diseases": [
+   "高血压"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.721,
+  "createdAt": "2026-04-14"
+ },
+ {
+  "id": "E0055",
+  "name": "颈项板紧",
+  "type": "症状",
+  "standardName": "颈项板紧",
+  "aliases": [],
+  "diseases": [
+   "高血压"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.944,
+  "createdAt": "2026-07-09"
+ },
+ {
+  "id": "E0056",
+  "name": "心悸",
+  "type": "症状",
+  "standardName": "心悸",
+  "aliases": [],
+  "diseases": [
+   "高血压",
+   "冠心病"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.86,
+  "createdAt": "2026-03-01"
+ },
+ {
+  "id": "E0057",
+  "name": "耳鸣",
+  "type": "症状",
+  "standardName": "耳鸣",
+  "aliases": [],
+  "diseases": [
+   "高血压"
+  ],
+  "source": "指南抽取",
+  "status": "已驳回",
+  "confidence": 0.914,
+  "createdAt": "2026-05-07"
+ },
+ {
+  "id": "E0058",
+  "name": "心力衰竭",
+  "type": "并发症",
+  "standardName": "心力衰竭",
+  "aliases": [],
+  "diseases": [
+   "高血压",
+   "冠心病"
+  ],
+  "source": "指南抽取",
+  "status": "已驳回",
+  "confidence": 0.731,
+  "createdAt": "2026-06-16"
+ },
+ {
+  "id": "E0059",
+  "name": "视网膜病变",
+  "type": "并发症",
+  "standardName": "视网膜病变",
+  "aliases": [],
+  "diseases": [
+   "高血压"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.737,
+  "createdAt": "2026-08-14"
+ },
+ {
+  "id": "E0060",
+  "name": "主动脉夹层",
+  "type": "并发症",
+  "standardName": "主动脉夹层",
+  "aliases": [],
+  "diseases": [
+   "高血压"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.858,
+  "createdAt": "2026-05-11"
+ },
+ {
+  "id": "E0061",
+  "name": "钙通道阻滞剂(CCB)",
+  "type": "药物类别",
+  "standardName": "钙通道阻滞剂(CCB)",
+  "aliases": [
+   "CCB",
+   "地平类"
+  ],
+  "diseases": [
+   "高血压"
+  ],
+  "source": "指南抽取",
+  "status": "已驳回",
+  "confidence": 0.806,
+  "createdAt": "2026-05-15"
+ },
+ {
+  "id": "E0062",
+  "name": "血管紧张素转换酶抑制剂(ACEI)",
+  "type": "药物类别",
+  "standardName": "血管紧张素转换酶抑制剂(ACEI)",
+  "aliases": [],
+  "diseases": [
+   "高血压",
+   "冠心病",
+   "慢性肾脏病"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.752,
+  "createdAt": "2026-07-09"
+ },
+ {
+  "id": "E0063",
+  "name": "血管紧张素受体拮抗剂(ARB)",
+  "type": "药物类别",
+  "standardName": "血管紧张素受体拮抗剂(ARB)",
+  "aliases": [],
+  "diseases": [
+   "高血压",
+   "慢性肾脏病"
+  ],
+  "source": "指南抽取",
+  "status": "候选",
+  "confidence": 0.977,
+  "createdAt": "2026-04-18"
+ },
+ {
+  "id": "E0064",
+  "name": "噻嗪类利尿剂",
+  "type": "药物类别",
+  "standardName": "噻嗪类利尿剂",
+  "aliases": [],
+  "diseases": [
+   "高血压"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.793,
+  "createdAt": "2026-08-18"
+ },
+ {
+  "id": "E0065",
+  "name": "β受体阻滞剂",
+  "type": "药物类别",
+  "standardName": "β受体阻滞剂",
+  "aliases": [],
+  "diseases": [
+   "高血压",
+   "冠心病"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.876,
+  "createdAt": "2026-07-01"
+ },
+ {
+  "id": "E0066",
+  "name": "血管紧张素受体脑啡肽酶抑制剂(ARNI)",
+  "type": "药物类别",
+  "standardName": "血管紧张素受体脑啡肽酶抑制剂(ARNI)",
+  "aliases": [],
+  "diseases": [
+   "高血压"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.861,
+  "createdAt": "2026-04-14"
+ },
+ {
+  "id": "E0067",
+  "name": "收缩压",
+  "type": "检查指标",
+  "standardName": "收缩压",
+  "aliases": [],
+  "diseases": [
+   "高血压",
+   "脑卒中"
+  ],
+  "source": "指南抽取",
+  "status": "候选",
+  "confidence": 0.926,
+  "createdAt": "2026-05-23"
+ },
+ {
+  "id": "E0068",
+  "name": "舒张压",
+  "type": "检查指标",
+  "standardName": "舒张压",
+  "aliases": [],
+  "diseases": [
+   "高血压"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.853,
+  "createdAt": "2026-08-14"
+ },
+ {
+  "id": "E0069",
+  "name": "动态血压监测",
+  "type": "检查指标",
+  "standardName": "动态血压监测",
+  "aliases": [],
+  "diseases": [
+   "高血压"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.78,
+  "createdAt": "2026-07-05"
+ },
+ {
+  "id": "E0070",
+  "name": "家庭自测血压",
+  "type": "检查指标",
+  "standardName": "家庭自测血压",
+  "aliases": [],
+  "diseases": [
+   "高血压"
+  ],
+  "source": "指南抽取",
+  "status": "待审核",
+  "confidence": 0.884,
+  "createdAt": "2026-07-21"
+ },
+ {
+  "id": "E0071",
+  "name": "血钾",
+  "type": "检查指标",
+  "standardName": "血钾",
+  "aliases": [],
+  "diseases": [
+   "高血压"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.732,
+  "createdAt": "2026-07-25"
+ },
+ {
+  "id": "E0072",
+  "name": "估算肾小球滤过率(eGFR)",
+  "type": "检查指标",
+  "standardName": "估算肾小球滤过率(eGFR)",
+  "aliases": [
+   "eGFR"
+  ],
+  "diseases": [
+   "高血压",
+   "慢性肾脏病"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.968,
+  "createdAt": "2026-07-17"
+ },
+ {
+  "id": "E0073",
+  "name": "限盐",
+  "type": "生活方式",
+  "standardName": "限盐",
+  "aliases": [],
+  "diseases": [
+   "高血压",
+   "脑卒中",
+   "慢性肾脏病"
+  ],
+  "source": "指南抽取",
+  "status": "候选",
+  "confidence": 0.821,
+  "createdAt": "2026-08-22"
+ },
+ {
+  "id": "E0074",
+  "name": "限酒",
+  "type": "生活方式",
+  "standardName": "限酒",
+  "aliases": [],
+  "diseases": [
+   "高血压",
+   "脂肪肝"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.88,
+  "createdAt": "2026-03-09"
+ },
+ {
+  "id": "E0075",
+  "name": "心理平衡",
+  "type": "生活方式",
+  "standardName": "心理平衡",
+  "aliases": [],
+  "diseases": [
+   "高血压"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.739,
+  "createdAt": "2026-06-24"
+ },
+ {
+  "id": "E0076",
+  "name": "高脂饮食",
+  "type": "危险因素",
+  "standardName": "高脂饮食",
+  "aliases": [],
+  "diseases": [
+   "血脂异常",
+   "肥胖"
+  ],
+  "source": "指南抽取",
+  "status": "已驳回",
+  "confidence": 0.878,
+  "createdAt": "2026-09-07"
+ },
+ {
+  "id": "E0077",
+  "name": "遗传性脂质代谢异常",
+  "type": "危险因素",
+  "standardName": "遗传性脂质代谢异常",
+  "aliases": [],
+  "diseases": [
+   "血脂异常"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.955,
+  "createdAt": "2026-10-08"
+ },
+ {
+  "id": "E0078",
+  "name": "黄色瘤",
+  "type": "症状",
+  "standardName": "黄色瘤",
+  "aliases": [],
+  "diseases": [
+   "血脂异常"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.784,
+  "createdAt": "2026-07-21"
+ },
+ {
+  "id": "E0079",
+  "name": "角膜环",
+  "type": "症状",
+  "standardName": "角膜环",
+  "aliases": [],
+  "diseases": [
+   "血脂异常"
+  ],
+  "source": "指南抽取",
+  "status": "待审核",
+  "confidence": 0.81,
+  "createdAt": "2026-05-15"
+ },
+ {
+  "id": "E0080",
+  "name": "胸闷",
+  "type": "症状",
+  "standardName": "胸闷",
+  "aliases": [],
+  "diseases": [
+   "血脂异常",
+   "冠心病",
+   "动脉粥样硬化"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.876,
+  "createdAt": "2026-07-21"
+ },
+ {
+  "id": "E0081",
+  "name": "急性胰腺炎",
+  "type": "并发症",
+  "standardName": "急性胰腺炎",
+  "aliases": [],
+  "diseases": [
+   "血脂异常"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.926,
+  "createdAt": "2026-09-15"
+ },
+ {
+  "id": "E0082",
+  "name": "他汀类",
+  "type": "药物类别",
+  "standardName": "他汀类",
+  "aliases": [],
+  "diseases": [
+   "血脂异常",
+   "冠心病",
+   "脑卒中",
+   "动脉粥样硬化"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.877,
+  "createdAt": "2026-08-18"
+ },
+ {
+  "id": "E0083",
+  "name": "胆固醇吸收抑制剂",
+  "type": "药物类别",
+  "standardName": "胆固醇吸收抑制剂",
+  "aliases": [],
+  "diseases": [
+   "血脂异常"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.767,
+  "createdAt": "2026-06-08"
+ },
+ {
+  "id": "E0084",
+  "name": "PCSK9抑制剂",
+  "type": "药物类别",
+  "standardName": "PCSK9抑制剂",
+  "aliases": [],
+  "diseases": [
+   "血脂异常"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.883,
+  "createdAt": "2026-06-12"
+ },
+ {
+  "id": "E0085",
+  "name": "贝特类",
+  "type": "药物类别",
+  "standardName": "贝特类",
+  "aliases": [],
+  "diseases": [
+   "血脂异常"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.954,
+  "createdAt": "2026-05-23"
+ },
+ {
+  "id": "E0086",
+  "name": "高纯度ω-3脂肪酸",
+  "type": "药物类别",
+  "standardName": "高纯度ω-3脂肪酸",
+  "aliases": [],
+  "diseases": [
+   "血脂异常"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.823,
+  "createdAt": "2026-06-24"
+ },
+ {
+  "id": "E0087",
+  "name": "低密度脂蛋白胆固醇(LDL-C)",
+  "type": "检查指标",
+  "standardName": "低密度脂蛋白胆固醇(LDL-C)",
+  "aliases": [
+   "LDL-C",
+   "低密度脂蛋白"
+  ],
+  "diseases": [
+   "血脂异常",
+   "冠心病",
+   "脑卒中",
+   "动脉粥样硬化"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.75,
+  "createdAt": "2026-09-03"
+ },
+ {
+  "id": "E0088",
+  "name": "总胆固醇(TC)",
+  "type": "检查指标",
+  "standardName": "总胆固醇(TC)",
+  "aliases": [],
+  "diseases": [
+   "血脂异常"
+  ],
+  "source": "指南抽取",
+  "status": "候选",
+  "confidence": 0.889,
+  "createdAt": "2026-08-18"
+ },
+ {
+  "id": "E0089",
+  "name": "甘油三酯(TG)",
+  "type": "检查指标",
+  "standardName": "甘油三酯(TG)",
+  "aliases": [],
+  "diseases": [
+   "血脂异常",
+   "脂肪肝"
+  ],
+  "source": "指南抽取",
+  "status": "候选",
+  "confidence": 0.846,
+  "createdAt": "2026-05-23"
+ },
+ {
+  "id": "E0090",
+  "name": "高密度脂蛋白胆固醇(HDL-C)",
+  "type": "检查指标",
+  "standardName": "高密度脂蛋白胆固醇(HDL-C)",
+  "aliases": [],
+  "diseases": [
+   "血脂异常"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.758,
+  "createdAt": "2026-09-19"
+ },
+ {
+  "id": "E0091",
+  "name": "载脂蛋白B",
+  "type": "检查指标",
+  "standardName": "载脂蛋白B",
+  "aliases": [],
+  "diseases": [
+   "血脂异常"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.777,
+  "createdAt": "2026-04-14"
+ },
+ {
+  "id": "E0092",
+  "name": "脂蛋白(a)",
+  "type": "检查指标",
+  "standardName": "脂蛋白(a)",
+  "aliases": [],
+  "diseases": [
+   "血脂异常"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.735,
+  "createdAt": "2026-10-20"
+ },
+ {
+  "id": "E0093",
+  "name": "控制饱和脂肪摄入",
+  "type": "生活方式",
+  "standardName": "控制饱和脂肪摄入",
+  "aliases": [],
+  "diseases": [
+   "血脂异常",
+   "冠心病",
+   "脂肪肝",
+   "动脉粥样硬化"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.846,
+  "createdAt": "2026-05-11"
+ },
+ {
+  "id": "E0094",
+  "name": "增加膳食纤维",
+  "type": "生活方式",
+  "standardName": "增加膳食纤维",
+  "aliases": [],
+  "diseases": [
+   "血脂异常"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.93,
+  "createdAt": "2026-05-23"
+ },
+ {
+  "id": "E0095",
+  "name": "戒烟限酒",
+  "type": "生活方式",
+  "standardName": "戒烟限酒",
+  "aliases": [],
+  "diseases": [
+   "血脂异常"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.801,
+  "createdAt": "2026-04-02"
+ },
+ {
+  "id": "E0096",
+  "name": "胸痛",
+  "type": "症状",
+  "standardName": "胸痛",
+  "aliases": [],
+  "diseases": [
+   "冠心病"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.972,
+  "createdAt": "2026-03-17"
+ },
+ {
+  "id": "E0097",
+  "name": "呼吸困难",
+  "type": "症状",
+  "standardName": "呼吸困难",
+  "aliases": [],
+  "diseases": [
+   "冠心病"
+  ],
+  "source": "指南抽取",
+  "status": "已驳回",
+  "confidence": 0.794,
+  "createdAt": "2026-05-27"
+ },
+ {
+  "id": "E0098",
+  "name": "心律失常",
+  "type": "并发症",
+  "standardName": "心律失常",
+  "aliases": [],
+  "diseases": [
+   "冠心病"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.858,
+  "createdAt": "2026-05-23"
+ },
+ {
+  "id": "E0099",
+  "name": "抗血小板药物",
+  "type": "药物类别",
+  "standardName": "抗血小板药物",
+  "aliases": [],
+  "diseases": [
+   "冠心病",
+   "脑卒中",
+   "动脉粥样硬化"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.72,
+  "createdAt": "2026-07-13"
+ },
+ {
+  "id": "E0100",
+  "name": "心电图",
+  "type": "检查指标",
+  "standardName": "心电图",
+  "aliases": [],
+  "diseases": [
+   "冠心病"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.974,
+  "createdAt": "2026-05-27"
+ },
+ {
+  "id": "E0101",
+  "name": "冠状动脉造影",
+  "type": "检查指标",
+  "standardName": "冠状动脉造影",
+  "aliases": [],
+  "diseases": [
+   "冠心病"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.792,
+  "createdAt": "2026-03-13"
+ },
+ {
+  "id": "E0102",
+  "name": "心房颤动",
+  "type": "危险因素",
+  "standardName": "心房颤动",
+  "aliases": [],
+  "diseases": [
+   "脑卒中"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.73,
+  "createdAt": "2026-09-11"
+ },
+ {
+  "id": "E0103",
+  "name": "言语不清",
+  "type": "症状",
+  "standardName": "言语不清",
+  "aliases": [],
+  "diseases": [
+   "脑卒中"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.76,
+  "createdAt": "2026-07-21"
+ },
+ {
+  "id": "E0104",
+  "name": "眩晕",
+  "type": "症状",
+  "standardName": "眩晕",
+  "aliases": [],
+  "diseases": [
+   "脑卒中"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.931,
+  "createdAt": "2026-06-12"
+ },
+ {
+  "id": "E0105",
+  "name": "认知功能障碍",
+  "type": "并发症",
+  "standardName": "认知功能障碍",
+  "aliases": [],
+  "diseases": [
+   "脑卒中"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.793,
+  "createdAt": "2026-08-02"
+ },
+ {
+  "id": "E0106",
+  "name": "吞咽困难",
+  "type": "并发症",
+  "standardName": "吞咽困难",
+  "aliases": [],
+  "diseases": [
+   "脑卒中"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.858,
+  "createdAt": "2026-09-27"
+ },
+ {
+  "id": "E0107",
+  "name": "抗凝药物",
+  "type": "药物类别",
+  "standardName": "抗凝药物",
+  "aliases": [],
+  "diseases": [
+   "脑卒中"
+  ],
+  "source": "指南抽取",
+  "status": "待审核",
+  "confidence": 0.752,
+  "createdAt": "2026-03-17"
+ },
+ {
+  "id": "E0108",
+  "name": "头颅CT",
+  "type": "检查指标",
+  "standardName": "头颅CT",
+  "aliases": [],
+  "diseases": [
+   "脑卒中"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.979,
+  "createdAt": "2026-10-20"
+ },
+ {
+  "id": "E0109",
+  "name": "高尿酸血症",
+  "type": "危险因素",
+  "standardName": "高尿酸血症",
+  "aliases": [],
+  "diseases": [
+   "慢性肾脏病"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.851,
+  "createdAt": "2026-10-16"
+ },
+ {
+  "id": "E0110",
+  "name": "夜尿增多",
+  "type": "症状",
+  "standardName": "夜尿增多",
+  "aliases": [],
+  "diseases": [
+   "慢性肾脏病"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.953,
+  "createdAt": "2026-04-14"
+ },
+ {
+  "id": "E0111",
+  "name": "水肿",
+  "type": "症状",
+  "standardName": "水肿",
+  "aliases": [],
+  "diseases": [
+   "慢性肾脏病"
+  ],
+  "source": "指南抽取",
+  "status": "已驳回",
+  "confidence": 0.725,
+  "createdAt": "2026-04-22"
+ },
+ {
+  "id": "E0112",
+  "name": "肾性贫血",
+  "type": "并发症",
+  "standardName": "肾性贫血",
+  "aliases": [],
+  "diseases": [
+   "慢性肾脏病"
+  ],
+  "source": "指南抽取",
+  "status": "已驳回",
+  "confidence": 0.765,
+  "createdAt": "2026-04-18"
+ },
+ {
+  "id": "E0113",
+  "name": "矿物质骨代谢异常",
+  "type": "并发症",
+  "standardName": "矿物质骨代谢异常",
+  "aliases": [],
+  "diseases": [
+   "慢性肾脏病"
+  ],
+  "source": "指南抽取",
+  "status": "待审核",
+  "confidence": 0.726,
+  "createdAt": "2026-05-27"
+ },
+ {
+  "id": "E0114",
+  "name": "血肌酐",
+  "type": "检查指标",
+  "standardName": "血肌酐",
+  "aliases": [],
+  "diseases": [
+   "慢性肾脏病"
+  ],
+  "source": "指南抽取",
+  "status": "已驳回",
+  "confidence": 0.876,
+  "createdAt": "2026-07-13"
+ },
+ {
+  "id": "E0115",
+  "name": "优质低蛋白饮食",
+  "type": "生活方式",
+  "standardName": "优质低蛋白饮食",
+  "aliases": [],
+  "diseases": [
+   "慢性肾脏病"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.796,
+  "createdAt": "2026-03-13"
+ },
+ {
+  "id": "E0116",
+  "name": "控制血压",
+  "type": "生活方式",
+  "standardName": "控制血压",
+  "aliases": [],
+  "diseases": [
+   "慢性肾脏病"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.74,
+  "createdAt": "2026-03-13"
+ },
+ {
+  "id": "E0117",
+  "name": "遗传因素",
+  "type": "危险因素",
+  "standardName": "遗传因素",
+  "aliases": [],
+  "diseases": [
+   "肥胖"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.971,
+  "createdAt": "2026-06-16"
+ },
+ {
+  "id": "E0118",
+  "name": "睡眠不足",
+  "type": "危险因素",
+  "standardName": "睡眠不足",
+  "aliases": [],
+  "diseases": [
+   "肥胖"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.869,
+  "createdAt": "2026-04-06"
+ },
+ {
+  "id": "E0119",
+  "name": "体重增加",
+  "type": "症状",
+  "standardName": "体重增加",
+  "aliases": [],
+  "diseases": [
+   "肥胖"
+  ],
+  "source": "指南抽取",
+  "status": "待审核",
+  "confidence": 0.895,
+  "createdAt": "2026-06-20"
+ },
+ {
+  "id": "E0120",
+  "name": "活动后气促",
+  "type": "症状",
+  "standardName": "活动后气促",
+  "aliases": [],
+  "diseases": [
+   "肥胖"
+  ],
+  "source": "指南抽取",
+  "status": "已驳回",
+  "confidence": 0.758,
+  "createdAt": "2026-05-23"
+ },
+ {
+  "id": "E0121",
+  "name": "体重指数(BMI)",
+  "type": "检查指标",
+  "standardName": "体重指数(BMI)",
+  "aliases": [
+   "BMI",
+   "体质指数"
+  ],
+  "diseases": [
+   "肥胖"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.912,
+  "createdAt": "2026-07-13"
+ },
+ {
+  "id": "E0122",
+  "name": "腰围",
+  "type": "检查指标",
+  "standardName": "腰围",
+  "aliases": [],
+  "diseases": [
+   "肥胖"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.744,
+  "createdAt": "2026-03-05"
+ },
+ {
+  "id": "E0123",
+  "name": "体脂率",
+  "type": "检查指标",
+  "standardName": "体脂率",
+  "aliases": [],
+  "diseases": [
+   "肥胖"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.924,
+  "createdAt": "2026-03-09"
+ },
+ {
+  "id": "E0124",
+  "name": "控制总能量摄入",
+  "type": "生活方式",
+  "standardName": "控制总能量摄入",
+  "aliases": [],
+  "diseases": [
+   "肥胖"
+  ],
+  "source": "指南抽取",
+  "status": "候选",
+  "confidence": 0.722,
+  "createdAt": "2026-09-23"
+ },
+ {
+  "id": "E0125",
+  "name": "右上腹不适",
+  "type": "症状",
+  "standardName": "右上腹不适",
+  "aliases": [],
+  "diseases": [
+   "脂肪肝"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.884,
+  "createdAt": "2026-07-25"
+ },
+ {
+  "id": "E0126",
+  "name": "肝纤维化",
+  "type": "并发症",
+  "standardName": "肝纤维化",
+  "aliases": [],
+  "diseases": [
+   "脂肪肝"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.726,
+  "createdAt": "2026-05-07"
+ },
+ {
+  "id": "E0127",
+  "name": "肝硬化",
+  "type": "并发症",
+  "standardName": "肝硬化",
+  "aliases": [],
+  "diseases": [
+   "脂肪肝"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.891,
+  "createdAt": "2026-06-16"
+ },
+ {
+  "id": "E0128",
+  "name": "胰岛素增敏剂",
+  "type": "药物类别",
+  "standardName": "胰岛素增敏剂",
+  "aliases": [],
+  "diseases": [
+   "脂肪肝"
+  ],
+  "source": "指南抽取",
+  "status": "已驳回",
+  "confidence": 0.878,
+  "createdAt": "2026-09-23"
+ },
+ {
+  "id": "E0129",
+  "name": "谷丙转氨酶(ALT)",
+  "type": "检查指标",
+  "standardName": "谷丙转氨酶(ALT)",
+  "aliases": [],
+  "diseases": [
+   "脂肪肝"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.972,
+  "createdAt": "2026-07-21"
+ },
+ {
+  "id": "E0130",
+  "name": "肝脏超声",
+  "type": "检查指标",
+  "standardName": "肝脏超声",
+  "aliases": [],
+  "diseases": [
+   "脂肪肝"
+  ],
+  "source": "指南抽取",
+  "status": "已驳回",
+  "confidence": 0.952,
+  "createdAt": "2026-03-25"
+ },
+ {
+  "id": "E0131",
+  "name": "间歇性跛行",
+  "type": "症状",
+  "standardName": "间歇性跛行",
+  "aliases": [],
+  "diseases": [
+   "动脉粥样硬化"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.802,
+  "createdAt": "2026-05-03"
+ },
+ {
+  "id": "E0132",
+  "name": "外周动脉疾病",
+  "type": "并发症",
+  "standardName": "外周动脉疾病",
+  "aliases": [],
+  "diseases": [
+   "动脉粥样硬化"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.831,
+  "createdAt": "2026-06-20"
+ },
+ {
+  "id": "E0133",
+  "name": "颈动脉超声",
+  "type": "检查指标",
+  "standardName": "颈动脉超声",
+  "aliases": [],
+  "diseases": [
+   "动脉粥样硬化"
+  ],
+  "source": "指南抽取",
+  "status": "已驳回",
+  "confidence": 0.856,
+  "createdAt": "2026-03-13"
+ },
+ {
+  "id": "E0134",
+  "name": "踝肱指数",
+  "type": "检查指标",
+  "standardName": "踝肱指数",
+  "aliases": [],
+  "diseases": [
+   "动脉粥样硬化"
+  ],
+  "source": "指南抽取",
+  "status": "已审核",
+  "confidence": 0.804,
+  "createdAt": "2026-03-21"
+ },
+ {
+  "id": "E0135",
+  "name": "ADAM17 Protein",
+  "type": "其他",
+  "standardName": "ADAM17 Protein",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "待审核",
+  "confidence": 0.964,
+  "createdAt": "2026-03-09",
+  "meshOnly": true
+ },
+ {
+  "id": "E0136",
+  "name": "AMP-Activated Protein Kinase Kinases",
+  "type": "其他",
+  "standardName": "AMP-Activated Protein Kinase Kinases",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "已审核",
+  "confidence": 0.891,
+  "createdAt": "2026-10-08",
+  "meshOnly": true
+ },
+ {
+  "id": "E0137",
+  "name": "AMP-Activated Protein Kinases",
+  "type": "其他",
+  "standardName": "AMP-Activated Protein Kinases",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "已审核",
+  "confidence": 0.851,
+  "createdAt": "2026-10-28",
+  "meshOnly": true
+ },
+ {
+  "id": "E0138",
+  "name": "APACHE",
+  "type": "其他",
+  "standardName": "APACHE",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "待审核",
+  "confidence": 0.86,
+  "createdAt": "2026-07-25",
+  "meshOnly": true
+ },
+ {
+  "id": "E0139",
+  "name": "ARNTL Transcription Factors",
+  "type": "其他",
+  "standardName": "ARNTL Transcription Factors",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "已审核",
+  "confidence": 0.851,
+  "createdAt": "2026-06-20",
+  "meshOnly": true
+ },
+ {
+  "id": "E0140",
+  "name": "ATP Binding Cassette Transporter 1",
+  "type": "其他",
+  "standardName": "ATP Binding Cassette Transporter 1",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "已审核",
+  "confidence": 0.91,
+  "createdAt": "2026-05-07",
+  "meshOnly": true
+ },
+ {
+  "id": "E0141",
+  "name": "ATP Binding Cassette Transporter, Subfamily G, Member 1",
+  "type": "其他",
+  "standardName": "ATP Binding Cassette Transporter, Subfamily G, Member 1",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "待审核",
+  "confidence": 0.894,
+  "createdAt": "2026-05-19",
+  "meshOnly": true
+ },
+ {
+  "id": "E0142",
+  "name": "ATP Binding Cassette Transporter, Subfamily G, Member 5",
+  "type": "其他",
+  "standardName": "ATP Binding Cassette Transporter, Subfamily G, Member 5",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "已审核",
+  "confidence": 0.738,
+  "createdAt": "2026-09-11",
+  "meshOnly": true
+ },
+ {
+  "id": "E0143",
+  "name": "ATP Binding Cassette Transporter, Subfamily G, Member 8",
+  "type": "其他",
+  "standardName": "ATP Binding Cassette Transporter, Subfamily G, Member 8",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "已审核",
+  "confidence": 0.727,
+  "createdAt": "2026-10-20",
+  "meshOnly": true
+ },
+ {
+  "id": "E0144",
+  "name": "ATP-Binding Cassette, Sub-Family C Proteins",
+  "type": "其他",
+  "standardName": "ATP-Binding Cassette, Sub-Family C Proteins",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "待审核",
+  "confidence": 0.83,
+  "createdAt": "2026-05-11",
+  "meshOnly": true
+ },
+ {
+  "id": "E0145",
+  "name": "Abdomen",
+  "type": "其他",
+  "standardName": "Abdomen",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "已审核",
+  "confidence": 0.887,
+  "createdAt": "2026-06-04",
+  "meshOnly": true
+ },
+ {
+  "id": "E0146",
+  "name": "Abdominal Pain",
+  "type": "其他",
+  "standardName": "Abdominal Pain",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "已审核",
+  "confidence": 0.724,
+  "createdAt": "2026-03-01",
+  "meshOnly": true
+ },
+ {
+  "id": "E0147",
+  "name": "Abdominoplasty",
+  "type": "其他",
+  "standardName": "Abdominoplasty",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "待审核",
+  "confidence": 0.943,
+  "createdAt": "2026-10-08",
+  "meshOnly": true
+ },
+ {
+  "id": "E0148",
+  "name": "Abetalipoproteinemia",
+  "type": "其他",
+  "standardName": "Abetalipoproteinemia",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "已审核",
+  "confidence": 0.821,
+  "createdAt": "2026-08-26",
+  "meshOnly": true
+ },
+ {
+  "id": "E0149",
+  "name": "Abiraterone Acetate",
+  "type": "其他",
+  "standardName": "Abiraterone Acetate",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "已审核",
+  "confidence": 0.857,
+  "createdAt": "2026-04-10",
+  "meshOnly": true
+ },
+ {
+  "id": "E0150",
+  "name": "Abnormalities, Multiple",
+  "type": "其他",
+  "standardName": "Abnormalities, Multiple",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "待审核",
+  "confidence": 0.818,
+  "createdAt": "2026-09-07",
+  "meshOnly": true
+ },
+ {
+  "id": "E0151",
+  "name": "Abortion, Habitual",
+  "type": "其他",
+  "standardName": "Abortion, Habitual",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "已审核",
+  "confidence": 0.805,
+  "createdAt": "2026-04-02",
+  "meshOnly": true
+ },
+ {
+  "id": "E0152",
+  "name": "Abortion, Spontaneous",
+  "type": "其他",
+  "standardName": "Abortion, Spontaneous",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "已审核",
+  "confidence": 0.743,
+  "createdAt": "2026-06-24",
+  "meshOnly": true
+ },
+ {
+  "id": "E0153",
+  "name": "Abruptio Placentae",
+  "type": "其他",
+  "standardName": "Abruptio Placentae",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "待审核",
+  "confidence": 0.753,
+  "createdAt": "2026-08-26",
+  "meshOnly": true
+ },
+ {
+  "id": "E0154",
+  "name": "Absorbable Implants",
+  "type": "其他",
+  "standardName": "Absorbable Implants",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "已审核",
+  "confidence": 0.814,
+  "createdAt": "2026-09-15",
+  "meshOnly": true
+ },
+ {
+  "id": "E0155",
+  "name": "Absorptiometry, Photon",
+  "type": "其他",
+  "standardName": "Absorptiometry, Photon",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "已审核",
+  "confidence": 0.724,
+  "createdAt": "2026-07-17",
+  "meshOnly": true
+ },
+ {
+  "id": "E0156",
+  "name": "Academic Medical Centers",
+  "type": "其他",
+  "standardName": "Academic Medical Centers",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "待审核",
+  "confidence": 0.794,
+  "createdAt": "2026-05-15",
+  "meshOnly": true
+ },
+ {
+  "id": "E0157",
+  "name": "Academies and Institutes",
+  "type": "其他",
+  "standardName": "Academies and Institutes",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "已审核",
+  "confidence": 0.941,
+  "createdAt": "2026-08-02",
+  "meshOnly": true
+ },
+ {
+  "id": "E0158",
+  "name": "Acanthosis Nigricans",
+  "type": "其他",
+  "standardName": "Acanthosis Nigricans",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "已审核",
+  "confidence": 0.852,
+  "createdAt": "2026-07-13",
+  "meshOnly": true
+ },
+ {
+  "id": "E0159",
+  "name": "Acarbose",
+  "type": "其他",
+  "standardName": "Acarbose",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "待审核",
+  "confidence": 0.94,
+  "createdAt": "2026-03-05",
+  "meshOnly": true
+ },
+ {
+  "id": "E0160",
+  "name": "Acceleration",
+  "type": "其他",
+  "standardName": "Acceleration",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "已审核",
+  "confidence": 0.946,
+  "createdAt": "2026-09-19",
+  "meshOnly": true
+ },
+ {
+  "id": "E0161",
+  "name": "Accelerometry",
+  "type": "其他",
+  "standardName": "Accelerometry",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "已审核",
+  "confidence": 0.97,
+  "createdAt": "2026-05-07",
+  "meshOnly": true
+ },
+ {
+  "id": "E0162",
+  "name": "Access to Primary Care",
+  "type": "其他",
+  "standardName": "Access to Primary Care",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "待审核",
+  "confidence": 0.902,
+  "createdAt": "2026-09-11",
+  "meshOnly": true
+ },
+ {
+  "id": "E0163",
+  "name": "Accidental Falls",
+  "type": "其他",
+  "standardName": "Accidental Falls",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "已审核",
+  "confidence": 0.865,
+  "createdAt": "2026-08-02",
+  "meshOnly": true
+ },
+ {
+  "id": "E0164",
+  "name": "Acculturation",
+  "type": "其他",
+  "standardName": "Acculturation",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "已审核",
+  "confidence": 0.911,
+  "createdAt": "2026-06-20",
+  "meshOnly": true
+ },
+ {
+  "id": "E0165",
+  "name": "Acetamides",
+  "type": "其他",
+  "standardName": "Acetamides",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "待审核",
+  "confidence": 0.942,
+  "createdAt": "2026-09-19",
+  "meshOnly": true
+ },
+ {
+  "id": "E0166",
+  "name": "Acetates",
+  "type": "其他",
+  "standardName": "Acetates",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "已审核",
+  "confidence": 0.8,
+  "createdAt": "2026-03-05",
+  "meshOnly": true
+ },
+ {
+  "id": "E0167",
+  "name": "Acetazolamide",
+  "type": "其他",
+  "standardName": "Acetazolamide",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "已审核",
+  "confidence": 0.728,
+  "createdAt": "2026-03-01",
+  "meshOnly": true
+ },
+ {
+  "id": "E0168",
+  "name": "Acetone",
+  "type": "其他",
+  "standardName": "Acetone",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "待审核",
+  "confidence": 0.743,
+  "createdAt": "2026-10-04",
+  "meshOnly": true
+ },
+ {
+  "id": "E0169",
+  "name": "Acetylation",
+  "type": "其他",
+  "standardName": "Acetylation",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "已审核",
+  "confidence": 0.757,
+  "createdAt": "2026-08-18",
+  "meshOnly": true
+ },
+ {
+  "id": "E0170",
+  "name": "Acetylcarnitine",
+  "type": "其他",
+  "standardName": "Acetylcarnitine",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "已审核",
+  "confidence": 0.837,
+  "createdAt": "2026-08-22",
+  "meshOnly": true
+ },
+ {
+  "id": "E0171",
+  "name": "Acetylcholine",
+  "type": "其他",
+  "standardName": "Acetylcholine",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "待审核",
+  "confidence": 0.794,
+  "createdAt": "2026-05-23",
+  "meshOnly": true
+ },
+ {
+  "id": "E0172",
+  "name": "Acetylcholinesterase",
+  "type": "其他",
+  "standardName": "Acetylcholinesterase",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "已审核",
+  "confidence": 0.807,
+  "createdAt": "2026-06-20",
+  "meshOnly": true
+ },
+ {
+  "id": "E0173",
+  "name": "Acetylgalactosamine",
+  "type": "其他",
+  "standardName": "Acetylgalactosamine",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "已审核",
+  "confidence": 0.72,
+  "createdAt": "2026-03-17",
+  "meshOnly": true
+ },
+ {
+  "id": "E0174",
+  "name": "Acetylglucosaminidase",
+  "type": "其他",
+  "standardName": "Acetylglucosaminidase",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "待审核",
+  "confidence": 0.976,
+  "createdAt": "2026-03-17",
+  "meshOnly": true
+ },
+ {
+  "id": "E0175",
+  "name": "Achilles Tendon",
+  "type": "其他",
+  "standardName": "Achilles Tendon",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "已审核",
+  "confidence": 0.79,
+  "createdAt": "2026-05-15",
+  "meshOnly": true
+ },
+ {
+  "id": "E0176",
+  "name": "Acid-Base Equilibrium",
+  "type": "其他",
+  "standardName": "Acid-Base Equilibrium",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "已审核",
+  "confidence": 0.836,
+  "createdAt": "2026-03-01",
+  "meshOnly": true
+ },
+ {
+  "id": "E0177",
+  "name": "Acidosis",
+  "type": "其他",
+  "standardName": "Acidosis",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "待审核",
+  "confidence": 0.889,
+  "createdAt": "2026-08-02",
+  "meshOnly": true
+ },
+ {
+  "id": "E0178",
+  "name": "Acidosis, Lactic",
+  "type": "其他",
+  "standardName": "Acidosis, Lactic",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "已审核",
+  "confidence": 0.804,
+  "createdAt": "2026-03-01",
+  "meshOnly": true
+ },
+ {
+  "id": "E0179",
+  "name": "Acinar Cells",
+  "type": "其他",
+  "standardName": "Acinar Cells",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "已审核",
+  "confidence": 0.745,
+  "createdAt": "2026-08-18",
+  "meshOnly": true
+ },
+ {
+  "id": "E0180",
+  "name": "Acne Vulgaris",
+  "type": "其他",
+  "standardName": "Acne Vulgaris",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "待审核",
+  "confidence": 0.9,
+  "createdAt": "2026-07-21",
+  "meshOnly": true
+ },
+ {
+  "id": "E0181",
+  "name": "Acoustics",
+  "type": "其他",
+  "standardName": "Acoustics",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "已审核",
+  "confidence": 0.847,
+  "createdAt": "2026-06-04",
+  "meshOnly": true
+ },
+ {
+  "id": "E0182",
+  "name": "Acquired Immunodeficiency Syndrome",
+  "type": "其他",
+  "standardName": "Acquired Immunodeficiency Syndrome",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "已审核",
+  "confidence": 0.917,
+  "createdAt": "2026-08-18",
+  "meshOnly": true
+ },
+ {
+  "id": "E0183",
+  "name": "Actigraphy",
+  "type": "其他",
+  "standardName": "Actigraphy",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "待审核",
+  "confidence": 0.972,
+  "createdAt": "2026-07-25",
+  "meshOnly": true
+ },
+ {
+  "id": "E0184",
+  "name": "Actin Cytoskeleton",
+  "type": "其他",
+  "standardName": "Actin Cytoskeleton",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "已审核",
+  "confidence": 0.979,
+  "createdAt": "2026-10-16",
+  "meshOnly": true
+ },
+ {
+  "id": "E0185",
+  "name": "Actinidia",
+  "type": "其他",
+  "standardName": "Actinidia",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "已审核",
+  "confidence": 0.765,
+  "createdAt": "2026-04-14",
+  "meshOnly": true
+ },
+ {
+  "id": "E0186",
+  "name": "Actins",
+  "type": "其他",
+  "standardName": "Actins",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "待审核",
+  "confidence": 0.966,
+  "createdAt": "2026-09-27",
+  "meshOnly": true
+ },
+ {
+  "id": "E0187",
+  "name": "Action Potentials",
+  "type": "其他",
+  "standardName": "Action Potentials",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "已审核",
+  "confidence": 0.873,
+  "createdAt": "2026-08-10",
+  "meshOnly": true
+ },
+ {
+  "id": "E0188",
+  "name": "Activating Transcription Factor 3",
+  "type": "其他",
+  "standardName": "Activating Transcription Factor 3",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "已审核",
+  "confidence": 0.862,
+  "createdAt": "2026-05-07",
+  "meshOnly": true
+ },
+ {
+  "id": "E0189",
+  "name": "Activating Transcription Factor 6",
+  "type": "其他",
+  "standardName": "Activating Transcription Factor 6",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "待审核",
+  "confidence": 0.771,
+  "createdAt": "2026-06-04",
+  "meshOnly": true
+ },
+ {
+  "id": "E0190",
+  "name": "Activities of Daily Living",
+  "type": "其他",
+  "standardName": "Activities of Daily Living",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "已审核",
+  "confidence": 0.817,
+  "createdAt": "2026-08-22",
+  "meshOnly": true
+ },
+ {
+  "id": "E0191",
+  "name": "Acupuncture Points",
+  "type": "其他",
+  "standardName": "Acupuncture Points",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "已审核",
+  "confidence": 0.775,
+  "createdAt": "2026-10-12",
+  "meshOnly": true
+ },
+ {
+  "id": "E0192",
+  "name": "Acupuncture Therapy",
+  "type": "其他",
+  "standardName": "Acupuncture Therapy",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "待审核",
+  "confidence": 0.729,
+  "createdAt": "2026-04-14",
+  "meshOnly": true
+ },
+ {
+  "id": "E0193",
+  "name": "Acute Coronary Syndrome",
+  "type": "其他",
+  "standardName": "Acute Coronary Syndrome",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "已审核",
+  "confidence": 0.958,
+  "createdAt": "2026-05-07",
+  "meshOnly": true
+ },
+ {
+  "id": "E0194",
+  "name": "Acute Disease",
+  "type": "其他",
+  "standardName": "Acute Disease",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "已审核",
+  "confidence": 0.745,
+  "createdAt": "2026-04-14",
+  "meshOnly": true
+ },
+ {
+  "id": "E0195",
+  "name": "Acute Kidney Injury",
+  "type": "其他",
+  "standardName": "Acute Kidney Injury",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "待审核",
+  "confidence": 0.814,
+  "createdAt": "2026-05-11",
+  "meshOnly": true
+ },
+ {
+  "id": "E0196",
+  "name": "Acute Lung Injury",
+  "type": "其他",
+  "standardName": "Acute Lung Injury",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "已审核",
+  "confidence": 0.792,
+  "createdAt": "2026-07-09",
+  "meshOnly": true
+ },
+ {
+  "id": "E0197",
+  "name": "Acute-On-Chronic Liver Failure",
+  "type": "其他",
+  "standardName": "Acute-On-Chronic Liver Failure",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "已审核",
+  "confidence": 0.857,
+  "createdAt": "2026-08-10",
+  "meshOnly": true
+ },
+ {
+  "id": "E0198",
+  "name": "Acute-Phase Proteins",
+  "type": "其他",
+  "standardName": "Acute-Phase Proteins",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "待审核",
+  "confidence": 0.838,
+  "createdAt": "2026-05-11",
+  "meshOnly": true
+ },
+ {
+  "id": "E0199",
+  "name": "Acyclic Monoterpenes",
+  "type": "其他",
+  "standardName": "Acyclic Monoterpenes",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "已审核",
+  "confidence": 0.728,
+  "createdAt": "2026-07-25",
+  "meshOnly": true
+ },
+ {
+  "id": "E0200",
+  "name": "Acyl Coenzyme A",
+  "type": "其他",
+  "standardName": "Acyl Coenzyme A",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "已审核",
+  "confidence": 0.845,
+  "createdAt": "2026-04-14",
+  "meshOnly": true
+ },
+ {
+  "id": "E0201",
+  "name": "Acyltransferases",
+  "type": "其他",
+  "standardName": "Acyltransferases",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "待审核",
+  "confidence": 0.735,
+  "createdAt": "2026-10-28",
+  "meshOnly": true
+ },
+ {
+  "id": "E0202",
+  "name": "Adaptation, Physiological",
+  "type": "其他",
+  "standardName": "Adaptation, Physiological",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "已审核",
+  "confidence": 0.775,
+  "createdAt": "2026-10-04",
+  "meshOnly": true
+ },
+ {
+  "id": "E0203",
+  "name": "Adaptation, Psychological",
+  "type": "其他",
+  "standardName": "Adaptation, Psychological",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "已审核",
+  "confidence": 0.854,
+  "createdAt": "2026-09-15",
+  "meshOnly": true
+ },
+ {
+  "id": "E0204",
+  "name": "Adaptive Clinical Trials as Topic",
+  "type": "其他",
+  "standardName": "Adaptive Clinical Trials as Topic",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "待审核",
+  "confidence": 0.817,
+  "createdAt": "2026-04-14",
+  "meshOnly": true
+ },
+ {
+  "id": "E0205",
+  "name": "Adaptive Immunity",
+  "type": "其他",
+  "standardName": "Adaptive Immunity",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "已审核",
+  "confidence": 0.775,
+  "createdAt": "2026-10-08",
+  "meshOnly": true
+ },
+ {
+  "id": "E0206",
+  "name": "Adaptor Proteins, Signal Transducing",
+  "type": "其他",
+  "standardName": "Adaptor Proteins, Signal Transducing",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "已审核",
+  "confidence": 0.797,
+  "createdAt": "2026-04-18",
+  "meshOnly": true
+ },
+ {
+  "id": "E0207",
+  "name": "Adenine",
+  "type": "其他",
+  "standardName": "Adenine",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "待审核",
+  "confidence": 0.806,
+  "createdAt": "2026-09-15",
+  "meshOnly": true
+ },
+ {
+  "id": "E0208",
+  "name": "Adenocarcinoma",
+  "type": "其他",
+  "standardName": "Adenocarcinoma",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "已审核",
+  "confidence": 0.953,
+  "createdAt": "2026-08-10",
+  "meshOnly": true
+ },
+ {
+  "id": "E0209",
+  "name": "Adenoids",
+  "type": "其他",
+  "standardName": "Adenoids",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "已审核",
+  "confidence": 0.888,
+  "createdAt": "2026-03-21",
+  "meshOnly": true
+ },
+ {
+  "id": "E0210",
+  "name": "Adenoma",
+  "type": "其他",
+  "standardName": "Adenoma",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "待审核",
+  "confidence": 0.965,
+  "createdAt": "2026-04-14",
+  "meshOnly": true
+ },
+ {
+  "id": "E0211",
+  "name": "Adenosine",
+  "type": "其他",
+  "standardName": "Adenosine",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "已审核",
+  "confidence": 0.73,
+  "createdAt": "2026-05-07",
+  "meshOnly": true
+ },
+ {
+  "id": "E0212",
+  "name": "Adenosine Deaminase",
+  "type": "其他",
+  "standardName": "Adenosine Deaminase",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "已审核",
+  "confidence": 0.757,
+  "createdAt": "2026-04-26",
+  "meshOnly": true
+ },
+ {
+  "id": "E0213",
+  "name": "Adenosine Deaminase Inhibitors",
+  "type": "其他",
+  "standardName": "Adenosine Deaminase Inhibitors",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "待审核",
+  "confidence": 0.832,
+  "createdAt": "2026-03-13",
+  "meshOnly": true
+ },
+ {
+  "id": "E0214",
+  "name": "Adenosine Monophosphate",
+  "type": "其他",
+  "standardName": "Adenosine Monophosphate",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "已审核",
+  "confidence": 0.783,
+  "createdAt": "2026-10-12",
+  "meshOnly": true
+ },
+ {
+  "id": "E0215",
+  "name": "Adenosine Triphosphatases",
+  "type": "其他",
+  "standardName": "Adenosine Triphosphatases",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "已审核",
+  "confidence": 0.738,
+  "createdAt": "2026-05-11",
+  "meshOnly": true
+ },
+ {
+  "id": "E0216",
+  "name": "Adenosine Triphosphate",
+  "type": "其他",
+  "standardName": "Adenosine Triphosphate",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "待审核",
+  "confidence": 0.87,
+  "createdAt": "2026-05-11",
+  "meshOnly": true
+ },
+ {
+  "id": "E0217",
+  "name": "Adherence Interventions",
+  "type": "其他",
+  "standardName": "Adherence Interventions",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "已审核",
+  "confidence": 0.897,
+  "createdAt": "2026-08-22",
+  "meshOnly": true
+ },
+ {
+  "id": "E0218",
+  "name": "Adipocytes",
+  "type": "其他",
+  "standardName": "Adipocytes",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "已审核",
+  "confidence": 0.928,
+  "createdAt": "2026-03-13",
+  "meshOnly": true
+ },
+ {
+  "id": "E0219",
+  "name": "Adipocytes, White",
+  "type": "其他",
+  "standardName": "Adipocytes, White",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "待审核",
+  "confidence": 0.887,
+  "createdAt": "2026-10-20",
+  "meshOnly": true
+ },
+ {
+  "id": "E0220",
+  "name": "Adipogenesis",
+  "type": "其他",
+  "standardName": "Adipogenesis",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "已审核",
+  "confidence": 0.911,
+  "createdAt": "2026-10-20",
+  "meshOnly": true
+ },
+ {
+  "id": "E0221",
+  "name": "Adipokines",
+  "type": "其他",
+  "standardName": "Adipokines",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "已审核",
+  "confidence": 0.906,
+  "createdAt": "2026-09-23",
+  "meshOnly": true
+ },
+ {
+  "id": "E0222",
+  "name": "Adiponectin",
+  "type": "其他",
+  "standardName": "Adiponectin",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "待审核",
+  "confidence": 0.761,
+  "createdAt": "2026-04-10",
+  "meshOnly": true
+ },
+ {
+  "id": "E0223",
+  "name": "Adipose Tissue",
+  "type": "其他",
+  "standardName": "Adipose Tissue",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "已审核",
+  "confidence": 0.836,
+  "createdAt": "2026-07-05",
+  "meshOnly": true
+ },
+ {
+  "id": "E0224",
+  "name": "Adipose Tissue, Brown",
+  "type": "其他",
+  "standardName": "Adipose Tissue, Brown",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "已审核",
+  "confidence": 0.966,
+  "createdAt": "2026-09-23",
+  "meshOnly": true
+ },
+ {
+  "id": "E0225",
+  "name": "Adipose Tissue, White",
+  "type": "其他",
+  "standardName": "Adipose Tissue, White",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "待审核",
+  "confidence": 0.793,
+  "createdAt": "2026-04-22",
+  "meshOnly": true
+ },
+ {
+  "id": "E0226",
+  "name": "Adiposity",
+  "type": "其他",
+  "standardName": "Adiposity",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "已审核",
+  "confidence": 0.953,
+  "createdAt": "2026-04-22",
+  "meshOnly": true
+ },
+ {
+  "id": "E0227",
+  "name": "Administration, Cutaneous",
+  "type": "其他",
+  "standardName": "Administration, Cutaneous",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "已审核",
+  "confidence": 0.887,
+  "createdAt": "2026-10-20",
+  "meshOnly": true
+ },
+ {
+  "id": "E0228",
+  "name": "Administration, Inhalation",
+  "type": "其他",
+  "standardName": "Administration, Inhalation",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "待审核",
+  "confidence": 0.895,
+  "createdAt": "2026-10-16",
+  "meshOnly": true
+ },
+ {
+  "id": "E0229",
+  "name": "Administration, Intranasal",
+  "type": "其他",
+  "standardName": "Administration, Intranasal",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "已审核",
+  "confidence": 0.9,
+  "createdAt": "2026-07-05",
+  "meshOnly": true
+ },
+ {
+  "id": "E0230",
+  "name": "Administration, Intravaginal",
+  "type": "其他",
+  "standardName": "Administration, Intravaginal",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "已审核",
+  "confidence": 0.861,
+  "createdAt": "2026-04-26",
+  "meshOnly": true
+ },
+ {
+  "id": "E0231",
+  "name": "Administration, Intravenous",
+  "type": "其他",
+  "standardName": "Administration, Intravenous",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "待审核",
+  "confidence": 0.728,
+  "createdAt": "2026-03-13",
+  "meshOnly": true
+ },
+ {
+  "id": "E0232",
+  "name": "Administration, Oral",
+  "type": "其他",
+  "standardName": "Administration, Oral",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "已审核",
+  "confidence": 0.828,
+  "createdAt": "2026-07-13",
+  "meshOnly": true
+ },
+ {
+  "id": "E0233",
+  "name": "Administration, Topical",
+  "type": "其他",
+  "standardName": "Administration, Topical",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "已审核",
+  "confidence": 0.756,
+  "createdAt": "2026-07-17",
+  "meshOnly": true
+ },
+ {
+  "id": "E0234",
+  "name": "Administrative Claims, Healthcare",
+  "type": "其他",
+  "standardName": "Administrative Claims, Healthcare",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "待审核",
+  "confidence": 0.788,
+  "createdAt": "2026-07-13",
+  "meshOnly": true
+ },
+ {
+  "id": "E0235",
+  "name": "Ado-Trastuzumab Emtansine",
+  "type": "其他",
+  "standardName": "Ado-Trastuzumab Emtansine",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "已审核",
+  "confidence": 0.812,
+  "createdAt": "2026-03-17",
+  "meshOnly": true
+ },
+ {
+  "id": "E0236",
+  "name": "Adolescent Behavior",
+  "type": "其他",
+  "standardName": "Adolescent Behavior",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "已审核",
+  "confidence": 0.784,
+  "createdAt": "2026-07-25",
+  "meshOnly": true
+ },
+ {
+  "id": "E0237",
+  "name": "Adolescent Health",
+  "type": "其他",
+  "standardName": "Adolescent Health",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "待审核",
+  "confidence": 0.903,
+  "createdAt": "2026-10-12",
+  "meshOnly": true
+ },
+ {
+  "id": "E0238",
+  "name": "Adoptive Transfer",
+  "type": "其他",
+  "standardName": "Adoptive Transfer",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "已审核",
+  "confidence": 0.85,
+  "createdAt": "2026-09-03",
+  "meshOnly": true
+ },
+ {
+  "id": "E0239",
+  "name": "Adrenal Cortex Hormones",
+  "type": "其他",
+  "standardName": "Adrenal Cortex Hormones",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "已审核",
+  "confidence": 0.959,
+  "createdAt": "2026-06-24",
+  "meshOnly": true
+ },
+ {
+  "id": "E0240",
+  "name": "Adrenal Gland Neoplasms",
+  "type": "其他",
+  "standardName": "Adrenal Gland Neoplasms",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "待审核",
+  "confidence": 0.978,
+  "createdAt": "2026-05-11",
+  "meshOnly": true
+ },
+ {
+  "id": "E0241",
+  "name": "Adrenal Glands",
+  "type": "其他",
+  "standardName": "Adrenal Glands",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "已审核",
+  "confidence": 0.75,
+  "createdAt": "2026-05-03",
+  "meshOnly": true
+ },
+ {
+  "id": "E0242",
+  "name": "Adrenalectomy",
+  "type": "其他",
+  "standardName": "Adrenalectomy",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "已审核",
+  "confidence": 0.889,
+  "createdAt": "2026-08-06",
+  "meshOnly": true
+ },
+ {
+  "id": "E0243",
+  "name": "Adrenergic beta-1 Receptor Antagonists",
+  "type": "其他",
+  "standardName": "Adrenergic beta-1 Receptor Antagonists",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "待审核",
+  "confidence": 0.779,
+  "createdAt": "2026-10-20",
+  "meshOnly": true
+ },
+ {
+  "id": "E0244",
+  "name": "Adrenergic beta-Agonists",
+  "type": "其他",
+  "standardName": "Adrenergic beta-Agonists",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "已审核",
+  "confidence": 0.958,
+  "createdAt": "2026-09-23",
+  "meshOnly": true
+ },
+ {
+  "id": "E0245",
+  "name": "Adrenergic beta-Antagonists",
+  "type": "其他",
+  "standardName": "Adrenergic beta-Antagonists",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "已审核",
+  "confidence": 0.971,
+  "createdAt": "2026-10-24",
+  "meshOnly": true
+ },
+ {
+  "id": "E0246",
+  "name": "Adult Survivors of Child Abuse",
+  "type": "其他",
+  "standardName": "Adult Survivors of Child Abuse",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "待审核",
+  "confidence": 0.859,
+  "createdAt": "2026-06-12",
+  "meshOnly": true
+ },
+ {
+  "id": "E0247",
+  "name": "Adult Survivors of Child Adverse Events",
+  "type": "其他",
+  "standardName": "Adult Survivors of Child Adverse Events",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "已审核",
+  "confidence": 0.78,
+  "createdAt": "2026-03-13",
+  "meshOnly": true
+ },
+ {
+  "id": "E0248",
+  "name": "Advanced Maternal Age",
+  "type": "其他",
+  "standardName": "Advanced Maternal Age",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "已审核",
+  "confidence": 0.97,
+  "createdAt": "2026-09-15",
+  "meshOnly": true
+ },
+ {
+  "id": "E0249",
+  "name": "Advanced Oxidation Protein Products",
+  "type": "其他",
+  "standardName": "Advanced Oxidation Protein Products",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "待审核",
+  "confidence": 0.849,
+  "createdAt": "2026-04-18",
+  "meshOnly": true
+ },
+ {
+  "id": "E0250",
+  "name": "Adverse Childhood Experiences",
+  "type": "其他",
+  "standardName": "Adverse Childhood Experiences",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "已审核",
+  "confidence": 0.878,
+  "createdAt": "2026-09-23",
+  "meshOnly": true
+ },
+ {
+  "id": "E0251",
+  "name": "Adverse Drug Reaction Reporting Systems",
+  "type": "其他",
+  "standardName": "Adverse Drug Reaction Reporting Systems",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "已审核",
+  "confidence": 0.898,
+  "createdAt": "2026-05-27",
+  "meshOnly": true
+ },
+ {
+  "id": "E0252",
+  "name": "Advisory Committees",
+  "type": "其他",
+  "standardName": "Advisory Committees",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "待审核",
+  "confidence": 0.862,
+  "createdAt": "2026-05-27",
+  "meshOnly": true
+ },
+ {
+  "id": "E0253",
+  "name": "Aerospace Medicine",
+  "type": "其他",
+  "standardName": "Aerospace Medicine",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "已审核",
+  "confidence": 0.908,
+  "createdAt": "2026-03-13",
+  "meshOnly": true
+ },
+ {
+  "id": "E0254",
+  "name": "Affect",
+  "type": "其他",
+  "standardName": "Affect",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "已审核",
+  "confidence": 0.77,
+  "createdAt": "2026-05-03",
+  "meshOnly": true
+ },
+ {
+  "id": "E0255",
+  "name": "Africa",
+  "type": "其他",
+  "standardName": "Africa",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "待审核",
+  "confidence": 0.949,
+  "createdAt": "2026-04-02",
+  "meshOnly": true
+ },
+ {
+  "id": "E0256",
+  "name": "Africa South of the Sahara",
+  "type": "其他",
+  "standardName": "Africa South of the Sahara",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "已审核",
+  "confidence": 0.834,
+  "createdAt": "2026-09-23",
+  "meshOnly": true
+ },
+ {
+  "id": "E0257",
+  "name": "Africa, Northern",
+  "type": "其他",
+  "standardName": "Africa, Northern",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "已审核",
+  "confidence": 0.977,
+  "createdAt": "2026-04-22",
+  "meshOnly": true
+ },
+ {
+  "id": "E0258",
+  "name": "Africa, Western",
+  "type": "其他",
+  "standardName": "Africa, Western",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "待审核",
+  "confidence": 0.899,
+  "createdAt": "2026-06-12",
+  "meshOnly": true
+ },
+ {
+  "id": "E0259",
+  "name": "Aftercare",
+  "type": "其他",
+  "standardName": "Aftercare",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "已审核",
+  "confidence": 0.768,
+  "createdAt": "2026-03-05",
+  "meshOnly": true
+ },
+ {
+  "id": "E0260",
+  "name": "Agaricales",
+  "type": "其他",
+  "standardName": "Agaricales",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "已审核",
+  "confidence": 0.806,
+  "createdAt": "2026-05-27",
+  "meshOnly": true
+ },
+ {
+  "id": "E0261",
+  "name": "Age Distribution",
+  "type": "其他",
+  "standardName": "Age Distribution",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "待审核",
+  "confidence": 0.977,
+  "createdAt": "2026-04-02",
+  "meshOnly": true
+ },
+ {
+  "id": "E0262",
+  "name": "Age Factors",
+  "type": "其他",
+  "standardName": "Age Factors",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "已审核",
+  "confidence": 0.856,
+  "createdAt": "2026-03-05",
+  "meshOnly": true
+ },
+ {
+  "id": "E0263",
+  "name": "Age of Onset",
+  "type": "其他",
+  "standardName": "Age of Onset",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "已审核",
+  "confidence": 0.808,
+  "createdAt": "2026-07-21",
+  "meshOnly": true
+ },
+ {
+  "id": "E0264",
+  "name": "Aggregatibacter",
+  "type": "其他",
+  "standardName": "Aggregatibacter",
+  "aliases": [],
+  "diseases": [],
+  "source": "PubMed MeSH",
+  "status": "待审核",
+  "confidence": 0.765,
+  "createdAt": "2026-08-18",
+  "meshOnly": true
+ }
+]

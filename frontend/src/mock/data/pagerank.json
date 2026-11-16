@@ -1,0 +1,2744 @@
+[
+ {
+  "id": "E0001",
+  "name": "2型糖尿病",
+  "type": "疾病",
+  "score": 8.8889,
+  "degree": 44,
+  "relCount": 61,
+  "diseases": [
+   "2型糖尿病",
+   "血脂异常",
+   "冠心病",
+   "脑卒中",
+   "慢性肾脏病",
+   "肥胖",
+   "脂肪肝",
+   "动脉粥样硬化"
+  ]
+ },
+ {
+  "id": "E0002",
+  "name": "高血压",
+  "type": "疾病",
+  "score": 8.2053,
+  "degree": 44,
+  "relCount": 61,
+  "diseases": [
+   "高血压",
+   "2型糖尿病",
+   "血脂异常",
+   "冠心病",
+   "脑卒中",
+   "慢性肾脏病",
+   "肥胖",
+   "动脉粥样硬化"
+  ]
+ },
+ {
+  "id": "E0003",
+  "name": "血脂异常",
+  "type": "疾病",
+  "score": 6.1116,
+  "degree": 33,
+  "relCount": 50,
+  "diseases": [
+   "血脂异常",
+   "2型糖尿病",
+   "冠心病",
+   "脑卒中",
+   "肥胖",
+   "脂肪肝",
+   "动脉粥样硬化"
+  ]
+ },
+ {
+  "id": "E0004",
+  "name": "冠心病",
+  "type": "疾病",
+  "score": 3.9324,
+  "degree": 23,
+  "relCount": 33,
+  "diseases": [
+   "冠心病",
+   "2型糖尿病",
+   "高血压",
+   "血脂异常",
+   "动脉粥样硬化"
+  ]
+ },
+ {
+  "id": "E0005",
+  "name": "脑卒中",
+  "type": "疾病",
+  "score": 3.9271,
+  "degree": 22,
+  "relCount": 32,
+  "diseases": [
+   "脑卒中",
+   "2型糖尿病",
+   "高血压",
+   "血脂异常",
+   "动脉粥样硬化"
+  ]
+ },
+ {
+  "id": "E0007",
+  "name": "肥胖",
+  "type": "疾病",
+  "score": 3.7065,
+  "degree": 19,
+  "relCount": 25,
+  "diseases": [
+   "肥胖"
+  ]
+ },
+ {
+  "id": "E0006",
+  "name": "慢性肾脏病",
+  "type": "疾病",
+  "score": 3.6314,
+  "degree": 18,
+  "relCount": 25,
+  "diseases": [
+   "慢性肾脏病",
+   "高血压"
+  ]
+ },
+ {
+  "id": "E0008",
+  "name": "脂肪肝",
+  "type": "疾病",
+  "score": 3.0598,
+  "degree": 16,
+  "relCount": 23,
+  "diseases": [
+   "脂肪肝",
+   "血脂异常",
+   "肥胖"
+  ]
+ },
+ {
+  "id": "E0009",
+  "name": "动脉粥样硬化",
+  "type": "疾病",
+  "score": 3.0597,
+  "degree": 18,
+  "relCount": 25,
+  "diseases": [
+   "动脉粥样硬化",
+   "血脂异常"
+  ]
+ },
+ {
+  "id": "E0042",
+  "name": "规律有氧运动",
+  "type": "生活方式",
+  "score": 1.1928,
+  "degree": 7,
+  "relCount": 7,
+  "diseases": [
+   "2型糖尿病",
+   "高血压",
+   "血脂异常",
+   "冠心病",
+   "脑卒中",
+   "肥胖",
+   "动脉粥样硬化"
+  ]
+ },
+ {
+  "id": "E0044",
+  "name": "减重",
+  "type": "生活方式",
+  "score": 0.9138,
+  "degree": 5,
+  "relCount": 5,
+  "diseases": [
+   "2型糖尿病",
+   "高血压",
+   "血脂异常",
+   "肥胖",
+   "脂肪肝"
+  ]
+ },
+ {
+  "id": "E0010",
+  "name": "超重与肥胖",
+  "type": "危险因素",
+  "score": 0.8933,
+  "degree": 5,
+  "relCount": 5,
+  "diseases": [
+   "2型糖尿病",
+   "高血压",
+   "血脂异常",
+   "冠心病",
+   "脂肪肝"
+  ]
+ },
+ {
+  "id": "E0045",
+  "name": "戒烟",
+  "type": "生活方式",
+  "score": 0.8695,
+  "degree": 5,
+  "relCount": 5,
+  "diseases": [
+   "2型糖尿病",
+   "高血压",
+   "冠心病",
+   "脑卒中",
+   "动脉粥样硬化"
+  ]
+ },
+ {
+  "id": "E0052",
+  "name": "吸烟",
+  "type": "危险因素",
+  "score": 0.8552,
+  "degree": 5,
+  "relCount": 5,
+  "diseases": [
+   "高血压",
+   "血脂异常",
+   "冠心病",
+   "脑卒中",
+   "动脉粥样硬化"
+  ]
+ },
+ {
+  "id": "E0020",
+  "name": "乏力",
+  "type": "症状",
+  "score": 0.7693,
+  "degree": 4,
+  "relCount": 4,
+  "diseases": [
+   "2型糖尿病",
+   "慢性肾脏病",
+   "肥胖",
+   "脂肪肝"
+  ]
+ },
+ {
+  "id": "E0013",
+  "name": "缺乏身体活动",
+  "type": "危险因素",
+  "score": 0.7512,
+  "degree": 4,
+  "relCount": 4,
+  "diseases": [
+   "2型糖尿病",
+   "高血压",
+   "血脂异常",
+   "肥胖"
+  ]
+ },
+ {
+  "id": "E0093",
+  "name": "控制饱和脂肪摄入",
+  "type": "生活方式",
+  "score": 0.7075,
+  "degree": 4,
+  "relCount": 4,
+  "diseases": [
+   "血脂异常",
+   "冠心病",
+   "脂肪肝",
+   "动脉粥样硬化"
+  ]
+ },
+ {
+  "id": "E0082",
+  "name": "他汀类",
+  "type": "药物类别",
+  "score": 0.6967,
+  "degree": 4,
+  "relCount": 4,
+  "diseases": [
+   "血脂异常",
+   "冠心病",
+   "脑卒中",
+   "动脉粥样硬化"
+  ]
+ },
+ {
+  "id": "E0087",
+  "name": "低密度脂蛋白胆固醇(LDL-C)",
+  "type": "检查指标",
+  "score": 0.6967,
+  "degree": 4,
+  "relCount": 4,
+  "diseases": [
+   "血脂异常",
+   "冠心病",
+   "脑卒中",
+   "动脉粥样硬化"
+  ]
+ },
+ {
+  "id": "E0040",
+  "name": "尿微量白蛋白/肌酐比值",
+  "type": "检查指标",
+  "score": 0.5995,
+  "degree": 3,
+  "relCount": 3,
+  "diseases": [
+   "2型糖尿病",
+   "高血压",
+   "慢性肾脏病"
+  ]
+ },
+ {
+  "id": "E0021",
+  "name": "视物模糊",
+  "type": "症状",
+  "score": 0.5797,
+  "degree": 3,
+  "relCount": 3,
+  "diseases": [
+   "2型糖尿病",
+   "高血压",
+   "脑卒中"
+  ]
+ },
+ {
+  "id": "E0073",
+  "name": "限盐",
+  "type": "生活方式",
+  "score": 0.5795,
+  "degree": 3,
+  "relCount": 3,
+  "diseases": [
+   "高血压",
+   "脑卒中",
+   "慢性肾脏病"
+  ]
+ },
+ {
+  "id": "E0047",
+  "name": "过量饮酒",
+  "type": "危险因素",
+  "score": 0.5762,
+  "degree": 3,
+  "relCount": 3,
+  "diseases": [
+   "高血压",
+   "血脂异常",
+   "脂肪肝"
+  ]
+ },
+ {
+  "id": "E0062",
+  "name": "血管紧张素转换酶抑制剂(ACEI)",
+  "type": "药物类别",
+  "score": 0.5731,
+  "degree": 3,
+  "relCount": 3,
+  "diseases": [
+   "高血压",
+   "冠心病",
+   "慢性肾脏病"
+  ]
+ },
+ {
+  "id": "E0049",
+  "name": "年龄增长",
+  "type": "危险因素",
+  "score": 0.5722,
+  "degree": 3,
+  "relCount": 3,
+  "diseases": [
+   "高血压",
+   "慢性肾脏病",
+   "动脉粥样硬化"
+  ]
+ },
+ {
+  "id": "E0080",
+  "name": "胸闷",
+  "type": "症状",
+  "score": 0.545,
+  "degree": 3,
+  "relCount": 3,
+  "diseases": [
+   "血脂异常",
+   "冠心病",
+   "动脉粥样硬化"
+  ]
+ },
+ {
+  "id": "E0099",
+  "name": "抗血小板药物",
+  "type": "药物类别",
+  "score": 0.5393,
+  "degree": 3,
+  "relCount": 3,
+  "diseases": [
+   "冠心病",
+   "脑卒中",
+   "动脉粥样硬化"
+  ]
+ },
+ {
+  "id": "E0031",
+  "name": "SGLT2抑制剂",
+  "type": "药物类别",
+  "score": 0.4409,
+  "degree": 2,
+  "relCount": 2,
+  "diseases": [
+   "2型糖尿病",
+   "慢性肾脏病"
+  ]
+ },
+ {
+  "id": "E0032",
+  "name": "GLP-1受体激动剂",
+  "type": "药物类别",
+  "score": 0.4353,
+  "degree": 2,
+  "relCount": 2,
+  "diseases": [
+   "2型糖尿病",
+   "肥胖"
+  ]
+ },
+ {
+  "id": "E0063",
+  "name": "血管紧张素受体拮抗剂(ARB)",
+  "type": "药物类别",
+  "score": 0.4277,
+  "degree": 2,
+  "relCount": 2,
+  "diseases": [
+   "高血压",
+   "慢性肾脏病"
+  ]
+ },
+ {
+  "id": "E0072",
+  "name": "估算肾小球滤过率(eGFR)",
+  "type": "检查指标",
+  "score": 0.4277,
+  "degree": 2,
+  "relCount": 2,
+  "diseases": [
+   "高血压",
+   "慢性肾脏病"
+  ]
+ },
+ {
+  "id": "E0051",
+  "name": "睡眠呼吸暂停综合征",
+  "type": "危险因素",
+  "score": 0.4221,
+  "degree": 2,
+  "relCount": 2,
+  "diseases": [
+   "高血压",
+   "肥胖"
+  ]
+ },
+ {
+  "id": "E0023",
+  "name": "肢体麻木",
+  "type": "症状",
+  "score": 0.4212,
+  "degree": 2,
+  "relCount": 2,
+  "diseases": [
+   "2型糖尿病",
+   "脑卒中"
+  ]
+ },
+ {
+  "id": "E0076",
+  "name": "高脂饮食",
+  "type": "危险因素",
+  "score": 0.421,
+  "degree": 2,
+  "relCount": 2,
+  "diseases": [
+   "血脂异常",
+   "肥胖"
+  ]
+ },
+ {
+  "id": "E0074",
+  "name": "限酒",
+  "type": "生活方式",
+  "score": 0.4188,
+  "degree": 2,
+  "relCount": 2,
+  "diseases": [
+   "高血压",
+   "脂肪肝"
+  ]
+ },
+ {
+  "id": "E0089",
+  "name": "甘油三酯(TG)",
+  "type": "检查指标",
+  "score": 0.4177,
+  "degree": 2,
+  "relCount": 2,
+  "diseases": [
+   "血脂异常",
+   "脂肪肝"
+  ]
+ },
+ {
+  "id": "E0067",
+  "name": "收缩压",
+  "type": "检查指标",
+  "score": 0.408,
+  "degree": 2,
+  "relCount": 2,
+  "diseases": [
+   "高血压",
+   "脑卒中"
+  ]
+ },
+ {
+  "id": "E0056",
+  "name": "心悸",
+  "type": "症状",
+  "score": 0.4016,
+  "degree": 2,
+  "relCount": 2,
+  "diseases": [
+   "高血压",
+   "冠心病"
+  ]
+ },
+ {
+  "id": "E0058",
+  "name": "心力衰竭",
+  "type": "并发症",
+  "score": 0.4016,
+  "degree": 2,
+  "relCount": 2,
+  "diseases": [
+   "高血压",
+   "冠心病"
+  ]
+ },
+ {
+  "id": "E0065",
+  "name": "β受体阻滞剂",
+  "type": "药物类别",
+  "score": 0.4016,
+  "degree": 2,
+  "relCount": 2,
+  "diseases": [
+   "高血压",
+   "冠心病"
+  ]
+ },
+ {
+  "id": "E0011",
+  "name": "糖尿病家族史",
+  "type": "危险因素",
+  "score": 0.2694,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "2型糖尿病"
+  ]
+ },
+ {
+  "id": "E0012",
+  "name": "年龄≥40岁",
+  "type": "危险因素",
+  "score": 0.2694,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "2型糖尿病"
+  ]
+ },
+ {
+  "id": "E0014",
+  "name": "妊娠期糖尿病史",
+  "type": "危险因素",
+  "score": 0.2694,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "2型糖尿病"
+  ]
+ },
+ {
+  "id": "E0015",
+  "name": "多囊卵巢综合征",
+  "type": "危险因素",
+  "score": 0.2694,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "2型糖尿病"
+  ]
+ },
+ {
+  "id": "E0016",
+  "name": "多饮",
+  "type": "症状",
+  "score": 0.2694,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "2型糖尿病"
+  ]
+ },
+ {
+  "id": "E0017",
+  "name": "多尿",
+  "type": "症状",
+  "score": 0.2694,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "2型糖尿病"
+  ]
+ },
+ {
+  "id": "E0018",
+  "name": "多食",
+  "type": "症状",
+  "score": 0.2694,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "2型糖尿病"
+  ]
+ },
+ {
+  "id": "E0019",
+  "name": "体重下降",
+  "type": "症状",
+  "score": 0.2694,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "2型糖尿病"
+  ]
+ },
+ {
+  "id": "E0022",
+  "name": "皮肤瘙痒",
+  "type": "症状",
+  "score": 0.2694,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "2型糖尿病"
+  ]
+ },
+ {
+  "id": "E0024",
+  "name": "糖尿病肾病",
+  "type": "并发症",
+  "score": 0.2694,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "2型糖尿病"
+  ]
+ },
+ {
+  "id": "E0025",
+  "name": "糖尿病视网膜病变",
+  "type": "并发症",
+  "score": 0.2694,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "2型糖尿病"
+  ]
+ },
+ {
+  "id": "E0026",
+  "name": "糖尿病周围神经病变",
+  "type": "并发症",
+  "score": 0.2694,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "2型糖尿病"
+  ]
+ },
+ {
+  "id": "E0027",
+  "name": "糖尿病足",
+  "type": "并发症",
+  "score": 0.2694,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "2型糖尿病"
+  ]
+ },
+ {
+  "id": "E0028",
+  "name": "双胍类",
+  "type": "药物类别",
+  "score": 0.2694,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "2型糖尿病"
+  ]
+ },
+ {
+  "id": "E0029",
+  "name": "磺脲类",
+  "type": "药物类别",
+  "score": 0.2694,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "2型糖尿病"
+  ]
+ },
+ {
+  "id": "E0030",
+  "name": "DPP-4抑制剂",
+  "type": "药物类别",
+  "score": 0.2694,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "2型糖尿病"
+  ]
+ },
+ {
+  "id": "E0033",
+  "name": "胰岛素",
+  "type": "药物类别",
+  "score": 0.2694,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "2型糖尿病"
+  ]
+ },
+ {
+  "id": "E0034",
+  "name": "噻唑烷二酮类",
+  "type": "药物类别",
+  "score": 0.2694,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "2型糖尿病"
+  ]
+ },
+ {
+  "id": "E0035",
+  "name": "空腹血糖",
+  "type": "检查指标",
+  "score": 0.2694,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "2型糖尿病"
+  ]
+ },
+ {
+  "id": "E0036",
+  "name": "餐后2小时血糖",
+  "type": "检查指标",
+  "score": 0.2694,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "2型糖尿病"
+  ]
+ },
+ {
+  "id": "E0037",
+  "name": "糖化血红蛋白(HbA1c)",
+  "type": "检查指标",
+  "score": 0.2694,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "2型糖尿病"
+  ]
+ },
+ {
+  "id": "E0038",
+  "name": "口服葡萄糖耐量试验(OGTT)",
+  "type": "检查指标",
+  "score": 0.2694,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "2型糖尿病"
+  ]
+ },
+ {
+  "id": "E0039",
+  "name": "C肽",
+  "type": "检查指标",
+  "score": 0.2694,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "2型糖尿病"
+  ]
+ },
+ {
+  "id": "E0041",
+  "name": "医学营养治疗",
+  "type": "生活方式",
+  "score": 0.2694,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "2型糖尿病"
+  ]
+ },
+ {
+  "id": "E0043",
+  "name": "血糖自我监测",
+  "type": "生活方式",
+  "score": 0.2694,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "2型糖尿病"
+  ]
+ },
+ {
+  "id": "E0109",
+  "name": "高尿酸血症",
+  "type": "危险因素",
+  "score": 0.2692,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "慢性肾脏病"
+  ]
+ },
+ {
+  "id": "E0110",
+  "name": "夜尿增多",
+  "type": "症状",
+  "score": 0.2692,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "慢性肾脏病"
+  ]
+ },
+ {
+  "id": "E0111",
+  "name": "水肿",
+  "type": "症状",
+  "score": 0.2692,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "慢性肾脏病"
+  ]
+ },
+ {
+  "id": "E0112",
+  "name": "肾性贫血",
+  "type": "并发症",
+  "score": 0.2692,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "慢性肾脏病"
+  ]
+ },
+ {
+  "id": "E0113",
+  "name": "矿物质骨代谢异常",
+  "type": "并发症",
+  "score": 0.2692,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "慢性肾脏病"
+  ]
+ },
+ {
+  "id": "E0114",
+  "name": "血肌酐",
+  "type": "检查指标",
+  "score": 0.2692,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "慢性肾脏病"
+  ]
+ },
+ {
+  "id": "E0115",
+  "name": "优质低蛋白饮食",
+  "type": "生活方式",
+  "score": 0.2692,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "慢性肾脏病"
+  ]
+ },
+ {
+  "id": "E0116",
+  "name": "控制血压",
+  "type": "生活方式",
+  "score": 0.2692,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "慢性肾脏病"
+  ]
+ },
+ {
+  "id": "E0117",
+  "name": "遗传因素",
+  "type": "危险因素",
+  "score": 0.2635,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "肥胖"
+  ]
+ },
+ {
+  "id": "E0118",
+  "name": "睡眠不足",
+  "type": "危险因素",
+  "score": 0.2635,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "肥胖"
+  ]
+ },
+ {
+  "id": "E0119",
+  "name": "体重增加",
+  "type": "症状",
+  "score": 0.2635,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "肥胖"
+  ]
+ },
+ {
+  "id": "E0120",
+  "name": "活动后气促",
+  "type": "症状",
+  "score": 0.2635,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "肥胖"
+  ]
+ },
+ {
+  "id": "E0121",
+  "name": "体重指数(BMI)",
+  "type": "检查指标",
+  "score": 0.2635,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "肥胖"
+  ]
+ },
+ {
+  "id": "E0122",
+  "name": "腰围",
+  "type": "检查指标",
+  "score": 0.2635,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "肥胖"
+  ]
+ },
+ {
+  "id": "E0123",
+  "name": "体脂率",
+  "type": "检查指标",
+  "score": 0.2635,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "肥胖"
+  ]
+ },
+ {
+  "id": "E0124",
+  "name": "控制总能量摄入",
+  "type": "生活方式",
+  "score": 0.2635,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "肥胖"
+  ]
+ },
+ {
+  "id": "E0125",
+  "name": "右上腹不适",
+  "type": "症状",
+  "score": 0.2603,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "脂肪肝"
+  ]
+ },
+ {
+  "id": "E0126",
+  "name": "肝纤维化",
+  "type": "并发症",
+  "score": 0.2603,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "脂肪肝"
+  ]
+ },
+ {
+  "id": "E0127",
+  "name": "肝硬化",
+  "type": "并发症",
+  "score": 0.2603,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "脂肪肝"
+  ]
+ },
+ {
+  "id": "E0128",
+  "name": "胰岛素增敏剂",
+  "type": "药物类别",
+  "score": 0.2603,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "脂肪肝"
+  ]
+ },
+ {
+  "id": "E0129",
+  "name": "谷丙转氨酶(ALT)",
+  "type": "检查指标",
+  "score": 0.2603,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "脂肪肝"
+  ]
+ },
+ {
+  "id": "E0130",
+  "name": "肝脏超声",
+  "type": "检查指标",
+  "score": 0.2603,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "脂肪肝"
+  ]
+ },
+ {
+  "id": "E0046",
+  "name": "高钠低钾饮食",
+  "type": "危险因素",
+  "score": 0.2562,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "高血压"
+  ]
+ },
+ {
+  "id": "E0048",
+  "name": "长期精神紧张",
+  "type": "危险因素",
+  "score": 0.2562,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "高血压"
+  ]
+ },
+ {
+  "id": "E0050",
+  "name": "高血压家族史",
+  "type": "危险因素",
+  "score": 0.2562,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "高血压"
+  ]
+ },
+ {
+  "id": "E0053",
+  "name": "头晕",
+  "type": "症状",
+  "score": 0.2562,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "高血压"
+  ]
+ },
+ {
+  "id": "E0054",
+  "name": "头痛",
+  "type": "症状",
+  "score": 0.2562,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "高血压"
+  ]
+ },
+ {
+  "id": "E0055",
+  "name": "颈项板紧",
+  "type": "症状",
+  "score": 0.2562,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "高血压"
+  ]
+ },
+ {
+  "id": "E0057",
+  "name": "耳鸣",
+  "type": "症状",
+  "score": 0.2562,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "高血压"
+  ]
+ },
+ {
+  "id": "E0059",
+  "name": "视网膜病变",
+  "type": "并发症",
+  "score": 0.2562,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "高血压"
+  ]
+ },
+ {
+  "id": "E0060",
+  "name": "主动脉夹层",
+  "type": "并发症",
+  "score": 0.2562,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "高血压"
+  ]
+ },
+ {
+  "id": "E0061",
+  "name": "钙通道阻滞剂(CCB)",
+  "type": "药物类别",
+  "score": 0.2562,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "高血压"
+  ]
+ },
+ {
+  "id": "E0064",
+  "name": "噻嗪类利尿剂",
+  "type": "药物类别",
+  "score": 0.2562,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "高血压"
+  ]
+ },
+ {
+  "id": "E0066",
+  "name": "血管紧张素受体脑啡肽酶抑制剂(ARNI)",
+  "type": "药物类别",
+  "score": 0.2562,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "高血压"
+  ]
+ },
+ {
+  "id": "E0068",
+  "name": "舒张压",
+  "type": "检查指标",
+  "score": 0.2562,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "高血压"
+  ]
+ },
+ {
+  "id": "E0069",
+  "name": "动态血压监测",
+  "type": "检查指标",
+  "score": 0.2562,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "高血压"
+  ]
+ },
+ {
+  "id": "E0070",
+  "name": "家庭自测血压",
+  "type": "检查指标",
+  "score": 0.2562,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "高血压"
+  ]
+ },
+ {
+  "id": "E0071",
+  "name": "血钾",
+  "type": "检查指标",
+  "score": 0.2562,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "高血压"
+  ]
+ },
+ {
+  "id": "E0075",
+  "name": "心理平衡",
+  "type": "生活方式",
+  "score": 0.2562,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "高血压"
+  ]
+ },
+ {
+  "id": "E0077",
+  "name": "遗传性脂质代谢异常",
+  "type": "危险因素",
+  "score": 0.2551,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "血脂异常"
+  ]
+ },
+ {
+  "id": "E0078",
+  "name": "黄色瘤",
+  "type": "症状",
+  "score": 0.2551,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "血脂异常"
+  ]
+ },
+ {
+  "id": "E0079",
+  "name": "角膜环",
+  "type": "症状",
+  "score": 0.2551,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "血脂异常"
+  ]
+ },
+ {
+  "id": "E0081",
+  "name": "急性胰腺炎",
+  "type": "并发症",
+  "score": 0.2551,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "血脂异常"
+  ]
+ },
+ {
+  "id": "E0083",
+  "name": "胆固醇吸收抑制剂",
+  "type": "药物类别",
+  "score": 0.2551,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "血脂异常"
+  ]
+ },
+ {
+  "id": "E0084",
+  "name": "PCSK9抑制剂",
+  "type": "药物类别",
+  "score": 0.2551,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "血脂异常"
+  ]
+ },
+ {
+  "id": "E0085",
+  "name": "贝特类",
+  "type": "药物类别",
+  "score": 0.2551,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "血脂异常"
+  ]
+ },
+ {
+  "id": "E0086",
+  "name": "高纯度ω-3脂肪酸",
+  "type": "药物类别",
+  "score": 0.2551,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "血脂异常"
+  ]
+ },
+ {
+  "id": "E0088",
+  "name": "总胆固醇(TC)",
+  "type": "检查指标",
+  "score": 0.2551,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "血脂异常"
+  ]
+ },
+ {
+  "id": "E0090",
+  "name": "高密度脂蛋白胆固醇(HDL-C)",
+  "type": "检查指标",
+  "score": 0.2551,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "血脂异常"
+  ]
+ },
+ {
+  "id": "E0091",
+  "name": "载脂蛋白B",
+  "type": "检查指标",
+  "score": 0.2551,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "血脂异常"
+  ]
+ },
+ {
+  "id": "E0092",
+  "name": "脂蛋白(a)",
+  "type": "检查指标",
+  "score": 0.2551,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "血脂异常"
+  ]
+ },
+ {
+  "id": "E0094",
+  "name": "增加膳食纤维",
+  "type": "生活方式",
+  "score": 0.2551,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "血脂异常"
+  ]
+ },
+ {
+  "id": "E0095",
+  "name": "戒烟限酒",
+  "type": "生活方式",
+  "score": 0.2551,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "血脂异常"
+  ]
+ },
+ {
+  "id": "E0102",
+  "name": "心房颤动",
+  "type": "危险因素",
+  "score": 0.2495,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "脑卒中"
+  ]
+ },
+ {
+  "id": "E0103",
+  "name": "言语不清",
+  "type": "症状",
+  "score": 0.2495,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "脑卒中"
+  ]
+ },
+ {
+  "id": "E0104",
+  "name": "眩晕",
+  "type": "症状",
+  "score": 0.2495,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "脑卒中"
+  ]
+ },
+ {
+  "id": "E0105",
+  "name": "认知功能障碍",
+  "type": "并发症",
+  "score": 0.2495,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "脑卒中"
+  ]
+ },
+ {
+  "id": "E0106",
+  "name": "吞咽困难",
+  "type": "并发症",
+  "score": 0.2495,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "脑卒中"
+  ]
+ },
+ {
+  "id": "E0107",
+  "name": "抗凝药物",
+  "type": "药物类别",
+  "score": 0.2495,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "脑卒中"
+  ]
+ },
+ {
+  "id": "E0108",
+  "name": "头颅CT",
+  "type": "检查指标",
+  "score": 0.2495,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "脑卒中"
+  ]
+ },
+ {
+  "id": "E0096",
+  "name": "胸痛",
+  "type": "症状",
+  "score": 0.2431,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "冠心病"
+  ]
+ },
+ {
+  "id": "E0097",
+  "name": "呼吸困难",
+  "type": "症状",
+  "score": 0.2431,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "冠心病"
+  ]
+ },
+ {
+  "id": "E0098",
+  "name": "心律失常",
+  "type": "并发症",
+  "score": 0.2431,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "冠心病"
+  ]
+ },
+ {
+  "id": "E0100",
+  "name": "心电图",
+  "type": "检查指标",
+  "score": 0.2431,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "冠心病"
+  ]
+ },
+ {
+  "id": "E0101",
+  "name": "冠状动脉造影",
+  "type": "检查指标",
+  "score": 0.2431,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "冠心病"
+  ]
+ },
+ {
+  "id": "E0131",
+  "name": "间歇性跛行",
+  "type": "症状",
+  "score": 0.2422,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "动脉粥样硬化"
+  ]
+ },
+ {
+  "id": "E0132",
+  "name": "外周动脉疾病",
+  "type": "并发症",
+  "score": 0.2422,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "动脉粥样硬化"
+  ]
+ },
+ {
+  "id": "E0133",
+  "name": "颈动脉超声",
+  "type": "检查指标",
+  "score": 0.2422,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "动脉粥样硬化"
+  ]
+ },
+ {
+  "id": "E0134",
+  "name": "踝肱指数",
+  "type": "检查指标",
+  "score": 0.2422,
+  "degree": 1,
+  "relCount": 1,
+  "diseases": [
+   "动脉粥样硬化"
+  ]
+ },
+ {
+  "id": "E0135",
+  "name": "ADAM17 Protein",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0136",
+  "name": "AMP-Activated Protein Kinase Kinases",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0137",
+  "name": "AMP-Activated Protein Kinases",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0138",
+  "name": "APACHE",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0139",
+  "name": "ARNTL Transcription Factors",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0140",
+  "name": "ATP Binding Cassette Transporter 1",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0141",
+  "name": "ATP Binding Cassette Transporter, Subfamily G, Member 1",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0142",
+  "name": "ATP Binding Cassette Transporter, Subfamily G, Member 5",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0143",
+  "name": "ATP Binding Cassette Transporter, Subfamily G, Member 8",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0144",
+  "name": "ATP-Binding Cassette, Sub-Family C Proteins",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0145",
+  "name": "Abdomen",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0146",
+  "name": "Abdominal Pain",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0147",
+  "name": "Abdominoplasty",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0148",
+  "name": "Abetalipoproteinemia",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0149",
+  "name": "Abiraterone Acetate",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0150",
+  "name": "Abnormalities, Multiple",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0151",
+  "name": "Abortion, Habitual",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0152",
+  "name": "Abortion, Spontaneous",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0153",
+  "name": "Abruptio Placentae",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0154",
+  "name": "Absorbable Implants",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0155",
+  "name": "Absorptiometry, Photon",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0156",
+  "name": "Academic Medical Centers",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0157",
+  "name": "Academies and Institutes",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0158",
+  "name": "Acanthosis Nigricans",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0159",
+  "name": "Acarbose",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0160",
+  "name": "Acceleration",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0161",
+  "name": "Accelerometry",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0162",
+  "name": "Access to Primary Care",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0163",
+  "name": "Accidental Falls",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0164",
+  "name": "Acculturation",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0165",
+  "name": "Acetamides",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0166",
+  "name": "Acetates",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0167",
+  "name": "Acetazolamide",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0168",
+  "name": "Acetone",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0169",
+  "name": "Acetylation",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0170",
+  "name": "Acetylcarnitine",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0171",
+  "name": "Acetylcholine",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0172",
+  "name": "Acetylcholinesterase",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0173",
+  "name": "Acetylgalactosamine",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0174",
+  "name": "Acetylglucosaminidase",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0175",
+  "name": "Achilles Tendon",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0176",
+  "name": "Acid-Base Equilibrium",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0177",
+  "name": "Acidosis",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0178",
+  "name": "Acidosis, Lactic",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0179",
+  "name": "Acinar Cells",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0180",
+  "name": "Acne Vulgaris",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0181",
+  "name": "Acoustics",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0182",
+  "name": "Acquired Immunodeficiency Syndrome",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0183",
+  "name": "Actigraphy",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0184",
+  "name": "Actin Cytoskeleton",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0185",
+  "name": "Actinidia",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0186",
+  "name": "Actins",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0187",
+  "name": "Action Potentials",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0188",
+  "name": "Activating Transcription Factor 3",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0189",
+  "name": "Activating Transcription Factor 6",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0190",
+  "name": "Activities of Daily Living",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0191",
+  "name": "Acupuncture Points",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0192",
+  "name": "Acupuncture Therapy",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0193",
+  "name": "Acute Coronary Syndrome",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0194",
+  "name": "Acute Disease",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0195",
+  "name": "Acute Kidney Injury",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0196",
+  "name": "Acute Lung Injury",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0197",
+  "name": "Acute-On-Chronic Liver Failure",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0198",
+  "name": "Acute-Phase Proteins",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0199",
+  "name": "Acyclic Monoterpenes",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0200",
+  "name": "Acyl Coenzyme A",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0201",
+  "name": "Acyltransferases",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0202",
+  "name": "Adaptation, Physiological",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0203",
+  "name": "Adaptation, Psychological",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0204",
+  "name": "Adaptive Clinical Trials as Topic",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0205",
+  "name": "Adaptive Immunity",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0206",
+  "name": "Adaptor Proteins, Signal Transducing",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0207",
+  "name": "Adenine",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0208",
+  "name": "Adenocarcinoma",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0209",
+  "name": "Adenoids",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0210",
+  "name": "Adenoma",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0211",
+  "name": "Adenosine",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0212",
+  "name": "Adenosine Deaminase",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0213",
+  "name": "Adenosine Deaminase Inhibitors",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0214",
+  "name": "Adenosine Monophosphate",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0215",
+  "name": "Adenosine Triphosphatases",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0216",
+  "name": "Adenosine Triphosphate",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0217",
+  "name": "Adherence Interventions",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0218",
+  "name": "Adipocytes",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0219",
+  "name": "Adipocytes, White",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0220",
+  "name": "Adipogenesis",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0221",
+  "name": "Adipokines",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0222",
+  "name": "Adiponectin",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0223",
+  "name": "Adipose Tissue",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0224",
+  "name": "Adipose Tissue, Brown",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0225",
+  "name": "Adipose Tissue, White",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0226",
+  "name": "Adiposity",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0227",
+  "name": "Administration, Cutaneous",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0228",
+  "name": "Administration, Inhalation",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0229",
+  "name": "Administration, Intranasal",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0230",
+  "name": "Administration, Intravaginal",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0231",
+  "name": "Administration, Intravenous",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0232",
+  "name": "Administration, Oral",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0233",
+  "name": "Administration, Topical",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0234",
+  "name": "Administrative Claims, Healthcare",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0235",
+  "name": "Ado-Trastuzumab Emtansine",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0236",
+  "name": "Adolescent Behavior",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0237",
+  "name": "Adolescent Health",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0238",
+  "name": "Adoptive Transfer",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0239",
+  "name": "Adrenal Cortex Hormones",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0240",
+  "name": "Adrenal Gland Neoplasms",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0241",
+  "name": "Adrenal Glands",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0242",
+  "name": "Adrenalectomy",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0243",
+  "name": "Adrenergic beta-1 Receptor Antagonists",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0244",
+  "name": "Adrenergic beta-Agonists",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0245",
+  "name": "Adrenergic beta-Antagonists",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0246",
+  "name": "Adult Survivors of Child Abuse",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0247",
+  "name": "Adult Survivors of Child Adverse Events",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0248",
+  "name": "Advanced Maternal Age",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0249",
+  "name": "Advanced Oxidation Protein Products",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0250",
+  "name": "Adverse Childhood Experiences",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0251",
+  "name": "Adverse Drug Reaction Reporting Systems",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0252",
+  "name": "Advisory Committees",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0253",
+  "name": "Aerospace Medicine",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0254",
+  "name": "Affect",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0255",
+  "name": "Africa",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0256",
+  "name": "Africa South of the Sahara",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0257",
+  "name": "Africa, Northern",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0258",
+  "name": "Africa, Western",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0259",
+  "name": "Aftercare",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0260",
+  "name": "Agaricales",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0261",
+  "name": "Age Distribution",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0262",
+  "name": "Age Factors",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0263",
+  "name": "Age of Onset",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ },
+ {
+  "id": "E0264",
+  "name": "Aggregatibacter",
+  "type": "其他",
+  "score": 0.0977,
+  "degree": 0,
+  "relCount": 0,
+  "diseases": []
+ }
+]

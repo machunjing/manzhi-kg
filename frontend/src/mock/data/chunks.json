@@ -1,0 +1,57 @@
+[
+ {
+  "id": "C00001",
+  "docId": "DOC-P0001",
+  "source": "PubMed",
+  "pmid": "42828937",
+  "disease": "2型糖尿病",
+  "chunkIdx": 0,
+  "textLen": 300,
+  "text": "Skeletal muscle is the major site of insulin-stimulated glucose uptake, making it highly susceptible to metabolic disorders. This study investigates Type 2 diabetes mellitus-associated alterations in the macromolecular composition of functionally distinct human skeletal muscles. These modifications ",
+  "score": 0.778
+ },
+ {
+  "id": "C00002",
+  "docId": "DOC-P0002",
+  "source": "PubMed",
+  "pmid": "42828937",
+  "disease": "2型糖尿病",
+  "chunkIdx": 1,
+  "textLen": 300,
+  "text": "tinct human skeletal muscles. These modifications are crucial to understanding the molecular basis of diabetic myopathies but remain underexplored. Five skeletal muscles from 80 individuals (40 controls and 40 individuals with Type 2 diabetes) were analysed. To overcome the limitations of traditiona",
+  "score": 0.618
+ },
+ {
+  "id": "C00003",
+  "docId": "DOC-P0003",
+  "source": "PubMed",
+  "pmid": "42828937",
+  "disease": "2型糖尿病",
+  "chunkIdx": 2,
+  "textLen": 300,
+  "text": "nalysed. To overcome the limitations of traditional histochemical assays, we employed infrared spectroscopy combined with a chemometric decomposition approach to resolve spectra into five spectral components, each dominated by a specific macromolecular group. The corresponding component weights quan",
+  "score": 0.908
+ },
+ {
+  "id": "C00004",
+  "docId": "DOC-P0004",
+  "source": "PubMed",
+  "pmid": "42828937",
+  "disease": "2型糖尿病",
+  "chunkIdx": 3,
+  "textLen": 300,
+  "text": "ar group. The corresponding component weights quantified and compared relative macromolecular proportions between the diabetic and control groups for different muscle types. Compared with controls, muscles from individuals with diabetes showed a consistent pattern of higher lipid levels and lower gl",
+  "score": 0.805
+ },
+ {
+  "id": "C00005",
+  "docId": "DOC-P0005",
+  "source": "PubMed",
+  "pmid": "42828937",
+  "disease": "2型糖尿病",
+  "chunkIdx": 4,
+  "textLen": 300,
+  "text": "istent pattern of higher lipid levels and lower glycogen levels, with a statistically significant increase in lipids within the diaphragm. This biochemical profiling was enriched by building machine learning classifiers, which achieved low-to-modest but statistically significant AUC performance of u",
+  "score": 0.778
+ }
+]

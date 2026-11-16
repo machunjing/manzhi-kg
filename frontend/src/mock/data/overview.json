@@ -1,0 +1,73 @@
+{
+ "dataSnapshotAt": "2026-11-04",
+ "entityTotal": 264,
+ "entityMeshTotal": 4793,
+ "tripleTotal": 36619,
+ "chunkTotal": 32078,
+ "charTotal": 7669660,
+ "docTotal": 5026,
+ "docWithAbstract": 4611,
+ "journalTotal": 1259,
+ "mlpTopicTotal": 31,
+ "avgMesh": 11.3,
+ "diseaseCount": {
+  "2型糖尿病": 1677,
+  "高血压": 1645,
+  "血脂异常": 1704
+ },
+ "yearCount": {
+  "2020": 199,
+  "2021": 750,
+  "2022": 744,
+  "2023": 706,
+  "2024": 708,
+  "2025": 629,
+  "2026": 1268,
+  "2027": 19
+ },
+ "kgEntityTotal": 264,
+ "kgRelationTotal": 263,
+ "kgApproved": 175,
+ "kgPending": 41,
+ "kgCandidate": 26,
+ "kgRejected": 21,
+ "typeCount": {
+  "疾病": 9,
+  "危险因素": 19,
+  "症状": 26,
+  "并发症": 16,
+  "药物类别": 21,
+  "检查指标": 29,
+  "生活方式": 14,
+  "其他": 130
+ },
+ "relTypeCount": {
+  "危险因素": 55,
+  "临床表现": 35,
+  "并发症": 33,
+  "常用药物": 32,
+  "监测指标": 37,
+  "干预措施": 34,
+  "共病": 7,
+  "关联疾病": 20,
+  "导致": 10
+ },
+ "entityStatus": {
+  "已审核": 180,
+  "待审核": 55,
+  "候选": 11,
+  "已驳回": 18
+ },
+ "relationStatus": {
+  "候选": 26,
+  "已审核": 175,
+  "待审核": 41,
+  "已驳回": 21
+ },
+ "baseline": {
+  "entity": 3931,
+  "triple": 24731,
+  "chunk": 21002,
+  "char": 5019000
+ }
+}

@@ -1,0 +1,408 @@
+/* ============================================================
+   慢知 · 慢性病智能知识服务平台 —— 全局主题
+   设计基调：高校科研数据平台 + 医疗知识服务（专业 / 简洁 / 学术 / 科技感）
+   ============================================================ */
+
+:root {
+  --mz-primary: #2563eb;
+  --mz-primary-dark: #1d4ed8;
+  --mz-primary-soft: #eff4ff;
+  --mz-navy: #173b70;
+  --mz-bg: #f5f7fa;
+  --mz-card: #ffffff;
+  --mz-text: #1f2937;
+  --mz-text-sub: #6b7280;
+  --mz-text-light: #9ca3af;
+  --mz-border: #e5e7eb;
+  --mz-border-strong: #d8dee8;
+  --mz-success: #16a34a;
+  --mz-warning: #f59e0b;
+  --mz-danger: #dc2626;
+  --mz-info: #0ea5e9;
+  --mz-radius: 10px;
+  --mz-shadow: 0 1px 2px rgba(16, 24, 40, 0.04), 0 1px 3px rgba(16, 24, 40, 0.06);
+  --mz-shadow-hover: 0 4px 12px rgba(16, 24, 40, 0.08);
+
+  --el-color-primary: #2563eb;
+  --el-color-success: #16a34a;
+  --el-color-warning: #f59e0b;
+  --el-color-danger: #dc2626;
+  --el-color-info: #6b7280;
+  --el-border-radius-base: 6px;
+  --el-font-size-base: 13px;
+  --el-text-color-primary: #1f2937;
+  --el-text-color-regular: #4b5563;
+  --el-border-color: #e5e7eb;
+  --el-border-color-light: #eef1f6;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#app {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--mz-bg);
+  color: var(--mz-text);
+  font-family: 'PingFang SC', 'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial,
+    'Noto Sans CJK SC', sans-serif;
+  font-size: 13px;
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background: #d3d9e3;
+  border-radius: 8px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #b9c2d0;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* ---------------- 布局骨架 ---------------- */
+.mz-layout {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+
+.mz-aside {
+  width: 220px;
+  flex: 0 0 220px;
+  background: #ffffff;
+  border-right: 1px solid var(--mz-border);
+  display: flex;
+  flex-direction: column;
+  transition: width 0.22s ease, flex-basis 0.22s ease;
+  z-index: 20;
+}
+.mz-aside.is-collapsed {
+  width: 64px;
+  flex-basis: 64px;
+}
+
+.mz-brand {
+  height: 60px;
+  flex: 0 0 60px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 16px;
+  border-bottom: 1px solid var(--mz-border);
+  overflow: hidden;
+}
+.mz-brand-logo {
+  width: 30px;
+  height: 30px;
+  flex: 0 0 30px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #2563eb, #173b70);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.mz-brand-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.25;
+  white-space: nowrap;
+}
+.mz-brand-text b {
+  font-size: 16px;
+  letter-spacing: 2px;
+  color: var(--mz-navy);
+}
+.mz-brand-text span {
+  font-size: 10px;
+  color: var(--mz-text-light);
+  letter-spacing: 0.4px;
+}
+
+.mz-menu-wrap {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 8px 0 20px;
+}
+
+.mz-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.mz-header {
+  height: 60px;
+  flex: 0 0 60px;
+  background: #ffffff;
+  border-bottom: 1px solid var(--mz-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  z-index: 10;
+}
+
+.mz-content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 24px;
+}
+
+/* ---------------- 通用块 ---------------- */
+.mz-page-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+.mz-page-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--mz-text);
+  letter-spacing: 0.2px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.mz-page-desc {
+  margin-top: 6px;
+  font-size: 12.5px;
+  color: var(--mz-text-sub);
+  line-height: 1.6;
+  max-width: 900px;
+}
+
+.mz-card {
+  background: var(--mz-card);
+  border: 1px solid var(--mz-border);
+  border-radius: var(--mz-radius);
+  box-shadow: var(--mz-shadow);
+}
+.mz-card-pad {
+  padding: 18px;
+}
+.mz-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--mz-border);
+}
+.mz-card-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--mz-text);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.mz-card-title::before {
+  content: '';
+  width: 3px;
+  height: 14px;
+  border-radius: 2px;
+  background: var(--mz-primary);
+}
+.mz-card-sub {
+  font-size: 12px;
+  color: var(--mz-text-light);
+  font-weight: 400;
+}
+
+.mz-grid {
+  display: grid;
+  gap: 16px;
+}
+.mz-row {
+  display: flex;
+  gap: 16px;
+}
+.mz-col {
+  flex: 1;
+  min-width: 0;
+}
+
+.mz-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--mz-border);
+}
+.mz-toolbar .el-input,
+.mz-toolbar .el-select {
+  width: 168px;
+}
+.mz-toolbar-spacer {
+  flex: 1;
+}
+
+.mz-table-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 18px;
+  border-top: 1px solid var(--mz-border);
+}
+.mz-total {
+  font-size: 12px;
+  color: var(--mz-text-sub);
+}
+
+.mz-muted {
+  color: var(--mz-text-sub);
+}
+.mz-light {
+  color: var(--mz-text-light);
+}
+.mz-mono {
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+  font-size: 12px;
+}
+.mz-link {
+  color: var(--mz-primary);
+  cursor: pointer;
+}
+.mz-link:hover {
+  text-decoration: underline;
+}
+
+.mz-demo-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 20px;
+  padding: 0 7px;
+  border-radius: 4px;
+  font-size: 11px;
+  color: #b45309;
+  background: #fef6e7;
+  border: 1px solid #fbe0b0;
+  white-space: nowrap;
+}
+
+/* ---------------- Element Plus 微调 ---------------- */
+.el-button {
+  font-weight: 400;
+}
+.el-table {
+  font-size: 12.5px;
+  --el-table-header-bg-color: #fafbfd;
+  --el-table-header-text-color: #4b5563;
+  --el-table-row-hover-bg-color: #f7f9fd;
+  --el-table-border-color: #eef1f6;
+}
+.el-table th.el-table__cell {
+  font-weight: 600;
+  background: #fafbfd !important;
+}
+.el-table .cell {
+  line-height: 1.55;
+}
+.el-tabs__item {
+  font-size: 13px;
+}
+.el-drawer__header {
+  margin-bottom: 0;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--mz-border);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--mz-text);
+}
+.el-drawer__body {
+  padding: 18px 20px;
+}
+.el-dialog__header {
+  border-bottom: 1px solid var(--mz-border);
+  padding-bottom: 14px;
+  margin-right: 0;
+}
+.el-dialog__title {
+  font-size: 15px;
+  font-weight: 600;
+}
+.el-descriptions__label {
+  color: var(--mz-text-sub) !important;
+  font-weight: 400 !important;
+}
+
+/* 侧边菜单 */
+.mz-menu.el-menu {
+  border-right: none;
+  padding: 0 8px;
+  background: transparent;
+}
+.mz-menu .el-sub-menu__title,
+.mz-menu .el-menu-item {
+  height: 38px;
+  line-height: 38px;
+  font-size: 13px;
+  border-radius: 6px;
+  margin: 2px 0;
+  color: #4b5563;
+}
+.mz-menu .el-menu-item.is-active {
+  background: var(--mz-primary-soft);
+  color: var(--mz-primary);
+  font-weight: 600;
+}
+.mz-menu .el-menu-item.is-active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 9px;
+  bottom: 9px;
+  width: 3px;
+  border-radius: 0 2px 2px 0;
+  background: var(--mz-primary);
+}
+.mz-menu .el-menu-item,
+.mz-menu .el-sub-menu__title {
+  position: relative;
+}
+.mz-menu .el-sub-menu.is-active > .el-sub-menu__title {
+  color: var(--mz-primary);
+}
+.mz-menu .el-sub-menu .el-menu-item {
+  min-width: auto;
+  padding-left: 44px !important;
+  height: 34px;
+  line-height: 34px;
+  font-size: 12.5px;
+}
+.mz-menu .el-icon {
+  font-size: 16px;
+}
+.mz-menu--collapse .el-menu-item,
+.mz-menu--collapse .el-sub-menu__title {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  justify-content: center;
+}
