@@ -6,7 +6,7 @@
   seed.sql       -> manzhi       演示库，408 篇文献 / 264 实体 / 263 关系，数字与前端页面一致
   import_real.py -> manzhi_real  真实库，5,057 篇文献 / 3.2 万切块 / 6 万实体 / 30 万关系
 
-数据来源（均在 D:/毕业设计/开题答辩/数据包）：
+数据来源（数据包/ 目录，未随仓库分发，需自行获取）：
   03_清洗后数据/解析结构化JSON/pubmed_records.json        5,026 篇 PubMed
   03_清洗后数据/解析结构化JSON/mlp_topics.json            31 条 MedlinePlus 主题
   04_预处理中间产物/向量切块/向量切块清单_300重叠50.json   32,078 个切块

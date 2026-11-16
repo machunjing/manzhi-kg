@@ -4,10 +4,11 @@
 真实数据来源：03_清洗后数据 / 04_预处理中间产物 / 05_统计分析产出
 """
 import json, os, re, math, random, hashlib
+import os
 from collections import Counter, defaultdict
 
-PKG = r"D:/毕业设计/开题答辩/数据包"
-OUT = r"D:/毕业设计/开题答辩/慢知前端原型/src/mock/data"
+PKG = os.environ.get("DATA_PKG", os.path.join("..", "..", "数据包"))
+OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "src", "mock", "data")
 random.seed(20261104)
 
 os.makedirs(OUT, exist_ok=True)

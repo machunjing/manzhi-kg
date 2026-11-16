@@ -25,7 +25,7 @@ const permissions = ref([
 const sources = ref([
   { name: 'PubMed E-utilities', url: 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils', enabled: true, type: 'API', status: '演示状态' },
   { name: 'MedlinePlus', url: 'https://medlineplus.gov', enabled: true, type: 'API', status: '演示状态' },
-  { name: '本地指南 PDF 目录', url: 'D:/毕业设计/开题答辩/数据包/01_外部公开语料/指南PDF', enabled: true, type: '文件', status: '可用' },
+  { name: '本地指南 PDF 目录', url: './数据包/01_外部公开语料/指南PDF', enabled: true, type: '文件', status: '可用' },
   { name: 'DiaKG', url: 'https://github.com/China-Linguistics/DiaKG', enabled: true, type: '图谱', status: '可用' },
   { name: 'OpenCMKG', url: 'https://github.com/OpenCMKG', enabled: false, type: '图谱', status: '未启用' }
 ])
