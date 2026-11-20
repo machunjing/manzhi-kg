@@ -100,7 +100,7 @@ const features = [
           </div>
         </div>
 
-        <h1 class="left-title">基于知识图谱与 RAG 的<br />慢性病智能知识服务系统</h1>
+        <h1 class="left-title">基于知识图谱与 RAG 的<br />慢性病智能问答系统</h1>
         <p class="left-desc">
           面向 2 型糖尿病、高血压与血脂异常，整合国家级指南与多源文献，构建结构化知识图谱，
           并以检索增强生成技术提供可追溯的健康知识问答。
@@ -117,7 +117,7 @@ const features = [
         </div>
 
         <div class="left-foot">
-          <span>医学知识服务与科研辅助系统</span>
+          <span>医学知识问答与科研辅助系统</span>
           <span class="sep">·</span>
           <span>不提供临床诊断与处方建议</span>
         </div>

@@ -97,7 +97,7 @@ function resetParams() {
               </el-row>
             </el-form>
             <div class="tip-box">
-              本系统为医学知识服务与科研辅助系统，不提供个体化诊断、处方与治疗决策建议。
+              本系统为医学知识问答与科研辅助系统，不提供个体化诊断、处方与治疗决策建议。
             </div>
           </div>
         </el-tab-pane>
