@@ -229,7 +229,7 @@ const healthMap: Record<string, string> = { 演示状态: 'warning', 未连接: 
   <div>
     <div class="mz-page-head">
       <div>
-        <div class="mz-page-title">慢性病知识服务总览</div>
+        <div class="mz-page-title">慢性病知识总览</div>
         <div class="mz-page-desc">多源知识整合 · 疾病关系分析 · GraphRAG 智能问答</div>
       </div>
       <div style="display: flex; gap: 8px; align-items: center">

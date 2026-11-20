@@ -13,7 +13,7 @@ const basic = reactive({
   version: 'v1.4.2',
   owner: '慢知团队',
   contact: 'admin@manzhi.edu.cn',
-  desc: '面向 2 型糖尿病、高血压与血脂异常的慢性病知识服务与科研辅助平台'
+  desc: '面向 2 型糖尿病、高血压与血脂异常的慢性病知识问答与科研辅助平台'
 })
 
 const permissions = ref([

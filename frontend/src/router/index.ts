@@ -6,7 +6,7 @@ export const menuRoutes = [
     path: '/dashboard',
     name: 'Dashboard',
     component: () => import('@/views/dashboard/index.vue'),
-    meta: { title: '首页总览', icon: 'Odometer', group: '首页总览', desc: '慢性病知识服务总览' }
+    meta: { title: '首页总览', icon: 'Odometer', group: '首页总览', desc: '慢性病知识总览' }
   },
   {
     path: '/user',
