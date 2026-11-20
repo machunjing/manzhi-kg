@@ -35,17 +35,11 @@ async function submit() {
     loading.value = false
   }
 }
-
-const features = [
-  { t: '多源知识整合', d: '指南 · 文献 · 知识图谱统一建模' },
-  { t: '疾病关系分析', d: '共病网络与 PageRank 结构重要性' },
-  { t: 'GraphRAG 问答', d: '图谱 + 全文 + 向量 + 跨语言四路召回' }
-]
 </script>
 
 <template>
   <div class="login-page">
-    <!-- 左：系统介绍 -->
+    <!-- 左：品牌与主张 -->
     <section class="login-left">
       <svg class="net" viewBox="0 0 620 620" preserveAspectRatio="xMidYMid slice">
         <defs>
@@ -85,7 +79,7 @@ const features = [
       <div class="left-inner">
         <div class="brand-row">
           <div class="logo-lg">
-            <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
               <path d="M12 3v18M3 12h18" stroke="#fff" stroke-width="1.6" stroke-linecap="round" />
               <circle cx="12" cy="12" r="3.2" fill="#fff" />
               <circle cx="12" cy="3" r="1.9" fill="#BFD3FF" />
@@ -94,33 +88,16 @@ const features = [
               <circle cx="21" cy="12" r="1.9" fill="#BFD3FF" />
             </svg>
           </div>
-          <div>
-            <div class="brand-name">慢知</div>
-            <div class="brand-sub">慢性病智能问答系统</div>
-          </div>
+          <span class="brand-name">慢知</span>
         </div>
 
-        <h1 class="left-title">基于知识图谱与 RAG 的<br />慢性病智能问答系统</h1>
-        <p class="left-desc">
-          面向 2 型糖尿病、高血压与血脂异常，整合国家级指南与多源文献，构建结构化知识图谱，
-          并以检索增强生成技术提供可追溯的健康知识问答。
-        </p>
-
-        <div class="feature-list">
-          <div v-for="f in features" :key="f.t" class="feature">
-            <span class="f-bar" />
-            <div>
-              <div class="f-t">{{ f.t }}</div>
-              <div class="f-d">{{ f.d }}</div>
-            </div>
-          </div>
+        <div class="hero">
+          <h1 class="hero-title">慢性病<br />智能问答系统</h1>
+          <div class="hero-rule" />
+          <p class="hero-sub">每个结论，都能查回原文</p>
         </div>
 
-        <div class="left-foot">
-          <span>医学知识问答与科研辅助系统</span>
-          <span class="sep">·</span>
-          <span>不提供临床诊断与处方建议</span>
-        </div>
+        <div class="left-foot">仅提供医学知识查询，不提供临床诊断与处方建议</div>
       </div>
     </section>
 
@@ -178,44 +155,44 @@ const features = [
 }
 .login-left {
   position: relative;
-  flex: 1 1 56%;
+  flex: 1 1 58%;
   background: linear-gradient(150deg, #173b70 0%, #14315c 45%, #0f2544 100%);
   color: #fff;
   overflow: hidden;
 }
 .net {
   position: absolute;
-  right: -110px;
-  bottom: -140px;
-  width: 660px;
-  height: 660px;
-  opacity: 0.55;
+  right: -170px;
+  bottom: -210px;
+  width: 860px;
+  height: 860px;
+  opacity: 0.5;
   pointer-events: none;
 }
 .login-left::after {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(15, 37, 68, 0) 42%, rgba(15, 37, 68, 0.55) 100%);
+  background: linear-gradient(180deg, rgba(15, 37, 68, 0) 45%, rgba(15, 37, 68, 0.5) 100%);
   pointer-events: none;
 }
 .left-inner {
   position: relative;
   z-index: 2;
   height: 100%;
-  padding: 56px 64px;
+  padding: 60px 76px 52px;
   display: flex;
   flex-direction: column;
 }
 .brand-row {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
 }
 .logo-lg {
-  width: 42px;
-  height: 42px;
-  border-radius: 11px;
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
   background: rgba(255, 255, 255, 0.14);
   border: 1px solid rgba(255, 255, 255, 0.24);
   display: flex;
@@ -223,72 +200,45 @@ const features = [
   justify-content: center;
 }
 .brand-name {
-  font-size: 19px;
+  font-size: 23px;
   font-weight: 700;
-  letter-spacing: 4px;
+  letter-spacing: 8px;
 }
-.brand-sub {
-  font-size: 11.5px;
-  color: rgba(255, 255, 255, 0.62);
-  letter-spacing: 0.6px;
-  margin-top: 2px;
+
+.hero {
+  margin: auto 0;
+  max-width: 640px;
 }
-.left-title {
-  margin: 72px 0 0;
-  font-size: 31px;
-  line-height: 1.42;
-  font-weight: 600;
-  letter-spacing: 0.5px;
+.hero-title {
+  margin: 0;
+  font-size: clamp(42px, 4.6vw, 66px);
+  line-height: 1.22;
+  font-weight: 700;
+  letter-spacing: 3px;
 }
-.left-desc {
-  margin: 20px 0 0;
-  max-width: 520px;
-  font-size: 13.5px;
-  line-height: 2;
-  color: rgba(255, 255, 255, 0.74);
-}
-.feature-list {
-  margin-top: 44px;
-  display: flex;
-  gap: 40px;
-  flex-wrap: wrap;
-}
-.feature {
-  display: flex;
-  gap: 10px;
-  align-items: flex-start;
-}
-.f-bar {
-  width: 3px;
-  height: 30px;
+.hero-rule {
+  width: 64px;
+  height: 3px;
   border-radius: 2px;
   background: #4d8be0;
-  margin-top: 2px;
+  margin: 34px 0 26px;
 }
-.f-t {
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 0.3px;
-}
-.f-d {
-  font-size: 11.5px;
-  color: rgba(255, 255, 255, 0.55);
-  margin-top: 4px;
+.hero-sub {
+  margin: 0;
+  font-size: clamp(17px, 1.55vw, 22px);
+  font-weight: 400;
+  letter-spacing: 2px;
+  color: rgba(255, 255, 255, 0.76);
 }
 .left-foot {
-  margin-top: auto;
-  font-size: 11.5px;
-  color: rgba(255, 255, 255, 0.45);
-  display: flex;
-  gap: 8px;
-}
-.sep {
-  color: rgba(255, 255, 255, 0.25);
+  font-size: 12.5px;
+  letter-spacing: 0.4px;
+  color: rgba(255, 255, 255, 0.4);
 }
 
 .login-right {
-  flex: 0 0 44%;
-  min-width: 460px;
+  flex: 0 0 42%;
+  min-width: 440px;
   background: #fff;
   display: flex;
   align-items: center;
@@ -351,5 +301,20 @@ const features = [
   color: #b6bcc7;
   text-align: center;
   line-height: 1.7;
+}
+
+@media (max-width: 1280px) {
+  .left-inner {
+    padding: 48px 56px 44px;
+  }
+}
+@media (max-width: 980px) {
+  .login-left {
+    display: none;
+  }
+  .login-right {
+    flex: 1 1 100%;
+    min-width: 0;
+  }
 }
 </style>
