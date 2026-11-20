@@ -2,7 +2,7 @@
 import { computed, nextTick, onMounted, reactive, ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import BaseChart from '@/components/common/BaseChart.vue'
-import { buildGraph, pinDiseases, getEntity, getRelation, entities, relations, DISEASES, ENTITY_TYPES, RELATION_TYPES, TYPE_COLOR, RELATION_COLOR, REVIEW_STATUS } from '@/api'
+import { buildGraph, pinDiseases, getEntity, getRelation, getEntityById, fetchEntityRelations, entities, DISEASES, ENTITY_TYPES, RELATION_TYPES, TYPE_COLOR, RELATION_COLOR, REVIEW_STATUS } from '@/api'
 
 const loading = ref(false)
 const chartRef = ref<any>()
@@ -94,10 +94,25 @@ function reset() {
   build()
 }
 
-function onChartClick(p: any) {
+// 点开节点后再补一次详情：图接口只返回 id/name/type，
+// 标准名、别名、审核状态、关联关系这些要单独查，否则面板一片空白
+const nodeRels = ref<any[]>([])
+
+async function onChartClick(p: any) {
   if (p.dataType === 'node') {
     picked.type = 'node'
     picked.node = getEntity(p.data.id) || p.data
+    nodeRels.value = []
+    try {
+      const [full, rels] = await Promise.all([
+        getEntityById(p.data.id),
+        fetchEntityRelations(p.data.id, p.data.name)
+      ])
+      if (full) picked.node = { ...picked.node, ...full }
+      nodeRels.value = rels || []
+    } catch {
+      /* 详情拉不到就只用图上已有的信息，不影响主流程 */
+    }
   } else if (p.dataType === 'edge') {
     picked.type = 'edge'
     const rel = getRelation(p.data.id) || p.data
@@ -136,7 +151,7 @@ function saveImage() {
   ElMessage.success('图谱图片已保存')
 }
 
-const nodeRels = computed(() => (picked.type === 'node' ? relations.filter((r) => r.headId === picked.node.id || r.tailId === picked.node.id) : []))
+// nodeRels 现在是 onChartClick 里异步填的 ref，不再从 mock 的 relations 数组过滤
 const nodeImportance = computed(() => {
   if (picked.type !== 'node') return 0
   return Math.min(100, Math.round((picked.node.relCount || nodeRels.value.length) * 3.2 + 12))
@@ -286,7 +301,7 @@ const allEntityOptions = computed(() => entities.filter((e) => e.type === '疾�
           </div>
           <el-descriptions :column="1" size="small" border>
             <el-descriptions-item label="关系 ID">{{ picked.edge.id }}</el-descriptions-item>
-            <el-descriptions-item label="证据来源">{{ picked.edge.source }}</el-descriptions-item>
+            <el-descriptions-item label="证据来源">{{ picked.edge.evidenceSource || picked.edge.source }}</el-descriptions-item>
             <el-descriptions-item label="章节 / 页码">{{ picked.edge.section }}</el-descriptions-item>
             <el-descriptions-item label="证据等级">{{ picked.edge.evidenceLevel }}</el-descriptions-item>
             <el-descriptions-item label="置信度">{{ ((picked.edge.confidence || 0) * 100).toFixed(1) }}%</el-descriptions-item>

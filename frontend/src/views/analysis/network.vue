@@ -40,7 +40,9 @@ async function build() {
     series: [
       {
         type: 'graph',
-        layout: 'none',
+        // 真库两跳有 40+ 节点且没有预置坐标，用力导向；固定布局会把它们全叠在原点
+        layout: 'force',
+        force: { repulsion: 420, edgeLength: [80, 170], gravity: 0.05 },
         roam: true,
         draggable: true,
         scaleLimit: { min: 0.4, max: 4 },
@@ -59,6 +61,11 @@ async function build() {
           }
         }),
         links: g.edges,
+        // 四周留白，否则最外圈的标签会被画布边缘切掉
+        left: 70,
+        right: 110,
+        top: 30,
+        bottom: 40,
         label: { position: 'right', fontSize: 10.5, color: '#374151' },
         labelLayout: { hideOverlap: true },
         lineStyle: { opacity: 0.5 },
@@ -177,7 +184,7 @@ function setCenter(name: string) {
           </div>
           <el-descriptions :column="1" border size="small" style="margin-top: 12px">
             <el-descriptions-item label="关系 ID">{{ picked.edge.id }}</el-descriptions-item>
-            <el-descriptions-item label="证据来源">{{ picked.edge.source }}</el-descriptions-item>
+            <el-descriptions-item label="证据来源">{{ picked.edge.evidenceSource || picked.edge.source }}</el-descriptions-item>
             <el-descriptions-item label="章节">{{ picked.edge.section }}</el-descriptions-item>
             <el-descriptions-item label="证据等级">{{ picked.edge.evidenceLevel }}</el-descriptions-item>
             <el-descriptions-item label="置信度">{{ ((picked.edge.confidence || 0) * 100).toFixed(1) }}%</el-descriptions-item>

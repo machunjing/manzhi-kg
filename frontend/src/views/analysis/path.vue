@@ -10,6 +10,8 @@ const maxLen = ref(3)
 const result = ref<any>(null)
 const searched = ref(false)
 const loading = ref(false)
+// 用户点「避开该节点」时累积的中转节点名，重查时传给后端
+const avoid = ref<string[]>([])
 
 // 下拉框用真库里的热门疾病，避免选了库里没有的实体导致「未找到路径」
 const diseases = ref<string[]>(['糖尿病', '高血压', '血脂异常', '肥胖', '脂肪肝', '冠心病'])
@@ -18,7 +20,7 @@ async function search() {
   if (from.value === to.value) return ElMessage.warning('起始疾病与目标疾病不能相同')
   loading.value = true
   try {
-    result.value = await shortestPath(from.value, to.value, maxLen.value)
+    result.value = await shortestPath(from.value, to.value, maxLen.value, avoid.value)
     searched.value = true
     if (!result.value) ElMessage.info('在给定跳数内未找到关联路径，可增加最大路径长度后重试')
   } catch (e: any) {
@@ -28,6 +30,19 @@ async function search() {
   } finally {
     loading.value = false
   }
+}
+
+/** 绕开某个中转节点重查：图里有语义说不通的边，避开它常能得到一条每跳都有文献支撑的路径 */
+function avoidNode(name: string) {
+  if (avoid.value.includes(name)) return
+  avoid.value = [...avoid.value, name]
+  search()
+}
+
+function resetAvoid() {
+  if (!avoid.value.length) return
+  avoid.value = []
+  search()
 }
 
 onMounted(async () => {
@@ -49,7 +64,25 @@ function swap() {
   const t = from.value
   from.value = to.value
   to.value = t
+  avoid.value = []
   search()
+}
+
+/** 有文献支撑的跳数占比，用来提示「这条路径可信到什么程度」 */
+const supported = computed(() => {
+  const list = result.value || []
+  if (!list.length) return { ok: 0, total: 0 }
+  return { ok: list.filter((s: any) => s.evidence).length, total: list.length }
+})
+
+/** 某一跳的「中转节点」——既不是起点也不是终点，才允许被避开 */
+function hopMiddle(i: number) {
+  const list = result.value || []
+  const n = list[i]?.to
+  if (!n) return ''
+  const first = list[0]?.from?.name
+  const last = list[list.length - 1]?.to?.name
+  return n.name === first || n.name === last ? '' : n.name
 }
 
 const chain = computed(() => {
@@ -120,7 +153,9 @@ const examples = [
       <div class="mz-card right">
         <div class="mz-card-head">
           <div class="mz-card-title">路径可视化</div>
-          <span v-if="result" class="mz-card-sub">共 {{ result.length }} 跳 · {{ result.length + 1 }} 个节点</span>
+          <span v-if="result" class="mz-card-sub">
+            共 {{ result.length }} 跳 · {{ result.length + 1 }} 个节点 · 有文献支撑 {{ supported.ok }}/{{ supported.total }} 跳
+          </span>
         </div>
 
         <div v-if="!searched" class="empty">
@@ -135,6 +170,11 @@ const examples = [
         </div>
 
         <div v-else class="chain-box">
+          <div v-if="avoid.length" class="avoid-bar">
+            <span>已避开：{{ avoid.join('、') }}</span>
+            <el-button link type="primary" size="small" @click="resetAvoid">恢复</el-button>
+          </div>
+
           <div class="chain">
             <template v-for="(c, i) in chain" :key="i">
               <div v-if="c.relation" class="link">
@@ -160,14 +200,31 @@ const examples = [
                 <span class="sc-node">{{ s.from.name }}</span>
                 <span class="sc-rel">{{ s.relation }}</span>
                 <span class="sc-node">{{ s.to.name }}</span>
+                <el-tag v-if="s.direction === 'reverse'" size="small" type="info" effect="plain">反向边</el-tag>
+                <el-tag v-if="!s.evidence" size="small" type="warning" effect="plain">无文献支撑</el-tag>
               </div>
               <div class="seg-meta">
                 <el-tag size="small" effect="plain">{{ s.rel.evidenceLevel }}</el-tag>
                 <span>{{ s.rel.source }}</span>
-                <span class="mz-light">{{ s.rel.section }}</span>
-                <span class="mz-light">置信度 {{ (s.rel.confidence * 100).toFixed(1) }}%</span>
+                <span v-if="s.rel.section" class="mz-light">{{ s.rel.section }}</span>
+                <span class="mz-light">置信度 {{ ((s.rel.confidence || 0) * 100).toFixed(1) }}%</span>
+                <span v-if="s.cooccur" class="cooc">文献共现 {{ s.cooccur }} 段</span>
               </div>
-              <div class="seg-snip">{{ s.rel.snippet }}</div>
+              <div v-if="s.rel.snippet" class="seg-snip">{{ s.rel.snippet }}</div>
+              <div v-if="s.evidence" class="seg-src">
+                <el-icon><Document /></el-icon>
+                <span class="ss-title">{{ s.evidence.title }}</span>
+                <span class="mz-light">{{ s.evidence.source }}</span>
+                <span v-if="s.evidence.journal" class="mz-light">{{ s.evidence.journal }}</span>
+                <span v-if="s.evidence.date" class="mz-light">{{ s.evidence.date }}</span>
+                <span v-if="s.evidence.pmid" class="mz-light">PMID {{ s.evidence.pmid }}</span>
+              </div>
+              <div v-else class="seg-none">
+                文献库里找不到同时提到这两个实体的段落，本跳只来自 OpenCMKG 结构化三元组。
+                <el-button v-if="hopMiddle(i)" link type="primary" size="small" @click="avoidNode(hopMiddle(i))">
+                  避开「{{ hopMiddle(i) }}」重查
+                </el-button>
+              </div>
             </div>
           </div>
         </div>
@@ -385,5 +442,54 @@ const examples = [
   border: 1px solid #f0f3f8;
   border-radius: 6px;
   padding: 8px 11px;
+}
+.avoid-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 11.5px;
+  color: var(--mz-text-sub);
+  background: #fffbeb;
+  border: 1px solid #fde9b8;
+  border-radius: 6px;
+  padding: 6px 12px;
+  margin-bottom: 10px;
+}
+.cooc {
+  color: #0f766e;
+  background: #ecfdf5;
+  border: 1px solid #cdeee6;
+  border-radius: 3px;
+  padding: 0 6px;
+}
+.seg-src {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  font-size: 11px;
+  color: var(--mz-text-sub);
+  margin-top: 8px;
+  padding: 6px 10px;
+  background: #f7f9fd;
+  border-radius: 6px;
+}
+.seg-src .el-icon {
+  color: #2563eb;
+  font-size: 12px;
+}
+.ss-title {
+  max-width: 420px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #1f2937;
+  font-weight: 500;
+}
+.seg-none {
+  margin-top: 8px;
+  font-size: 11px;
+  color: var(--mz-text-light);
+  line-height: 1.9;
 }
 </style>

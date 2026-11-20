@@ -294,25 +294,41 @@ export async function fetchEntityRelations(id: string, name?: string) {
 
 /* ---------------------------------------------------------------- 关联分析 */
 
-/** 最短路径：后端返回 [{node, relation, rel}]，页面要 [{from, relation, rel, to}] */
-export async function shortestPath(from: string, to: string, maxLen = 3) {
+/**
+ * 最短路径：后端返回 [{node, relation, rel, evidence, cooccur}]，
+ * 页面要 [{from, relation, rel, to}]。额外把「这一跳有没有文献支撑」一起带过去。
+ *
+ * avoid：用户在结果里点「避开该节点」时传进来的中转节点名。
+ * 图里有「巨人症与肢端肥大症 → 糖尿病 / 冠心病」这种语义说不通的边，
+ * 绕开它往往能得到一条每条边都有文献支撑的路径。
+ */
+export async function shortestPath(from: string, to: string, maxLen = 3, avoid: string[] = []) {
   const d: any = await unwrap(
-    http.get('/analysis/path', { params: { from, to, maxLen } })
+    http.get('/analysis/path', {
+      params: { from, to, maxLen, ...(avoid.length ? { avoid: avoid.join(',') } : {}) }
+    })
   )
   if (!d.found || !d.path?.length) return null
   const steps: any[] = []
   for (let i = 1; i < d.path.length; i++) {
     const prev = d.path[i - 1].node
     const cur = d.path[i]
+    const ev = (cur.evidence || [])[0] || null
     steps.push({
       from: prev,
       relation: cur.relation,
+      direction: cur.direction || 'forward',
+      cooccur: cur.cooccur || 0,
+      evidence: ev,
       rel: {
+        id: cur.rel?.id,
         source: cur.rel?.source || 'OpenCMKG',
         section: cur.rel?.section || '',
-        evidenceLevel: cur.rel?.evidenceLevel || '图谱关系',
+        // OpenCMKG 的三元组没有证据等级字段，用「有没有原文片段」给出可读的等级
+        evidenceLevel: cur.rel?.evidenceLevel || (ev ? '文献支撑' : '结构化三元组'),
         confidence: cur.rel?.confidence ?? 0.9,
-        snippet: cur.rel?.snippet || '该关系由知识图谱抽取得到。'
+        status: cur.rel?.status || '已审核',
+        snippet: (ev && ev.snippet) || cur.rel?.snippet || ''
       },
       to: cur.node
     })
@@ -341,8 +357,22 @@ export async function buildDiseaseNetwork(center: string, relationTypes: string[
     deg[l.target] = (deg[l.target] || 0) + 1
   }
 
-  const nodes = (d.nodes || [])
-    .filter((n: any) => keep.has(String(n.id)))
+  // 两跳能拉到 40+ 节点，全画出来中心会糊成一团；按度数取前 34 个，中心节点必留
+  const MAX_NODES = 34
+  const centerId = d.center?.id
+  let keptNodes = (d.nodes || []).filter((n: any) => keep.has(String(n.id)))
+  if (keptNodes.length > MAX_NODES) {
+    const rest = keptNodes
+      .filter((n: any) => n.id !== centerId)
+      .sort((a: any, b: any) => (deg[b.id] || 0) - (deg[a.id] || 0))
+      .slice(0, MAX_NODES - 1)
+    const centerNode = keptNodes.find((n: any) => n.id === centerId)
+    keptNodes = centerNode ? [centerNode, ...rest] : rest
+  }
+  const keptIds = new Set(keptNodes.map((n: any) => String(n.id)))
+  const keptLinks = links.filter((l: any) => keptIds.has(String(l.source)) && keptIds.has(String(l.target)))
+
+  const nodes = keptNodes
     .map((n: any) => {
       const cat = TYPE_MAP[n.type] || '其他'
       const isCenter = d.center && n.id === d.center.id
@@ -352,19 +382,24 @@ export async function buildDiseaseNetwork(center: string, relationTypes: string[
         name: n.name,
         type: cat,
         category: ENTITY_TYPES.indexOf(cat),
-        symbolSize: isCenter ? 56 : cat === '疾病' ? 30 : 12 + Math.min(16, Math.sqrt(dd) * 3),
+        symbolSize: isCenter ? 42 : cat === '疾病' ? 20 : 8 + Math.min(10, Math.sqrt(dd) * 2.4),
         value: dd,
         isCenter: !!isCenter,
         itemStyle: { color: TYPE_COLOR[cat] || '#94A3B8', borderColor: '#fff', borderWidth: 1.5 },
-        label: { show: true, position: 'right', fontSize: 11 }
+        label: isCenter
+          ? { show: true, position: 'bottom', fontSize: 12, fontWeight: 'bold', color: '#173b70' }
+          : { show: cat === '疾病' || dd >= 3, position: 'right', fontSize: 11 }
       }
     })
 
   const nameOf: Record<string, string> = {}
   for (const n of d.nodes || []) nameOf[n.id] = n.name
 
-  const edges = links.map((l: any, i: number) => ({
+  const edges = keptLinks.map((l: any, i: number) => ({
     id: `${l.source}-${l.relation}-${l.target}-${i}`,
+    // ECharts 的 graph 靠 source/target 连边，少了这两个字段就只剩孤立的点
+    source: l.source,
+    target: l.target,
     headId: l.source,
     tailId: l.target,
     name: l.relation,
@@ -373,10 +408,18 @@ export async function buildDiseaseNetwork(center: string, relationTypes: string[
     tailName: nameOf[l.target],
     sourceName: nameOf[l.source],
     targetName: nameOf[l.target],
-    status: '已审核',
+    // 边详情面板直接读这些字段：getRelation(id) 拿不到时页面会退回 p.data
+    // 注意不能占用 source（ECharts 用它连边），证据来源改名 evidenceSource
+    relId: l.id,
+    evidenceSource: l.evidence_source || 'OpenCMKG',
+    section: l.section || '',
+    evidenceLevel: l.evidence_level || '结构化三元组',
+    confidence: l.confidence ?? 0.9,
+    status: l.status || '已审核',
+    snippet: l.snippet || '',
     lineStyle: {
       color: RELATION_COLOR[l.relation] || '#CBD5E1',
-      width: 1.2,
+      width: l.relation === '导致' ? 2 : 1.2,
       curveness: 0.08
     }
   }))
@@ -545,5 +588,121 @@ export async function askQuestion(question: string) {
     retrieval: d.retrieval || {},
     elapsedMs: d.elapsed_ms || 0,
     raw: d
+  }
+}
+
+/* ---------------------------------------------------------------- 平台运维 */
+/* 用户 / 采集任务 / 操作日志属于平台自身运行数据，后端从演示库 manzhi 读 */
+
+export async function queryUsers(q: any = {}) {
+  const d: any = await unwrap(
+    http.get('/users', {
+      params: {
+        page: q.page || 1,
+        pageSize: q.pageSize || 10,
+        keyword: q.keyword || '',
+        role: q.role || '',
+        status: q.status || ''
+      }
+    })
+  )
+  return { list: d.list || [], total: d.total || 0 }
+}
+
+export function fetchUserStats() {
+  return unwrap(http.get('/users/stats'))
+}
+
+export async function queryTasks(q: any = {}) {
+  const d: any = await unwrap(
+    http.get('/collect/tasks', {
+      params: {
+        page: q.page || 1,
+        pageSize: q.pageSize || 10,
+        keyword: q.keyword || '',
+        status: q.status || '',
+        source: q.source || ''
+      }
+    })
+  )
+  return { list: d.list || [], total: d.total || 0 }
+}
+
+export async function queryLogs(q: any = {}) {
+  const d: any = await unwrap(
+    http.get('/system/logs', {
+      params: {
+        page: q.page || 1,
+        pageSize: q.pageSize || 10,
+        keyword: q.keyword || '',
+        module: q.module || '',
+        user: q.user || '',
+        result: q.result || ''
+      }
+    })
+  )
+  return { list: d.list || [], total: d.total || 0 }
+}
+
+/** 关系列表页用：后端字段是 headName/tailName，页面用 head/tail */
+export async function queryRelations(q: any = {}) {
+  const d: any = await unwrap(
+    http.get('/kg/relations', {
+      params: {
+        page: q.page || 1,
+        pageSize: q.pageSize || 10,
+        keyword: q.keyword || '',
+        relation: q.relation || '',
+        status: q.status || '',
+        disease: q.disease || ''
+      }
+    })
+  )
+  const list = (d.list || []).map((r: any) => ({
+    ...r,
+    head: r.headName,
+    tail: r.tailName,
+    name: r.relation
+  }))
+  return { list, total: d.total || 0 }
+}
+
+/** 图谱页点节点/边时的详情：走真实接口，查不到再返回 null 由页面兜底 */
+export async function getEntityById(id: string) {
+  try {
+    return await unwrap(http.get(`/kg/entity/${id}`))
+  } catch {
+    return null
+  }
+}
+
+export async function getRelationById(id: string) {
+  try {
+    return await unwrap(http.get(`/kg/relation/${id}`))
+  } catch {
+    return null
+  }
+}
+
+/** 问答页点引用时打开文献详情，形状对齐 mock 的 getDocument */
+export async function getDocument(id: string) {
+  const d: any = await unwrap(http.get(`/docs/${id}`))
+  if (!d) return null
+  return {
+    id: d.id,
+    title: d.title,
+    titleEn: d.title_en,
+    authors: d.authors,
+    journal: d.journal,
+    docType: d.doc_type,
+    disease: d.disease,
+    source: d.source,
+    publishDate: d.publish_date || d.date,
+    pmid: d.pmid,
+    doi: d.doi,
+    url: d.url,
+    abstract: d.abstract,
+    chunkCount: d.chunk_count,
+    chunks: d.chunks || []
   }
 }

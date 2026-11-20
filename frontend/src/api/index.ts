@@ -27,5 +27,13 @@ export {
   fetchHotEntities,
   fetchReviewList,
   reviewAction,
-  fetchReviewStats
+  fetchReviewStats,
+  queryUsers,
+  fetchUserStats,
+  queryTasks,
+  queryLogs,
+  queryRelations,
+  getEntityById,
+  getRelationById,
+  getDocument
 } from './real'

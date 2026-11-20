@@ -202,6 +202,14 @@ ZH2EN = {
     "诊断": "diagnosis", "血糖": "blood glucose", "胰岛素": "insulin",
     "饮食": "diet", "运动": "exercise", "血压": "blood pressure",
     "心血管": "cardiovascular", "慢性肾脏病": "chronic kidney disease",
+    # 图谱里高频、但指南正文少见的中文实体，补上英文才能在英文摘要里找到证据
+    "脂肪肝": "fatty liver", "非酒精性脂肪肝": "nonalcoholic fatty liver",
+    "动脉粥样硬化": "atherosclerosis", "酮症酸中毒": "ketoacidosis",
+    "糖尿病足": "diabetic foot", "微量白蛋白尿": "microalbuminuria",
+    "蛋白尿": "proteinuria", "吸烟": "smoking", "饮酒": "alcohol consumption",
+    "高尿酸血症": "hyperuricemia", "痛风": "gout", "心肌梗死": "myocardial infarction",
+    "心力衰竭": "heart failure", "心房颤动": "atrial fibrillation",
+    "肾衰竭": "renal failure", "妊娠期糖尿病": "gestational diabetes",
 }
 INTENT_EN = {
     "治疗/用药": "treatment", "症状表现": "clinical manifestation", "检查监测": "monitoring",
@@ -285,6 +293,108 @@ def bilingual_select(cn_pool, en_pool, n=None, cn_ratio=0.5):
         seen.add(c["id"])
         out.append(c)
     return out
+
+
+def _best_pair(text, a, b, limit=40):
+    """返回 a、b 距离最近的一对出现位置；任一方不出现返回 None"""
+    pa, i = [], text.find(a)
+    while i >= 0 and len(pa) < limit:
+        pa.append(i)
+        i = text.find(a, i + 1)
+    pb, j = [], text.find(b)
+    while j >= 0 and len(pb) < limit:
+        pb.append(j)
+        j = text.find(b, j + 1)
+    best = None
+    for x in pa:
+        for y in pb:
+            d = abs(x - y)
+            if best is None or d < best[0]:
+                best = (d, x, y)
+    return best
+
+
+def _window(text, head, tail, width=170, max_gap=220):
+    """截出两个实体挨得最近的那一段；挨不到一起就认为这一段不算共现
+
+    不能只取第一个命中位置：一段里「高血压」出现十几次、「中风」只出现一次，
+    按首次出现截窗会整段都在讲血压测量，读者根本看不出这条关系从哪来。
+    """
+    if not text:
+        return ""
+    pair = _best_pair(text, head, tail)
+    if pair is None or pair[0] > max_gap:
+        return ""
+    _, i, j = pair
+    center = (i + j) // 2
+    start = max(0, min(center - width // 2, max(0, len(text) - width)))
+    seg = text[start:start + width].strip()
+    return ("…" if start > 0 else "") + seg + ("…" if start + width < len(text) else "")
+
+
+def _cooccur(expr):
+    try:
+        return int(db.scalar(config.DB_REAL,
+                             "SELECT COUNT(*) FROM chunks WHERE MATCH(text) AGAINST(%s IN BOOLEAN MODE)",
+                             (expr,)) or 0)
+    except Exception:
+        return 0
+
+
+def evidence_for(head, tail, topk=1, exclude=None, scan=20):
+    """给一条图谱三元组回文献库找「原文支撑句」
+
+    关系表的 snippet 在 OpenCMKG 侧是空的（结构化三元组本来就没有原文），
+    所以反过来做：拿头尾两个实体名同时进 ngram 全文索引捞切块。
+    注意 ngram 布尔模式下空格是 OR，要 AND 必须每个词前加 +，
+    否则「脂肪肝 高血压」会把只讲血压的段落也捞回来。
+
+    中文指南只有 6 篇，很多实体在中文语料里根本不同框，
+    所以第一轮没结果时用 ZH2EN 换成英文，去 4,000+ 篇英文摘要里再找一次。
+
+    返回 (命中片段列表, 共现段数)
+    """
+    exclude = exclude or set()
+    plans = []
+    if head and tail:
+        plans.append((head, tail, '+"%s" +"%s"' % (_safe(head), _safe(tail))))
+    eh, et = ZH2EN.get(head), ZH2EN.get(tail)
+    if eh and et and eh != head:
+        plans.append((eh, et, '+"%s" +"%s"' % (_safe(eh), _safe(et))))
+
+    for qa, qb, expr in plans:
+        try:
+            rows = db.query(config.DB_REAL, """
+                SELECT c.id cid, c.doc_id, c.chunk_idx, c.text, d.title, d.source,
+                       d.journal, d.publish_date, d.doc_type, d.pmid,
+                       MATCH(c.text) AGAINST(%s IN BOOLEAN MODE) AS score
+                FROM chunks c JOIN documents d ON d.id = c.doc_id
+                WHERE MATCH(c.text) AGAINST(%s IN BOOLEAN MODE)
+                ORDER BY score DESC LIMIT %s
+            """, (expr, expr, scan))
+        except Exception:
+            continue
+
+        out = []
+        for r in rows:
+            if r["cid"] in exclude:
+                continue
+            snip = _window(r["text"], qa, qb)
+            if not snip:
+                continue
+            out.append({
+                "chunk_id": r["cid"], "doc_id": r["doc_id"], "chunk_idx": r["chunk_idx"],
+                "title": r["title"], "source": r["source"], "journal": r["journal"],
+                "doc_type": r["doc_type"], "pmid": r["pmid"],
+                "date": r["publish_date"].strftime("%Y-%m-%d") if r["publish_date"] else None,
+                "snippet": snip, "lang": "en" if qa != head else "zh",
+                "score": round(float(r["score"]), 4),
+            })
+            if len(out) >= topk:
+                break
+        if out:
+            return out, _cooccur(expr)
+    return [], 0
 
 
 def rrf(ranked_lists, k=None, topk=None):

@@ -240,7 +240,9 @@ def _graph_data(name, depth=1, limit=120, dbname=None):
             break
         ph = ",".join(["%s"] * len(frontier))
         rows = db.query(dbname, """
-            SELECT r.relation, h.id hid, h.name hname, h.type htype,
+            SELECT r.id rid, r.relation, r.source rsrc, r.section rsec,
+                   r.evidence_level rlev, r.confidence rconf, r.snippet rsnip, r.status rstat,
+                   h.id hid, h.name hname, h.type htype,
                    t.id tid, t.name tname, t.type ttype
             FROM relations r JOIN entities h ON h.id=r.head_id JOIN entities t ON t.id=r.tail_id
             WHERE r.head_id IN (%s) OR r.tail_id IN (%s)
@@ -256,7 +258,15 @@ def _graph_data(name, depth=1, limit=120, dbname=None):
                     nodes[eid] = {"id": eid, "name": enm, "type": ety,
                                   "category": ety, "depth": d}
                     nxt.append(eid)
-            links.append({"source": r["hid"], "target": r["tid"], "relation": r["relation"]})
+            links.append({
+                "id": r["rid"], "source": r["hid"], "target": r["tid"],
+                "relation": r["relation"],
+                "source_name": r["hname"], "target_name": r["tname"],
+                "evidence_source": r["rsrc"], "section": r["rsec"],
+                "evidence_level": r["rlev"],
+                "confidence": float(r["rconf"]) if r["rconf"] is not None else None,
+                "snippet": r["rsnip"], "status": r["rstat"],
+            })
         frontier = nxt[:40]
 
     seen, uniq = set(), []
@@ -301,7 +311,9 @@ def kg_entities():
     total = db.scalar(config.DB_REAL, "SELECT COUNT(*) AS n FROM entities %s" % w, args)
     rows = db.query(config.DB_REAL,
                     "SELECT id,name,type,standard_name,source,status,confidence,rel_count "
-                    "FROM entities %s ORDER BY rel_count DESC, id LIMIT %s OFFSET %s"
+                    # 疾病类排前面：OpenCMKG 里「药物治疗」「白酒」这类泛化实体关系数也很高，
+                    # 只按 rel_count 排会让列表第一屏全是这些，看不出这是医学知识图谱
+                    "FROM entities %s ORDER BY (type='疾病') DESC, rel_count DESC, id LIMIT %s OFFSET %s"
                     % (w, size, (page - 1) * size),
                     args)
     return ok({"list": rows, "total": total, "page": page, "pageSize": size})
@@ -320,6 +332,7 @@ def kg_relations():
     entity = (request.args.get("entity") or "").strip()
     rel = (request.args.get("relation") or "").strip()
     status = (request.args.get("status") or "").strip()
+    disease = (request.args.get("disease") or "").strip()
     kw = (request.args.get("keyword") or "").strip()
     page = max(int(request.args.get("page") or 1), 1)
     size = min(int(request.args.get("pageSize") or 20), 100)
@@ -335,6 +348,9 @@ def kg_relations():
     if status:
         where.append("r.status=%s")
         args.append(status)
+    if disease:
+        where.append("r.disease=%s")
+        args.append(disease)
     if kw:
         where.append("(h.name LIKE %s OR t.name LIKE %s)")
         args += ["%" + kw + "%"] * 2
@@ -595,6 +611,188 @@ def stats_disease():
     return ok(out)
 
 
+# ---------------------------------------------------------------- 平台运维
+# 用户 / 采集任务 / 操作日志属于「平台自己的运行数据」，和文献语料不是一回事，
+# 统一走演示库 manzhi（那里有 42 个用户、22 个采集任务、90 条审计日志）。
+# 语料类数据（文献/切块/实体/关系）才走 manzhi_real。
+
+def _page_args(default_size=10):
+    page = max(int(request.args.get("page") or 1), 1)
+    size = min(int(request.args.get("pageSize") or default_size), 100)
+    return page, size, (page - 1) * size
+
+
+@app.route("/api/users")
+def user_list():
+    kw = (request.args.get("keyword") or "").strip()
+    role = (request.args.get("role") or "").strip()
+    status = (request.args.get("status") or "").strip()
+    page, size, offset = _page_args()
+
+    where, args = [], []
+    if kw:
+        where.append("(name LIKE %s OR account LIKE %s OR id LIKE %s)")
+        args += ["%" + kw + "%"] * 3
+    if role:
+        where.append("role=%s")
+        args.append(role)
+    if status:
+        where.append("status=%s")
+        args.append(status)
+    w = ("WHERE " + " AND ".join(where)) if where else ""
+
+    total = db.scalar(config.DB_DEMO, "SELECT COUNT(*) AS n FROM users %s" % w, args)
+    rows = db.query(config.DB_DEMO, """
+        SELECT id, account, name, avatar, role, dept, phone, email, status,
+               last_login_at, created_at
+        FROM users %s ORDER BY id LIMIT %s OFFSET %s
+    """ % (w, size, offset), args)
+    out = []
+    for r in rows:
+        out.append({
+            "id": r["id"], "account": r["account"], "name": r["name"],
+            "avatar": r["avatar"] or (r["name"] or "?")[:1],
+            "role": r["role"], "dept": r["dept"], "phone": r["phone"],
+            "email": r["email"], "status": r["status"],
+            "createdAt": r["created_at"].strftime("%Y-%m-%d") if r["created_at"] else None,
+            "lastLogin": r["last_login_at"].strftime("%Y-%m-%d %H:%M") if r["last_login_at"] else "—",
+        })
+    return ok({"list": out, "total": total, "page": page, "pageSize": size})
+
+
+@app.route("/api/users/stats")
+def user_stats():
+    rows = db.query(config.DB_DEMO,
+                    "SELECT role, status, COUNT(*) AS n FROM users GROUP BY role, status")
+    total = sum(r["n"] for r in rows)
+    active = sum(r["n"] for r in rows if r["status"] == "启用")
+    by_role = {}
+    for r in rows:
+        by_role[r["role"]] = by_role.get(r["role"], 0) + r["n"]
+    return ok({"total": total, "active": active, "by_role": by_role,
+               "rows": [{"role": r["role"], "status": r["status"], "count": r["n"]} for r in rows]})
+
+
+@app.route("/api/collect/tasks")
+def collect_tasks():
+    kw = (request.args.get("keyword") or "").strip()
+    status = (request.args.get("status") or "").strip()
+    src = (request.args.get("source") or "").strip()
+    page, size, offset = _page_args()
+
+    where, args = [], []
+    if kw:
+        where.append("(name LIKE %s OR id LIKE %s)")
+        args += ["%" + kw + "%"] * 2
+    if status:
+        where.append("status=%s")
+        args.append(status)
+    if src:
+        where.append("source=%s")
+        args.append(src)
+    w = ("WHERE " + " AND ".join(where)) if where else ""
+
+    total = db.scalar(config.DB_DEMO, "SELECT COUNT(*) AS n FROM collect_tasks %s" % w, args)
+    rows = db.query(config.DB_DEMO, """
+        SELECT id, name, source, collect_type, disease, keyword, status, progress,
+               fetched_count, operator, start_at, end_at, created_at
+        FROM collect_tasks %s ORDER BY created_at DESC, id DESC LIMIT %s OFFSET %s
+    """ % (w, size, offset), args)
+    out = []
+    for r in rows:
+        out.append({
+            "id": r["id"], "name": r["name"], "source": r["source"],
+            "collectType": r["collect_type"], "disease": r["disease"],
+            "keyword": r["keyword"], "status": r["status"],
+            "progress": r["progress"], "count": r["fetched_count"],
+            "operator": r["operator"],
+            "startAt": r["start_at"].strftime("%Y-%m-%d %H:%M") if r["start_at"] else "—",
+            "endAt": r["end_at"].strftime("%Y-%m-%d %H:%M") if r["end_at"] else "—",
+        })
+    return ok({"list": out, "total": total, "page": page, "pageSize": size})
+
+
+@app.route("/api/system/logs")
+def system_logs():
+    kw = (request.args.get("keyword") or "").strip()
+    module = (request.args.get("module") or "").strip()
+    user = (request.args.get("user") or "").strip()
+    result = (request.args.get("result") or "").strip()
+    page, size, offset = _page_args()
+
+    where, args = [], []
+    if kw:
+        where.append("(action LIKE %s OR user_name LIKE %s OR id LIKE %s)")
+        args += ["%" + kw + "%"] * 3
+    if module:
+        where.append("module=%s")
+        args.append(module)
+    if user:
+        where.append("user_name=%s")
+        args.append(user)
+    if result:
+        where.append("result=%s")
+        args.append(result)
+    w = ("WHERE " + " AND ".join(where)) if where else ""
+
+    total = db.scalar(config.DB_DEMO, "SELECT COUNT(*) AS n FROM operation_logs %s" % w, args)
+    rows = db.query(config.DB_DEMO, """
+        SELECT id, user_name, module, action, ip, result, detail, created_at
+        FROM operation_logs %s ORDER BY created_at DESC, id DESC LIMIT %s OFFSET %s
+    """ % (w, size, offset), args)
+    out = []
+    for r in rows:
+        out.append({
+            "id": r["id"], "user": r["user_name"], "module": r["module"],
+            "action": r["action"], "ip": r["ip"], "result": r["result"],
+            "detail": r["detail"],
+            "time": r["created_at"].strftime("%Y-%m-%d %H:%M:%S") if r["created_at"] else None,
+        })
+    return ok({"list": out, "total": total, "page": page, "pageSize": size})
+
+
+@app.route("/api/kg/entity/<entity_id>")
+def kg_entity(entity_id):
+    r = db.one(config.DB_REAL, """
+        SELECT id, name, type, standard_name, aliases, diseases, source, status,
+               confidence, rel_count
+        FROM entities WHERE id=%s
+    """, (entity_id,))
+    if not r:
+        return fail(40400, "实体不存在：%s" % entity_id)
+    return ok({
+        "id": r["id"], "name": r["name"], "type": r["type"],
+        "standardName": r["standard_name"] or r["name"],
+        "aliases": r["aliases"] or [], "diseases": r["diseases"] or [],
+        "source": r["source"], "status": r["status"],
+        "confidence": float(r["confidence"] or 0),
+        "value": r["rel_count"] or 0,
+    })
+
+
+@app.route("/api/kg/relation/<rel_id>")
+def kg_relation(rel_id):
+    r = db.one(config.DB_REAL, """
+        SELECT r.id, r.relation, r.disease, r.source, r.section, r.evidence_level,
+               r.confidence, r.status, r.snippet, r.reviewer, r.reviewed_at,
+               h.id hid, h.name hname, h.type htype,
+               t.id tid, t.name tname, t.type ttype
+        FROM relations r JOIN entities h ON h.id=r.head_id JOIN entities t ON t.id=r.tail_id
+        WHERE r.id=%s
+    """, (rel_id,))
+    if not r:
+        return fail(40400, "关系不存在：%s" % rel_id)
+    return ok({
+        "id": r["id"], "relation": r["relation"], "disease": r["disease"],
+        "source": r["source"], "section": r["section"],
+        "evidenceLevel": r["evidence_level"], "confidence": float(r["confidence"] or 0),
+        "status": r["status"], "snippet": r["snippet"], "reviewer": r["reviewer"],
+        "reviewedAt": str(r["reviewed_at"]) if r["reviewed_at"] else None,
+        "headId": r["hid"], "headName": r["hname"], "headType": r["htype"],
+        "tailId": r["tid"], "tailName": r["tname"], "tailType": r["ttype"],
+    })
+
+
 # ---------------------------------------------------------------- 关联分析
 @app.route("/api/analysis/network")
 def analysis_network():
@@ -623,6 +821,18 @@ def analysis_path():
     if not a or not b:
         return fail(40400, "实体不存在：%s" % (src if not a else dst))
 
+    # 用户可以在结果里「避开某个中转节点」再查一次：图里有「巨人症 → 糖尿病/冠心病」
+    # 这类语义上说不通的边，绕开它往往能得到一条更可信的路径。
+    avoid, avoid_names = set(), []
+    for name in (request.args.get("avoid") or "").split(","):
+        name = name.strip()
+        if not name:
+            continue
+        r = nlp.resolve(name)
+        if r and r["id"] not in (a["id"], b["id"]):
+            avoid.add(r["id"])
+            avoid_names.append(r["name"])
+
     # 逐层 BFS（每层一条 SQL，避免把 28 万条关系读进内存）
     parent = {a["id"]: None}
     frontier = [a["id"]]
@@ -634,42 +844,58 @@ def analysis_path():
         rows = db.query(config.DB_REAL, """
             SELECT h.id hid, h.name hname, h.type htype,
                    t.id tid, t.name tname, t.type ttype,
-                   r.relation rel, r.source rsrc, r.section rsec,
-                   r.evidence_level rlev, r.confidence rconf, r.snippet rsnip
+                   r.id rid, r.relation rel, r.source rsrc, r.section rsec,
+                   r.evidence_level rlev, r.confidence rconf, r.snippet rsnip,
+                   r.status rstat
             FROM relations r JOIN entities h ON h.id=r.head_id JOIN entities t ON t.id=r.tail_id
             WHERE r.head_id IN (%s) OR r.tail_id IN (%s)
         """ % (ph, ph), frontier + frontier)
         nxt = []
         for r in rows:
-            meta = {"source": r["rsrc"], "section": r["rsec"],
+            meta = {"id": r["rid"], "source": r["rsrc"], "section": r["rsec"],
                     "evidenceLevel": r["rlev"], "confidence": float(r["rconf"] or 0),
-                    "snippet": r["rsnip"] or ""}
-            for x, y in ((r["hid"], r["tid"]), (r["tid"], r["hid"])):
-                if x in parent and y not in parent:
-                    parent[y] = (x, r["rel"], meta)
+                    "snippet": r["rsnip"] or "", "status": r["rstat"]}
+            for idx, (x, y) in enumerate(((r["hid"], r["tid"]), (r["tid"], r["hid"]))):
+                if x in parent and y not in parent and y not in avoid:
+                    # idx=0 说明沿关系表方向走，idx=1 说明是逆着关系表走的反向边
+                    parent[y] = (x, r["rel"], meta, "forward" if idx == 0 else "reverse")
                     nxt.append(y)
                     if y == b["id"]:
                         found = True
         frontier = nxt[:200]
     if b["id"] not in parent:
-        return ok({"found": False, "from": a, "to": b, "path": [], "hops": None})
+        return ok({"found": False, "from": a, "to": b, "path": [], "hops": None,
+                   "avoid": avoid_names})
 
     # 回溯
     chain = []
     cur = b["id"]
     while parent[cur]:
-        prev, rel, meta = parent[cur]
-        chain.append((prev, rel, cur, meta))
+        prev, rel, meta, direction = parent[cur]
+        chain.append((prev, rel, cur, meta, direction))
         cur = prev
     chain.reverse()
     ids = [a["id"]] + [c[2] for c in chain]
     ph = ",".join(["%s"] * len(ids))
     info = {r["id"]: r for r in db.query(
         config.DB_REAL, "SELECT id,name,type FROM entities WHERE id IN (%s)" % ph, ids)}
-    path = [{"node": info[a["id"]], "relation": None, "rel": None}]
-    for prev, rel, cur, meta in chain:
-        path.append({"relation": rel, "node": info[cur], "rel": meta})
-    return ok({"found": True, "from": a, "to": b, "path": path, "hops": len(chain)})
+    path = [{"node": info[a["id"]], "relation": None, "rel": None, "evidence": [], "cooccur": 0}]
+    used = set()   # 同一条切块不要在两跳里重复出现，否则看着像凑数
+    for prev, rel, cur, meta, direction in chain:
+        hname, tname = info[prev]["name"], info[cur]["name"]
+        lit, cooc = retrieval.evidence_for(hname, tname, topk=1, exclude=used)
+        for e in lit:
+            used.add(e["chunk_id"])
+        path.append({
+            "relation": rel,
+            "node": info[cur],
+            "direction": direction,
+            "rel": meta,
+            "evidence": lit,
+            "cooccur": cooc,
+        })
+    return ok({"found": True, "from": a, "to": b, "path": path, "hops": len(chain),
+               "avoid": avoid_names})
 
 
 # ---------------------------------------------------------------- 启动
