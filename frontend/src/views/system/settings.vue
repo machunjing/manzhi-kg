@@ -7,7 +7,7 @@ const tab = ref('basic')
 const saving = ref(false)
 
 const basic = reactive({
-  name: '慢知 · 慢性病智能知识服务平台',
+  name: '慢知 · 慢性病智能问答系统',
   shortName: '慢知',
   org: '慢知知识工程组',
   version: 'v1.4.2',

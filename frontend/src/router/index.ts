@@ -197,7 +197,7 @@ router.beforeEach((to) => {
 
 router.afterEach((to) => {
   const t = (to.meta.title as string) || ''
-  document.title = t ? `${t} · 慢知平台` : '慢知 · 慢性病智能知识服务平台'
+  document.title = t ? `${t} · 慢知平台` : '慢知 · 慢性病智能问答系统'
 })
 
 export default router

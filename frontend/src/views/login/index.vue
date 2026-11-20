@@ -96,7 +96,7 @@ const features = [
           </div>
           <div>
             <div class="brand-name">慢知</div>
-            <div class="brand-sub">慢性病智能知识服务平台</div>
+            <div class="brand-sub">慢性病智能问答系统</div>
           </div>
         </div>
 
@@ -163,7 +163,7 @@ const features = [
           <span>演示账号：<b>admin</b> ／ 密码：<b>demo1234</b></span>
         </div>
 
-        <div class="form-foot">慢知 · 慢性病智能知识服务平台</div>
+        <div class="form-foot">慢知 · 慢性病智能问答系统</div>
       </div>
     </section>
   </div>

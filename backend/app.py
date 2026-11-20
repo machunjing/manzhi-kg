@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""慢知 · 慢性病智能知识服务平台 —— Flask 后端
+"""慢知 · 慢性病智能问答系统 —— Flask 后端
 
 启动：py -3.8-64 backend/app.py
 接口前缀：/api，统一响应 {code, message, data}
@@ -87,7 +87,7 @@ td{padding:7px 8px;border-bottom:1px solid #eaeef2}.m{width:80px;color:#8250df;f
 .p{font-family:monospace}a{color:#0969da;text-decoration:none}a:hover{text-decoration:underline}
 code{background:#eff2f5;padding:2px 5px;border-radius:4px;font-size:12px}
 </style></head><body>
-<div class="card"><h1>慢知 · 慢性病智能知识服务平台</h1>
+<div class="card"><h1>慢知 · 慢性病智能问答系统</h1>
 <div class="sub">后端服务运行中 · Flask + MySQL · 统一响应 <code>{code, message, data}</code></div>
 <div class="kv">
   <div>切块 <b>%d</b></div><div>实体 <b>%d</b></div><div>别名 <b>%d</b></div>

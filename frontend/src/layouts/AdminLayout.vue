@@ -92,7 +92,7 @@ async function onCommand(cmd: string) {
         </div>
         <div v-show="!app.collapsed" class="mz-brand-text">
           <b>慢知</b>
-          <span>慢性病智能知识服务平台</span>
+          <span>慢性病智能问答系统</span>
         </div>
       </div>
 
