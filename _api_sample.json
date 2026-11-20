@@ -1,0 +1,214 @@
+{
+ "health": {
+  "status": "up",
+  "chunks_indexed": 34309,
+  "entities_indexed": 32091,
+  "aliases_indexed": 785,
+  "built_at": "2026-11-17 08:55:37",
+  "db_real": "manzhi_real",
+  "db_demo": "manzhi",
+  "llm": {
+   "configured": true,
+   "model": "glm-4-flash",
+   "base_url": "https://open.bigmodel.cn/api/paas/v4",
+   "key_hint": "0b42c3****PGBl"
+  }
+ },
+ "graph": {
+  "center": {
+   "id": "E0001",
+   "name": "2型糖尿病",
+   "type": "疾病",
+   "category": "疾病",
+   "depth": 0,
+   "rel_count": 0
+  },
+  "n_nodes": 17,
+  "n_links": 16,
+  "sample_nodes": [
+   {
+    "id": "E0001",
+    "name": "2型糖尿病",
+    "type": "疾病",
+    "category": "疾病",
+    "depth": 0,
+    "rel_count": 0
+   },
+   {
+    "id": "E0024",
+    "name": "糖尿病肾病",
+    "type": "并发症",
+    "category": "并发症",
+    "depth": 1
+   },
+   {
+    "id": "E0025",
+    "name": "糖尿病视网膜病变",
+    "type": "并发症",
+    "category": "并发症",
+    "depth": 1
+   },
+   {
+    "id": "E0026",
+    "name": "糖尿病周围神经病变",
+    "type": "并发症",
+    "category": "并发症",
+    "depth": 1
+   }
+  ],
+  "sample_links": [
+   {
+    "source": "E0001",
+    "target": "E0024",
+    "relation": "并发症"
+   },
+   {
+    "source": "E0001",
+    "target": "E0025",
+    "relation": "并发症"
+   },
+   {
+    "source": "E0001",
+    "target": "E0026",
+    "relation": "并发症"
+   }
+  ]
+ },
+ "hot": [
+  {
+   "id": "E008593",
+   "name": "心力衰竭",
+   "type": "疾病",
+   "rel_count": 511
+  },
+  {
+   "id": "E008638",
+   "name": "心律失常",
+   "type": "疾病",
+   "rel_count": 436
+  },
+  {
+   "id": "E023250",
+   "name": "败血症",
+   "type": "疾病",
+   "rel_count": 421
+  },
+  {
+   "id": "E026351",
+   "name": "高血压",
+   "type": "疾病",
+   "rel_count": 373
+  },
+  {
+   "id": "E020530",
+   "name": "腹膜炎",
+   "type": "疾病",
+   "rel_count": 370
+  },
+  {
+   "id": "E004076",
+   "name": "吞咽困难",
+   "type": "疾病",
+   "rel_count": 361
+  }
+ ],
+ "docs": {
+  "total": 2177,
+  "first": {
+   "id": "D42503322",
+   "pmid": "42503322",
+   "title": "Mulberry leaf flavonoids alleviate type 2 diabetes by remodeling the gut microbiota-bile acid axis and activating FXR signaling.",
+   "journal": "Journal of ethnopharmacology",
+   "doc_type": "研究论文",
+   "disease": "2型糖尿病",
+   "source": "PubMed",
+   "publish_date": "2027-01-01",
+   "chunk_count": 11,
+   "doi": "10.1016/j.jep.2026.122237",
+   "url": "https://pubmed.ncbi.nlm.nih.gov/42503322/",
+   "abstract_brief": "ETHNOPHARMACOLOGICAL RELEVANCE: Mulberry leaf (Morus alba L.) has long been used in traditional Chinese medicine for treating \"Xiaoke\" (diabetes), as documented in \"Compendium of Materia Medica\" compi"
+  }
+ },
+ "review_stats": [
+  {
+   "status": "候选",
+   "cnt": 26,
+   "pct": 9.89
+  },
+  {
+   "status": "待审核",
+   "cnt": 41,
+   "pct": 15.59
+  },
+  {
+   "status": "已审核",
+   "cnt": 175,
+   "pct": 66.54
+  },
+  {
+   "status": "已驳回",
+   "cnt": 21,
+   "pct": 7.98
+  }
+ ],
+ "path": {
+  "found": true,
+  "hops": 3,
+  "path": [
+   {
+    "node": {
+     "id": "E018461",
+     "name": "肥胖",
+     "type": "症状"
+    },
+    "relation": null,
+    "rel": null
+   },
+   {
+    "relation": "并发症",
+    "node": {
+     "id": "E019661",
+     "name": "脂肪肝",
+     "type": "疾病"
+    },
+    "rel": {
+     "source": "OpenCMKG",
+     "section": null,
+     "evidenceLevel": null,
+     "confidence": 0.9,
+     "snippet": ""
+    }
+   },
+   {
+    "relation": "并发症",
+    "node": {
+     "id": "E026351",
+     "name": "高血压",
+     "type": "疾病"
+    },
+    "rel": {
+     "source": "OpenCMKG",
+     "section": null,
+     "evidenceLevel": null,
+     "confidence": 0.9,
+     "snippet": ""
+    }
+   },
+   {
+    "relation": "并发症",
+    "node": {
+     "id": "E000856",
+     "name": "中风",
+     "type": "疾病"
+    },
+    "rel": {
+     "source": "OpenCMKG",
+     "section": null,
+     "evidenceLevel": null,
+     "confidence": 0.9,
+     "snippet": ""
+    }
+   }
+  ]
+ }
+}

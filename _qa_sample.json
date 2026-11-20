@@ -1,0 +1,103 @@
+{
+ "question": "糖尿病有哪些并发症？",
+ "engine": {
+  "mode": "llm",
+  "name": "glm-4-flash",
+  "elapsed_ms": 10330,
+  "usage": {
+   "completion_tokens": 186,
+   "prompt_tokens": 1320,
+   "total_tokens": 1506
+  }
+ },
+ "elapsed_ms": 13983,
+ "query_en": [
+  "diabetes",
+  "complications"
+ ],
+ "retrieval": {
+  "keyword": 30,
+  "vector": 30,
+  "graph": 20,
+  "cross": 40,
+  "fused": 8,
+  "rrf_k": 60
+ },
+ "entities": [
+  {
+   "name": "糖尿病",
+   "type": "疾病"
+  }
+ ],
+ "steps": [
+  {
+   "name": "意图识别",
+   "detail": "问题类型：并发症"
+  },
+  {
+   "name": "实体链接",
+   "detail": "命中实体：糖尿病（疾病）"
+  },
+  {
+   "name": "跨语言改写",
+   "detail": "中文问题 → 英文检索式：diabetes、complications"
+  },
+  {
+   "name": "多路召回",
+   "detail": "关键词路 / 向量路 / 图谱路 / 跨语言路 并行召回，共 8 条候选"
+  },
+  {
+   "name": "RRF 融合",
+   "detail": "按 1/(60+rank) 累加各路排名，再按疾病维度与意图词加权"
+  },
+  {
+   "name": "大模型生成",
+   "detail": "glm-4-flash 依据图谱事实与 6 条证据成文，耗时 10330ms"
+  }
+ ],
+ "citations": [
+  {
+   "no": 1,
+   "title": "中国高血压防治指南2024修订版",
+   "source": "本地指南文件",
+   "pmid": null,
+   "chunk_idx": 397
+  },
+  {
+   "no": 2,
+   "title": "中国血脂管理指南_基层版2024年_",
+   "source": "本地指南文件",
+   "pmid": null,
+   "chunk_idx": 48
+  },
+  {
+   "no": 3,
+   "title": "中国高血压防治指南2024修订版",
+   "source": "本地指南文件",
+   "pmid": null,
+   "chunk_idx": 396
+  },
+  {
+   "no": 4,
+   "title": "中国血脂管理指南_基层版2024年_",
+   "source": "本地指南文件",
+   "pmid": null,
+   "chunk_idx": 47
+  },
+  {
+   "no": 5,
+   "title": "Diabetic cerebral microvascular disorder: from key pathologies to targ",
+   "source": "PubMed",
+   "pmid": "42046408",
+   "chunk_idx": 7
+  },
+  {
+   "no": 6,
+   "title": "Omentin-1 and diabetes: more evidence but far from enough.",
+   "source": "PubMed",
+   "pmid": "37395595",
+   "chunk_idx": 4
+  }
+ ],
+ "answer": "糖尿病的并发症包括：\n\n1. 糖尿病乳酸性酸中毒：这是一种严重的代谢紊乱，可能导致酸中毒 [1]。\n2. 糖尿病酮症酸中毒：这是由于血糖水平过高，导致体内产生过多的酮体，可能引起酸中毒 [1]。\n3. 糖尿病性神经病：糖尿病可能导致神经系统损伤，引起疼痛、麻木或其他感觉异常 [5]。\n4. 尿毒症：长期高血糖可能导致肾功能损害，严重时可能发展为尿毒症 [1]。\n\n此外，糖尿病合并高血压可显著增加心脑血管事件的风险，降压治疗能显著降低糖尿病患者大血管事件和死亡风险，预防肾病和视网膜病变等微血管并发症 [1][3]。对于糖尿病患者，血脂管理也很重要，建议根据ASCVD风险分层确定相应的LDL-C目标值，以降低心血管风险 [2][4]。"
+}
