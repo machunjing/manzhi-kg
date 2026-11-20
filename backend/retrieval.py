@@ -97,11 +97,15 @@ def graph_facts(entities, per_entity=8, prefer_rel=None):
     ph = ",".join(["%s"] * len(ids))
     rows = db.query(config.DB_REAL, """
         SELECT h.id hid, h.name hname, h.type htype,
-               r.relation rel, t.id tid, t.name tname, t.type ttype
+               r.relation rel, t.id tid, t.name tname, t.type ttype,
+               t.rel_count trels
         FROM relations r
         JOIN entities h ON h.id = r.head_id
         JOIN entities t ON t.id = r.tail_id
         WHERE r.head_id IN (%s)
+        -- 尾巴按热度排：OpenCMKG 里「白细胞介素4」「血清白细胞介素3」这类罕见指标
+        -- 和图谱连通度高的「血压」「糖化血红蛋白」混在一起，不排序就会挤掉常用指标
+        ORDER BY t.rel_count DESC
         LIMIT 300
     """ % ph, ids)
 
