@@ -1,31 +1,47 @@
 # -*- coding: utf-8 -*-
-"""MySQL 连接与查询helper"""
+"""MySQL 连接与查询 helper
+
+Flask 用 threaded=True 跑，多个请求可能并发进来。
+如果所有线程共用一条连接，MySQL 的报文序号会错乱
+（Packet sequence number wrong），严重时直接把进程打崩，
+所以这里按「线程 + 库」各持一条连接。
+"""
 import datetime
 import decimal
 import json
+import threading
 
 import pymysql
 from pymysql.cursors import DictCursor
 
 from config import MYSQL, DB_DEMO, DB_REAL
 
-_pool = {}
+_local = threading.local()
+
+
+def _new_conn(db):
+    return pymysql.connect(database=db, cursorclass=DictCursor,
+                           autocommit=True, **MYSQL)
 
 
 def conn(db):
-    """每个库一个长连接（Flask 单进程够用；生产换连接池）"""
-    c = _pool.get(db)
-    if c is None:
-        c = pymysql.connect(database=db, cursorclass=DictCursor,
-                            autocommit=True, **MYSQL)
-        _pool[db] = c
-    else:
+    """当前线程在指定库上的连接；不存在或已断开就重连"""
+    pool = getattr(_local, "pool", None)
+    if pool is None:
+        pool = {}
+        _local.pool = pool
+    c = pool.get(db)
+    if c is not None:
         try:
             c.ping(reconnect=True)
+            return c
         except Exception:
-            c = pymysql.connect(database=db, cursorclass=DictCursor,
-                                autocommit=True, **MYSQL)
-            _pool[db] = c
+            try:
+                c.close()
+            except Exception:
+                pass
+    c = _new_conn(db)
+    pool[db] = c
     return c
 
 

@@ -23,7 +23,7 @@ onMounted(async () => {
   yearly.value = y
   loading.value = false
 
-  const g = buildGraph({
+  const g = await buildGraph({
     entityTypes: ['疾病', '危险因素', '并发症', '药物类别'],
     relationTypes: ['共病', '导致', '危险因素', '并发症', '常用药物'],
     limit: 46
@@ -74,9 +74,9 @@ const cards = computed(() => [
     unit: '个',
     icon: 'Coin',
     color: '#2563EB',
-    trend: `真实 MeSH 有效实体 ${ov.value.entityMeshTotal?.toLocaleString()} 个`,
+    trend: `OpenCMKG 抽取，已与 MeSH 术语对齐`,
     trendType: 'flat' as const,
-    hint: '图谱演示子集实体数；右侧为数据包统计的真实 MeSH 有效实体总数'
+    hint: '来自 OpenCMKG 实体表，已去重并按名称建索引'
   },
   {
     title: '候选三元组',
@@ -182,7 +182,7 @@ const sourceBar = computed(() => ({
     {
       type: 'bar',
       barWidth: 15,
-      data: [ov.value.docTotal || 5026, ov.value.mlpTopicTotal || 31, 6, 41, 1],
+      data: [ov.value.docTotal || 0, ov.value.mlpTopicTotal || 31, ov.value.raw?.guides || 6, 41, ov.value.tripleTotal || 0],
       itemStyle: {
         borderRadius: [0, 4, 4, 0],
         color: (p: any) => ['#2563EB', '#0891B2', '#7C3AED', '#F59E0B', '#16A34A'][p.dataIndex]

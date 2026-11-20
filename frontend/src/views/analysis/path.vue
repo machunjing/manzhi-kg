@@ -2,29 +2,48 @@
 import { computed, onMounted, ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import PageHeader from '@/components/common/PageHeader.vue'
-import { shortestPath, TYPE_COLOR, DISEASES } from '@/api'
+import { shortestPath, fetchHotEntities, TYPE_COLOR } from '@/api'
 
-const from = ref('肥胖')
-const to = ref('脑卒中')
+const from = ref('糖尿病')
+const to = ref('高血压')
 const maxLen = ref(3)
 const result = ref<any>(null)
 const searched = ref(false)
 const loading = ref(false)
 
-const diseases = ['2型糖尿病', '高血压', '血脂异常', '冠心病', '脑卒中', '慢性肾脏病', '肥胖', '脂肪肝', '动脉粥样硬化']
+// 下拉框用真库里的热门疾病，避免选了库里没有的实体导致「未找到路径」
+const diseases = ref<string[]>(['糖尿病', '高血压', '血脂异常', '肥胖', '脂肪肝', '冠心病'])
 
-function search() {
+async function search() {
   if (from.value === to.value) return ElMessage.warning('起始疾病与目标疾病不能相同')
   loading.value = true
-  setTimeout(() => {
-    result.value = shortestPath(from.value, to.value, maxLen.value)
+  try {
+    result.value = await shortestPath(from.value, to.value, maxLen.value)
     searched.value = true
-    loading.value = false
     if (!result.value) ElMessage.info('在给定跳数内未找到关联路径，可增加最大路径长度后重试')
-  }, 320)
+  } catch (e: any) {
+    result.value = null
+    searched.value = true
+    ElMessage.error(e?.message || '路径查询失败')
+  } finally {
+    loading.value = false
+  }
 }
 
-onMounted(search)
+onMounted(async () => {
+  try {
+    const hot = await fetchHotEntities('疾病', 18)
+    if (hot.length) {
+      diseases.value = hot.map((e: any) => e.name)
+      // 保证默认的起止疾病在列表里
+      if (!diseases.value.includes(from.value)) diseases.value.unshift(from.value)
+      if (!diseases.value.includes(to.value)) diseases.value.unshift(to.value)
+    }
+  } catch {
+    /* 拿不到热度榜就用内置列表，不影响查询 */
+  }
+  search()
+})
 
 function swap() {
   const t = from.value
@@ -43,10 +62,10 @@ const chain = computed(() => {
 })
 
 const examples = [
-  ['肥胖', '脑卒中'],
+  ['糖尿病', '高血压'],
+  ['肥胖', '脂肪肝'],
   ['脂肪肝', '高血压'],
-  ['动脉粥样硬化', '慢性肾脏病'],
-  ['2型糖尿病', '高血压']
+  ['糖尿病', '冠心病']
 ]
 </script>
 

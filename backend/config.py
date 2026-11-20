@@ -34,6 +34,7 @@ DEBUG = False
 BM25_TOPK = 30            # 关键词路召回数
 VEC_TOPK = 30             # 向量路召回数
 GRAPH_TOPK = 20           # 图谱路召回数
+CROSS_TOPK = 20           # 跨语言路（英文检索式）召回数
 RRF_K = 60                # RRF 平滑常数
 FINAL_TOPK = 8            # 最终送进答案的条数
 MIN_SCORE = 0.0

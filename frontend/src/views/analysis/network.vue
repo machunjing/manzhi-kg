@@ -5,7 +5,7 @@ import PageHeader from '@/components/common/PageHeader.vue'
 import BaseChart from '@/components/common/BaseChart.vue'
 import { buildDiseaseNetwork, getEntity, getRelation, DISEASES, RELATION_TYPES, TYPE_COLOR, RELATION_COLOR } from '@/api'
 
-const center = ref('2型糖尿病')
+const center = ref('糖尿病')
 const relTypes = ref<string[]>(['共病', '导致', '危险因素', '并发症'])
 const hops = ref(2)
 const focusDiseases = ref<string[]>([])
@@ -14,12 +14,17 @@ const option = ref<any>({})
 const stat = reactive({ nodes: 0, edges: 0, diseases: 0 })
 const picked = reactive({ type: '' as '' | 'node' | 'edge', node: {} as any, edge: {} as any })
 
-const diseaseOnly = ['2型糖尿病', '高血压', '血脂异常', '冠心病', '脑卒中', '慢性肾脏病', '肥胖', '脂肪肝', '动脉粥样硬化']
+const diseaseOnly = ['糖尿病', '高血压', '血脂异常', '冠心病', '肥胖', '脂肪肝']
 
-function build() {
+async function build() {
   loading.value = true
   picked.type = ''
-  const g = buildDiseaseNetwork(center.value, relTypes.value, hops.value)
+  let g: any = { nodes: [], edges: [] }
+  try {
+    g = await buildDiseaseNetwork(center.value, relTypes.value, hops.value)
+  } catch (e: any) {
+    ElMessage.error(e?.message || '关联网络加载失败')
+  }
   stat.nodes = g.nodes.length
   stat.edges = g.edges.length
   stat.diseases = g.nodes.filter((n: any) => n.type === '疾病').length
@@ -27,7 +32,7 @@ function build() {
     tooltip: {
       formatter: (p: any) => {
         if (p.dataType === 'edge') {
-          return `${getEntity(p.data.source)?.name} → <b>${p.data.name}</b> → ${getEntity(p.data.target)?.name}`
+          return `${p.data.sourceName} → <b>${p.data.name}</b> → ${p.data.targetName}`
         }
         return `<b>${p.data.name}</b><br/>类型：${p.data.type}<br/>关联数：${p.data.value}`
       }
@@ -62,7 +67,7 @@ function build() {
       }
     ]
   }
-  setTimeout(() => (loading.value = false), 240)
+  loading.value = false
 }
 
 onMounted(build)
@@ -74,7 +79,7 @@ function onClick(p: any) {
   } else if (p.dataType === 'edge') {
     picked.type = 'edge'
     const rel = getRelation(p.data.id) || p.data
-    picked.edge = { ...rel, headName: getEntity(rel.headId)?.name, tailName: getEntity(rel.tailId)?.name }
+    picked.edge = { ...rel, headName: getEntity(rel.headId)?.name || rel.headName, tailName: getEntity(rel.tailId)?.name || rel.tailName }
   }
 }
 

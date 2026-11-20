@@ -39,7 +39,7 @@ async function submit() {
 const features = [
   { t: '多源知识整合', d: '指南 · 文献 · 知识图谱统一建模' },
   { t: '疾病关系分析', d: '共病网络与 PageRank 结构重要性' },
-  { t: 'GraphRAG 问答', d: '图谱 + BM25 + 向量三路召回' }
+  { t: 'GraphRAG 问答', d: '图谱 + 全文 + 向量 + 跨语言四路召回' }
 ]
 </script>
 

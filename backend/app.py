@@ -15,6 +15,7 @@ import db
 import nlp
 import retrieval
 import answer as answer_mod
+import llm
 
 app = Flask(__name__)
 
@@ -91,13 +92,16 @@ code{background:#eff2f5;padding:2px 5px;border-radius:4px;font-size:12px}
 <div class="kv">
   <div>切块 <b>%d</b></div><div>实体 <b>%d</b></div><div>别名 <b>%d</b></div>
   <div>真实库 <b>%s</b></div><div>演示库 <b>%s</b></div>
+  <div>答案引擎 <b>%s</b></div>
 </div>
 <div class="sub">问答接口是 POST，用下面的命令试：<br>
 <code>curl -X POST http://127.0.0.1:%d/api/qa/ask -H "Content-Type: application/json" -d "{\\"question\\":\\"糖尿病有哪些并发症\\"}"</code></div>
 </div>
 <div class="card"><h1 style="font-size:16px">接口清单（%d 个）</h1><table>%s</table></div>
 </body></html>""" % (len(s["chunks"]), len(s["entity_names"]), len(s.get("alias_map") or {}),
-                     config.DB_REAL, config.DB_DEMO, config.PORT,
+                     config.DB_REAL, config.DB_DEMO,
+                     (llm.MODEL if llm.available() else "图谱模板（未配置模型）"),
+                     config.PORT,
                      sum(len(v) for v in groups.values()), "".join(rows))
     return Response(html, mimetype="text/html; charset=utf-8")
 
@@ -127,7 +131,30 @@ def health():
         "built_at": s["meta"].get("built_at"),
         "db_real": config.DB_REAL,
         "db_demo": config.DB_DEMO,
+        "llm": llm.info(),
     })
+
+
+@app.route("/api/llm/status")
+def llm_status():
+    """前端用来显示「当前答案引擎」"""
+    i = llm.info()
+    return ok({"mode": "llm" if i["configured"] else "template", **i})
+
+
+@app.route("/api/llm/test", methods=["POST", "OPTIONS"])
+def llm_test():
+    """连通性自检：发一句极短的问题，返回耗时与首句"""
+    if request.method == "OPTIONS":
+        return ok()
+    if not llm.available():
+        return fail(40002, "未配置 LLM_API_KEY")
+    t0 = time.time()
+    text, usage = llm.chat([{"role": "user", "content": "用一句话说明高血压的危险因素"}], max_tokens=120)
+    if not text:
+        return fail(50001, "模型调用失败：%s" % usage)
+    return ok({"model": llm.MODEL, "elapsed_ms": int((time.time() - t0) * 1000),
+               "sample": text, "usage": usage})
 
 
 # ---------------------------------------------------------------- 智能问答
@@ -146,10 +173,16 @@ def qa_ask():
     kw = retrieval.keyword_search(q)
     vec = retrieval.vector_search(q)
     gph = retrieval.graph_search(entities)
+
+    # 跨语言路：中文问题改写成英文检索式，去查 4,000+ 篇英文摘要
+    trans = llm.translate_query(q)
+    terms = (trans or {}).get("terms") or retrieval._fallback_terms(entities, intent["intent"])
+    xl = retrieval.cross_lingual_search(terms)
+
     facts = retrieval.graph_facts(entities, prefer_rel=intent["rel"])
     fused = retrieval.rrf([("关键词路", kw), ("向量路", vec), ("图谱路", gph)])
 
-    # 疾病维度 + 意图词的证据优先
+    # 疾病维度 + 意图词的证据优先（中英两个池子分别重排，再均衡取证）
     disease_hint = None
     for e in entities:
         if e["type"] == "疾病":
@@ -157,41 +190,63 @@ def qa_ask():
             break
     fused = retrieval.rerank_disease(fused, disease_hint)
     fused = retrieval.rerank_intent(fused, intent["keywords"])
+    xl = retrieval.rerank_disease(xl, disease_hint)
+    xl = retrieval.rerank_intent(xl, intent["keywords"])
+    fused = retrieval.bilingual_select(fused, xl, config.FINAL_TOPK)
 
-    out = answer_mod.compose(q, entities, facts, fused, intent)
+    # 演示时想对比「纯图谱模板」和「大模型」的效果，加 ?no_llm=1
+    use_llm = request.args.get("no_llm") not in ("1", "true", "yes")
+    out = answer_mod.compose(q, entities, facts, fused, intent,
+                             use_llm=use_llm, query_en=terms)
     out["question"] = q
     out["entities"] = entities
     out["graph_facts"] = facts
+    out["query_en"] = terms
     out["retrieval"] = {
         "keyword": len(kw), "vector": len(vec), "graph": len(gph),
-        "fused": len(fused), "rrf_k": config.RRF_K,
+        "cross": len(xl), "fused": len(fused), "rrf_k": config.RRF_K,
     }
     out["elapsed_ms"] = int((time.time() - t0) * 1000)
     return ok(out)
 
 
 # ---------------------------------------------------------------- 知识图谱
-def _graph_data(name, depth=1, limit=120):
-    """取以 name 为中心的子图；返回 (data, err)"""
+def _graph_data(name, depth=1, limit=120, dbname=None):
+    """取以 name 为中心的子图；返回 (data, err)
+
+    dbname='demo' 时用演示库（264 实体 / 263 关系，人工整理过的疾病子图），
+    适合做可视化演示；默认走真实库（32,091 实体）。
+    """
+    dbname = dbname or config.DB_REAL
     if not name:
         return None, "entity 不能为空"
-    row = nlp.resolve(name)
+    if dbname == config.DB_DEMO:
+        row = db.one(dbname, "SELECT id,name,type FROM entities WHERE name=%s LIMIT 1", (name,))
+        if not row:
+            row = db.one(dbname, "SELECT id,name,type FROM entities WHERE name LIKE %s LIMIT 1",
+                         ("%" + name + "%",))
+    else:
+        row = nlp.resolve(name)
     if not row:
         return None, "实体不存在：%s" % name
 
     nodes = {row["id"]: {"id": row["id"], "name": row["name"], "type": row["type"],
-                         "category": row["type"], "depth": 0}}
+                         "category": row["type"], "depth": 0,
+                         "rel_count": row.get("rel_count") or 0}}
     links = []
     frontier = [row["id"]]
     for d in range(1, depth + 1):
         if not frontier:
             break
         ph = ",".join(["%s"] * len(frontier))
-        rows = db.query(config.DB_REAL, """
+        rows = db.query(dbname, """
             SELECT r.relation, h.id hid, h.name hname, h.type htype,
                    t.id tid, t.name tname, t.type ttype
             FROM relations r JOIN entities h ON h.id=r.head_id JOIN entities t ON t.id=r.tail_id
-            WHERE r.head_id IN (%s) OR r.tail_id IN (%s) LIMIT %s
+            WHERE r.head_id IN (%s) OR r.tail_id IN (%s)
+            ORDER BY FIELD(r.relation,'并发症','常用药物','监测指标','临床表现',
+                                     '危险因素','共病','导致','关联疾病','干预措施')
+            LIMIT %s
         """ % (ph, ph, limit), frontier + frontier)
         nxt = []
         for r in rows:
@@ -220,9 +275,12 @@ def kg_graph():
     name = (request.args.get("entity") or "").strip()
     depth = min(int(request.args.get("depth") or 1), 2)
     limit = min(int(request.args.get("limit") or 120), 300)
-    data, err = _graph_data(name, depth, limit)
+    src = (request.args.get("source") or "real").strip()
+    data, err = _graph_data(name, depth, limit,
+                            config.DB_DEMO if src == "demo" else config.DB_REAL)
     if err:
         return fail(40001 if "不能为空" in err else 40400, err)
+    data["source"] = src
     return ok(data)
 
 
@@ -242,8 +300,9 @@ def kg_entities():
     w = ("WHERE " + " AND ".join(where)) if where else ""
     total = db.scalar(config.DB_REAL, "SELECT COUNT(*) AS n FROM entities %s" % w, args)
     rows = db.query(config.DB_REAL,
-                    "SELECT id,name,type,standard_name,source,status,confidence "
-                    "FROM entities %s ORDER BY id LIMIT %s OFFSET %s" % (w, size, (page - 1) * size),
+                    "SELECT id,name,type,standard_name,source,status,confidence,rel_count "
+                    "FROM entities %s ORDER BY rel_count DESC, id LIMIT %s OFFSET %s"
+                    % (w, size, (page - 1) * size),
                     args)
     return ok({"list": rows, "total": total, "page": page, "pageSize": size})
 
@@ -255,11 +314,81 @@ def kg_types():
     return ok(rows)
 
 
+@app.route("/api/kg/relations")
+def kg_relations():
+    """关系列表：可按实体名、关系类型、审核状态、关键词筛选"""
+    entity = (request.args.get("entity") or "").strip()
+    rel = (request.args.get("relation") or "").strip()
+    status = (request.args.get("status") or "").strip()
+    kw = (request.args.get("keyword") or "").strip()
+    page = max(int(request.args.get("page") or 1), 1)
+    size = min(int(request.args.get("pageSize") or 20), 100)
+
+    where, args = [], []
+    join = "JOIN entities h ON h.id=r.head_id JOIN entities t ON t.id=r.tail_id"
+    if entity:
+        where.append("(h.name=%s OR t.name=%s)")
+        args += [entity, entity]
+    if rel:
+        where.append("r.relation=%s")
+        args.append(rel)
+    if status:
+        where.append("r.status=%s")
+        args.append(status)
+    if kw:
+        where.append("(h.name LIKE %s OR t.name LIKE %s)")
+        args += ["%" + kw + "%"] * 2
+    w = ("WHERE " + " AND ".join(where)) if where else ""
+
+    total = db.scalar(config.DB_REAL,
+                      "SELECT COUNT(*) AS n FROM relations r %s %s" % (join, w), args)
+    rows = db.query(config.DB_REAL, """
+        SELECT r.id, r.relation, r.disease, r.source, r.section, r.evidence_level,
+               r.confidence, r.status, r.snippet,
+               h.id hid, h.name hname, h.type htype,
+               t.id tid, t.name tname, t.type ttype
+        FROM relations r %s %s ORDER BY r.confidence DESC, r.id LIMIT %s OFFSET %s
+    """ % (join, w, size, (page - 1) * size), args)
+    out = []
+    for r in rows:
+        out.append({
+            "id": r["id"], "relation": r["relation"], "disease": r["disease"],
+            "source": r["source"], "section": r["section"],
+            "evidenceLevel": r["evidence_level"], "confidence": float(r["confidence"] or 0),
+            "status": r["status"], "snippet": r["snippet"],
+            "headId": r["hid"], "headName": r["hname"], "headType": r["htype"],
+            "tailId": r["tid"], "tailName": r["tname"], "tailType": r["ttype"],
+        })
+    return ok({"list": out, "total": total, "page": page, "pageSize": size})
+
+
+@app.route("/api/kg/hot")
+def kg_hot():
+    """热度榜：按关系条数排序，给前端下拉框和 PageRank 页用"""
+    typ = (request.args.get("type") or "").strip()
+    limit = min(int(request.args.get("limit") or 20), 100)
+    if typ:
+        rows = db.query(config.DB_REAL,
+                        "SELECT id,name,type,rel_count FROM entities "
+                        "WHERE type=%s AND rel_count>0 AND CHAR_LENGTH(name)>=3 "
+                        "ORDER BY rel_count DESC LIMIT %s",
+                        (typ, limit))
+    else:
+        rows = db.query(config.DB_REAL,
+                        "SELECT id,name,type,rel_count FROM entities "
+                        "WHERE rel_count>0 AND CHAR_LENGTH(name)>=3 "
+                        "ORDER BY rel_count DESC LIMIT %s", (limit,))
+    return ok(rows)
+
+
 # ---------------------------------------------------------------- 文献
 @app.route("/api/docs/search")
 def docs_search():
     kw = (request.args.get("keyword") or "").strip()
     disease = (request.args.get("disease") or "").strip()
+    source = (request.args.get("source") or "").strip()
+    doc_type = (request.args.get("docType") or "").strip()
+    year = (request.args.get("year") or "").strip()
     page = max(int(request.args.get("page") or 1), 1)
     size = min(int(request.args.get("pageSize") or 20), 100)
     where, args = [], []
@@ -269,6 +398,15 @@ def docs_search():
     if disease:
         where.append("disease=%s")
         args.append(disease)
+    if source:
+        where.append("source=%s")
+        args.append(source)
+    if doc_type:
+        where.append("doc_type=%s")
+        args.append(doc_type)
+    if year:
+        where.append("YEAR(publish_date)=%s")
+        args.append(year)
     w = ("WHERE " + " AND ".join(where)) if where else ""
     total = db.scalar(config.DB_REAL, "SELECT COUNT(*) AS n FROM documents %s" % w, args)
     rows = db.query(config.DB_REAL,
@@ -292,6 +430,44 @@ def docs_detail(doc_id):
 
 
 # ---------------------------------------------------------------- 关系审核（演示库）
+@app.route("/api/review/list")
+def review_list():
+    """审核工作台：按状态取队列（演示库 manzhi，带状态机触发器）"""
+    status = (request.args.get("status") or "").strip()
+    kw = (request.args.get("keyword") or "").strip()
+    limit = min(int(request.args.get("limit") or 200), 500)
+    where, args = [], []
+    if status:
+        where.append("r.status=%s")
+        args.append(status)
+    if kw:
+        where.append("(h.name LIKE %s OR t.name LIKE %s)")
+        args += ["%" + kw + "%"] * 2
+    w = ("WHERE " + " AND ".join(where)) if where else ""
+    rows = db.query(config.DB_DEMO, """
+        SELECT r.id, r.relation, r.disease, r.source, r.section, r.evidence_level,
+               r.confidence, r.status, r.snippet, r.reviewer, r.reviewed_at,
+               h.id hid, h.name hname, h.type htype,
+               t.id tid, t.name tname, t.type ttype
+        FROM relations r JOIN entities h ON h.id=r.head_id JOIN entities t ON t.id=r.tail_id
+        %s ORDER BY FIELD(r.status,'待审核','候选','已审核','已驳回'), r.confidence DESC
+        LIMIT %s
+    """ % (w, limit), args)
+    out = []
+    for r in rows:
+        out.append({
+            "id": r["id"], "relation": r["relation"], "disease": r["disease"],
+            "source": r["source"], "section": r["section"],
+            "evidenceLevel": r["evidence_level"], "confidence": float(r["confidence"] or 0),
+            "status": r["status"], "snippet": r["snippet"],
+            "reviewer": r["reviewer"],
+            "reviewedAt": str(r["reviewed_at"]) if r["reviewed_at"] else None,
+            "headId": r["hid"], "headName": r["hname"], "headType": r["htype"],
+            "tailId": r["tid"], "tailName": r["tname"], "tailType": r["ttype"],
+        })
+    return ok({"list": out, "total": len(out)})
+
+
 @app.route("/api/review/pending")
 def review_pending():
     page = max(int(request.args.get("page") or 1), 1)
@@ -336,15 +512,87 @@ def stats_overview():
     real = config.DB_REAL
     return ok({
         "documents": db.scalar(real, "SELECT COUNT(*) AS n FROM documents"),
+        "doc_with_abstract": db.scalar(
+            real, "SELECT COUNT(*) AS n FROM documents WHERE abstract IS NOT NULL AND abstract<>''"),
         "chunks": db.scalar(real, "SELECT COUNT(*) AS n FROM chunks"),
+        "char_total": db.scalar(real, "SELECT COALESCE(SUM(text_len),0) AS n FROM chunks"),
         "entities": db.scalar(real, "SELECT COUNT(*) AS n FROM entities"),
         "relations": db.scalar(real, "SELECT COUNT(*) AS n FROM relations"),
+        "journal_total": db.scalar(real, "SELECT COUNT(DISTINCT journal) AS n FROM documents"),
         "guides": db.scalar(real, "SELECT COUNT(*) AS n FROM documents WHERE source='本地指南文件'"),
+        "aliases": db.scalar(real, "SELECT COUNT(*) AS n FROM entity_alias"),
+        "data_snapshot_at": db.scalar(real, "SELECT MAX(publish_date) AS d FROM documents"),
         "by_source": db.query(real, "SELECT source, COUNT(*) AS cnt FROM documents GROUP BY source"),
-        "by_disease": db.query(real, "SELECT disease, COUNT(*) AS cnt FROM documents GROUP BY disease ORDER BY cnt DESC"),
-        "entity_types": db.query(real, "SELECT type, COUNT(*) AS cnt FROM entities GROUP BY type ORDER BY cnt DESC"),
-        "relation_types": db.query(real, "SELECT relation, COUNT(*) AS cnt FROM relations GROUP BY relation ORDER BY cnt DESC"),
+        "by_disease": db.query(real, "SELECT disease, COUNT(*) AS cnt FROM documents "
+                                     "GROUP BY disease ORDER BY cnt DESC"),
+        "by_year": db.query(real, "SELECT YEAR(publish_date) AS year, COUNT(*) AS cnt FROM documents "
+                                  "GROUP BY year ORDER BY year"),
+        "entity_types": db.query(real, "SELECT type, COUNT(*) AS cnt FROM entities "
+                                       "GROUP BY type ORDER BY cnt DESC"),
+        "relation_types": db.query(real, "SELECT relation, COUNT(*) AS cnt FROM relations "
+                                         "GROUP BY relation ORDER BY cnt DESC"),
+        "relation_status": db.query(real, "SELECT status, COUNT(*) AS cnt FROM relations "
+                                          "GROUP BY status"),
+        "llm": llm.info(),
     })
+
+
+@app.route("/api/stats/yearly")
+def stats_yearly():
+    """按疾病 × 年份统计文献量，给趋势图用"""
+    rows = db.query(config.DB_REAL, """
+        SELECT disease, YEAR(publish_date) AS y, COUNT(*) AS cnt
+        FROM documents WHERE publish_date IS NOT NULL
+        GROUP BY disease, y ORDER BY y
+    """)
+    out = {}
+    for r in rows:
+        if not r["disease"]:
+            continue
+        out.setdefault(r["disease"], {})[str(r["y"])] = r["cnt"]
+    return ok(out)
+
+
+@app.route("/api/stats/disease")
+def stats_disease():
+    """疾病维度聚合
+
+    文献量来自真实库（5,063 篇按疾病分桶）；
+    关系与审核状态来自演示库（manzhi，按疾病组织并带审核状态机）。
+    真实库的 OpenCMKG 是通用图谱，关系本身不带疾病归属，强行归属会造假数据。
+    """
+    docs = {r["disease"]: r["cnt"] for r in db.query(
+        config.DB_REAL, "SELECT disease, COUNT(*) AS cnt FROM documents GROUP BY disease")}
+    demo = {}
+    for r in db.query(config.DB_DEMO, """
+        SELECT disease, COUNT(*) AS cnt,
+               SUM(status='已审核') AS approved, SUM(status='待审核') AS pending
+        FROM relations WHERE disease IS NOT NULL GROUP BY disease
+    """):
+        demo[r["disease"]] = dict(r, ents=0)
+    for r in db.query(config.DB_DEMO, """
+        SELECT disease, COUNT(*) AS ents FROM (
+            SELECT disease, head_id AS id FROM relations WHERE disease IS NOT NULL
+            UNION
+            SELECT disease, tail_id AS id FROM relations WHERE disease IS NOT NULL
+        ) x GROUP BY disease
+    """):
+        if r["disease"] in demo:
+            demo[r["disease"]]["ents"] = r["ents"]
+    out = []
+    for d, cnt in docs.items():
+        if not d:
+            continue
+        m = demo.get(d) or {}
+        out.append({
+            "disease": d, "literature": cnt,
+            "entities": int(m.get("ents") or 0),
+            "relations": int(m.get("cnt") or 0),
+            "approved": int(m.get("approved") or 0),
+            "pending": int(m.get("pending") or 0),
+        })
+    out.sort(key=lambda x: -x["literature"])
+    return ok(out)
 
 
 # ---------------------------------------------------------------- 关联分析
@@ -352,7 +600,9 @@ def stats_overview():
 def analysis_network():
     name = (request.args.get("entity") or "糖尿病").strip()
     depth = min(int(request.args.get("depth") or 2), 3)
-    data, err = _graph_data(name, depth, 200)
+    src = (request.args.get("source") or "demo").strip()
+    data, err = _graph_data(name, depth, 200,
+                            config.DB_DEMO if src == "demo" else config.DB_REAL)
     if err:
         return fail(40400, err)
     from collections import Counter
@@ -383,15 +633,20 @@ def analysis_path():
         ph = ",".join(["%s"] * len(frontier))
         rows = db.query(config.DB_REAL, """
             SELECT h.id hid, h.name hname, h.type htype,
-                   t.id tid, t.name tname, t.type ttype, r.relation rel
+                   t.id tid, t.name tname, t.type ttype,
+                   r.relation rel, r.source rsrc, r.section rsec,
+                   r.evidence_level rlev, r.confidence rconf, r.snippet rsnip
             FROM relations r JOIN entities h ON h.id=r.head_id JOIN entities t ON t.id=r.tail_id
             WHERE r.head_id IN (%s) OR r.tail_id IN (%s)
         """ % (ph, ph), frontier + frontier)
         nxt = []
         for r in rows:
+            meta = {"source": r["rsrc"], "section": r["rsec"],
+                    "evidenceLevel": r["rlev"], "confidence": float(r["rconf"] or 0),
+                    "snippet": r["rsnip"] or ""}
             for x, y in ((r["hid"], r["tid"]), (r["tid"], r["hid"])):
                 if x in parent and y not in parent:
-                    parent[y] = (x, r["rel"])
+                    parent[y] = (x, r["rel"], meta)
                     nxt.append(y)
                     if y == b["id"]:
                         found = True
@@ -403,17 +658,17 @@ def analysis_path():
     chain = []
     cur = b["id"]
     while parent[cur]:
-        prev, rel = parent[cur]
-        chain.append((prev, rel, cur))
+        prev, rel, meta = parent[cur]
+        chain.append((prev, rel, cur, meta))
         cur = prev
     chain.reverse()
     ids = [a["id"]] + [c[2] for c in chain]
     ph = ",".join(["%s"] * len(ids))
     info = {r["id"]: r for r in db.query(
         config.DB_REAL, "SELECT id,name,type FROM entities WHERE id IN (%s)" % ph, ids)}
-    path = [{"node": info[a["id"]], "relation": None}]
-    for prev, rel, cur in chain:
-        path.append({"relation": rel, "node": info[cur]})
+    path = [{"node": info[a["id"]], "relation": None, "rel": None}]
+    for prev, rel, cur, meta in chain:
+        path.append({"relation": rel, "node": info[cur], "rel": meta})
     return ok({"found": True, "from": a, "to": b, "path": path, "hops": len(chain)})
 
 

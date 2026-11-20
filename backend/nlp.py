@@ -125,8 +125,20 @@ def vector_search(q, topk=None):
     return out
 
 
+# 泛概念实体：出现频率高但几乎没有信息量，链接到它们只会把答案带偏
+# （问「肥胖会增加哪些慢性病风险」，命中「慢性病」后返回的就是「胃炎/骨质疏松」这类噪声）
+GENERIC = {
+    "慢性病", "疾病", "病", "患者", "症状", "体征", "人群", "老年人", "儿童", "成人",
+    "男性", "女性", "正常人", "健康人", "并发症", "合并症", "危险因素", "药物", "治疗",
+    "诊断", "预后", "病因", "机制", "临床表现", "生活质量", "死亡率", "发病率",
+}
+
+
 def link_entities(q, limit=5):
-    """实体链接：查询里出现的实体名或别名（长名优先，避免"糖尿病"吃掉"糖尿病肾病"）"""
+    """实体链接：查询里出现的实体名或别名（长名优先，避免"糖尿病"吃掉"糖尿病肾病"）
+
+    泛概念（慢性病/疾病/患者…）直接跳过，否则图谱事实全是无意义的通用关联。
+    """
     s = state()
     ql = q.lower()
     hits, used = [], []
@@ -134,8 +146,17 @@ def link_entities(q, limit=5):
         kl = key.lower()
         if len(kl) < 2:
             continue
+        if ent["name"] in GENERIC:
+            continue
         pos = ql.find(kl)
         if pos < 0:
+            continue
+        # 「慢性病」里含「性病」：如果匹配位置前一个字能拼成更长的实体名/泛概念，
+        # 说明这次命中是截断出来的，跳过。
+        prev = q[pos - 1] if pos > 0 else ""
+        if prev and (prev + kl) in s["entity_map"]:
+            continue
+        if prev and (prev + kl) in GENERIC:
             continue
         if any(p <= pos < p + l for p, l in used):
             continue

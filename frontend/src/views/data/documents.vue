@@ -5,7 +5,7 @@ import PageHeader from '@/components/common/PageHeader.vue'
 import StatusTag from '@/components/common/StatusTag.vue'
 import EmptyState from '@/components/common/EmptyState.vue'
 import { useRouter } from 'vue-router'
-import { queryDocuments, getDocChunks, DOC_TYPES, DOC_SOURCES, DISEASES } from '@/api'
+import { queryDocuments, fetchDocDetail, DOC_TYPES, DOC_SOURCES, DISEASES } from '@/api'
 
 const router = useRouter()
 const routerPush = () => router.push('/data/tasks')
@@ -40,11 +40,18 @@ function reset() {
   search()
 }
 
-function openDetail(row: any) {
+async function openDetail(row: any) {
   drawer.row = row
-  drawer.chunks = getDocChunks(row.id)
+  drawer.chunks = []
   drawer.tab = 'meta'
   drawer.visible = true
+  try {
+    const d = await fetchDocDetail(row.id)
+    drawer.row = { ...row, ...d.doc }
+    drawer.chunks = d.chunks
+  } catch (e: any) {
+    ElMessage.error(e?.message || '文本块加载失败')
+  }
 }
 function openEdit(row: any) {
   editDlg.row = { ...row }
@@ -87,7 +94,7 @@ function copyDoi(row: any) {
 
 <template>
   <div>
-    <PageHeader title="文献与指南管理" desc="管理 PubMed 文献与国家级指南原文，查看文本切片与数据处理状态。当前展示 408 条样本记录，完整库共 5,026 篇。">
+    <PageHeader title="文献与指南管理" :desc="`管理 PubMed 文献与国家级指南原文，查看文本切片与数据处理状态。当前命中 ${total} 篇，语料库共 5,063 篇。`">
       <template #actions>
         <el-button @click="routerPush"><el-icon><Upload /></el-icon>导入文献</el-button>
         <el-button type="primary" @click="load"><el-icon><Refresh /></el-icon>刷新</el-button>

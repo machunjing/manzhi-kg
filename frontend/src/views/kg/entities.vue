@@ -4,7 +4,7 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 import PageHeader from '@/components/common/PageHeader.vue'
 import StatusTag from '@/components/common/StatusTag.vue'
 import EmptyState from '@/components/common/EmptyState.vue'
-import { queryEntities, relationsOf, DISEASES, ENTITY_TYPES, TYPE_COLOR, REVIEW_STATUS } from '@/api'
+import { queryEntities, fetchEntityRelations, DISEASES, ENTITY_TYPES, TYPE_COLOR, REVIEW_STATUS } from '@/api'
 
 const loading = ref(false)
 const list = ref<any[]>([])
@@ -59,10 +59,15 @@ function submit() {
   }
   dlg.visible = false
 }
-function openDetail(row: any) {
+async function openDetail(row: any) {
   drawer.row = row
-  drawer.rels = relationsOf(row.id)
+  drawer.rels = []
   drawer.visible = true
+  try {
+    drawer.rels = await fetchEntityRelations(row.id, row.name)
+  } catch (e: any) {
+    ElMessage.error(e?.message || '关联关系加载失败')
+  }
 }
 async function remove(row: any) {
   try {

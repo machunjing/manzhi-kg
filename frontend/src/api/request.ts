@@ -10,7 +10,7 @@ export const USE_MOCK = import.meta.env.VITE_USE_MOCK !== 'false'
 
 const http = axios.create({
   baseURL: import.meta.env.VITE_API_BASE || '/api',
-  timeout: 15000
+  timeout: 120000
 })
 
 http.interceptors.request.use((config) => {

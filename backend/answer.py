@@ -6,6 +6,8 @@
 """
 import re
 
+import llm
+
 REL_ORDER = ["临床表现", "常用药物", "监测指标", "并发症", "干预措施", "危险因素", "共病", "关联疾病", "导致"]
 
 # 意图 -> (图谱关系类型, 证据里该出现的词)
@@ -55,7 +57,7 @@ def _dedupe(vals, limit=5):
     return out[:limit]
 
 
-def compose(question, entities, facts, chunks, intent=None, max_cite=6):
+def compose(question, entities, facts, chunks, intent=None, max_cite=6, use_llm=True, query_en=None):
     intent = intent or detect_intent(question)
     steps = []
     steps.append({"name": "意图识别", "detail": "问题类型：%s" % intent["intent"]})
@@ -64,12 +66,15 @@ def compose(question, entities, facts, chunks, intent=None, max_cite=6):
                       "detail": "命中实体：" + "、".join("%s（%s）" % (e["name"], e["type"]) for e in entities)})
     else:
         steps.append({"name": "实体链接", "detail": "未命中图谱实体，仅走向量与关键词检索"})
-    steps.append({"name": "三路召回",
-                  "detail": "关键词路 / 向量路 / 图谱路 并行召回，共 %d 条候选" % len(chunks)})
+    if query_en:
+        steps.append({"name": "跨语言改写",
+                      "detail": "中文问题 → 英文检索式：%s" % "、".join(query_en[:6])})
+    steps.append({"name": "多路召回",
+                  "detail": "关键词路 / 向量路 / 图谱路%s 并行召回，共 %d 条候选"
+                            % (" / 跨语言路" if query_en else "", len(chunks))})
     steps.append({"name": "RRF 融合", "detail": "按 1/(60+rank) 累加各路排名，再按疾病维度与意图词加权"})
-    steps.append({"name": "生成与引用", "detail": "图谱事实作结论，原文切块作论据，逐条标注来源"})
 
-    # ---- 结论段：图谱事实（意图对应的关系类型优先） ----
+    # ---- 结论段：图谱事实（意图对应的关系类型优先），作为模板答案与 LLM 的依据 ----
     prefer = intent.get("rel")
     lines = []
     for f in facts[:3]:
@@ -94,9 +99,25 @@ def compose(question, entities, facts, chunks, intent=None, max_cite=6):
         cite_lines.append("[%d] %s（%s 第 %d 块）：%s" % (
             i, c["title"], c["source"], c.get("chunk_idx", 0), _sent(c["text"])))
 
-    answer = "\n".join(lines)
-    if cite_lines:
-        answer += "\n\n证据来源：\n" + "\n".join(cite_lines)
+    # ---- 优先走大模型，失败则用图谱模板兜底 ----
+    gen = llm.generate_answer(question, facts, chunks, intent["intent"], max_cite) if use_llm else None
+    if gen:
+        body = gen["text"]
+        engine = {"mode": "llm", "name": gen["model"], "elapsed_ms": gen["elapsed_ms"],
+                  "usage": gen.get("usage") or {}}
+        steps.append({"name": "大模型生成",
+                      "detail": "%s 依据图谱事实与 %d 条证据成文，耗时 %dms"
+                                % (gen["model"], min(len(chunks), max_cite), gen["elapsed_ms"])})
+    else:
+        body = "\n".join(lines)
+        engine = {"mode": "template", "name": "图谱模板",
+                  "reason": "未配置模型或调用失败，已回退模板答案"}
+        steps.append({"name": "答案组织", "detail": "图谱事实作结论，原文切块作论据，逐条标注来源"})
+
+    # 证据来源清单单独放 answer_full：页面上已经用「参考文献 / 证据卡片」渲染了一遍，
+    # 再拼进正文就会重复显示一大段，正文只留答案本身。
+    answer = body
+    answer_full = answer + ("\n\n证据来源：\n" + "\n".join(cite_lines) if cite_lines else "")
 
     citations = []
     for i, c in enumerate(chunks[:max_cite], 1):
@@ -114,4 +135,6 @@ def compose(question, entities, facts, chunks, intent=None, max_cite=6):
             "routes": c.get("routes", []),
             "rrf": c.get("rrf"),
         })
-    return {"answer": answer, "citations": citations, "steps": steps}
+    return {"answer": answer, "answer_full": answer_full,
+            "citations": citations, "steps": steps,
+            "engine": engine, "template_answer": "\n".join(lines)}

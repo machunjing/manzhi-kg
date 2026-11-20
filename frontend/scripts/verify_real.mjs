@@ -89,7 +89,14 @@ const typed = await evaluate(`(async () => {
 })()`)
 console.log('输入框操作:', typed)
 
-await sleep(6000)
+// 大模型生成要 10s 上下，不能固定 sleep，轮询「转圈消失且引用出现」
+let done = false
+for (let i = 0; i < 90; i++) {
+  await sleep(500)
+  done = await evaluate(`!document.querySelector('[class*="thinking"]') && document.querySelectorAll('[class*="cite-row"]').length > 0`)
+  if (done) { console.log('回答生成完成，用时约', ((i + 1) * 0.5).toFixed(1), '秒'); break }
+}
+if (!done) console.log('警告：45 秒内未检测到完成态')
 
 const probe = await evaluate(`({
   apiHits: (window.__apiHits || []).filter(u => u.includes('/api/')),

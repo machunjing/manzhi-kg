@@ -107,6 +107,8 @@ def graph_facts(entities, per_entity=8, prefer_rel=None):
 
     grouped = {}
     for r in rows:
+        if r["hname"] == r["tname"]:        # OpenCMKG 里有「肥胖 并发症 肥胖」这类自环
+            continue
         grouped.setdefault(r["hname"], []).append({
             "relation": r["rel"], "head": r["hname"], "head_type": r["htype"],
             "tail": r["tname"], "tail_type": r["ttype"], "direction": "out",
@@ -124,6 +126,8 @@ def graph_facts(entities, per_entity=8, prefer_rel=None):
             WHERE r.tail_id IN (%s) LIMIT 100
         """ % mph, mids)
         for r in rows2:
+            if r["hname"] == r["tname"]:
+                continue
             grouped.setdefault(r["tname"], []).append({
                 "relation": r["rel"], "head": r["hname"], "head_type": r["htype"],
                 "tail": r["tname"], "tail_type": r["ttype"], "direction": "in",
@@ -185,6 +189,104 @@ def graph_search(entities, topk=None):
     return out
 
 
+# ---------------------------------------------------------------- 跨语言路
+# 中文提问检索英文摘要：没有大模型时用这张小词典兜底，常见疾病仍能跨语言召回
+ZH2EN = {
+    "糖尿病": "diabetes mellitus", "2型糖尿病": "type 2 diabetes mellitus",
+    "1型糖尿病": "type 1 diabetes", "高血压": "hypertension", "血脂异常": "dyslipidemia",
+    "高脂血症": "hyperlipidemia", "肥胖": "obesity", "脑卒中": "stroke",
+    "中风": "stroke", "冠心病": "coronary heart disease", "肾病": "nephropathy",
+    "糖尿病肾病": "diabetic nephropathy", "视网膜病变": "retinopathy",
+    "神经病变": "neuropathy", "并发症": "complication", "症状": "symptom",
+    "治疗": "treatment", "药物": "drug therapy", "危险因素": "risk factor",
+    "诊断": "diagnosis", "血糖": "blood glucose", "胰岛素": "insulin",
+    "饮食": "diet", "运动": "exercise", "血压": "blood pressure",
+    "心血管": "cardiovascular", "慢性肾脏病": "chronic kidney disease",
+}
+INTENT_EN = {
+    "治疗/用药": "treatment", "症状表现": "clinical manifestation", "检查监测": "monitoring",
+    "并发症": "complication", "饮食干预": "diet intervention", "概念解释": "overview",
+}
+
+
+def _fallback_terms(entities, intent_name):
+    """没有大模型时的英文检索式：实体名 + 意图词"""
+    ts = []
+    for e in entities or []:
+        en = ZH2EN.get(e["name"])
+        if en:
+            ts.append(en)
+    if intent_name and INTENT_EN.get(intent_name):
+        ts.append(INTENT_EN[intent_name])
+    return ts
+
+
+def cross_lingual_search(terms, topk=None):
+    """跨语言路：拿英文检索式去查英文摘要（关键词 + 向量各取一半，再内部融合）"""
+    topk = topk or config.CROSS_TOPK
+    terms = [t for t in (terms or []) if t and len(t) >= 3]
+    if not terms:
+        return []
+    expr = " ".join('"%s"' % _safe(t) for t in terms[:6])
+    rows = db.query(config.DB_REAL, """
+        SELECT c.id, c.doc_id, c.chunk_idx, c.disease, c.text,
+               d.title, d.source, d.doc_type, d.pmid, d.journal, d.publish_date,
+               MATCH(c.text) AGAINST(%s IN BOOLEAN MODE) AS score
+        FROM chunks c JOIN documents d ON d.id = c.doc_id
+        WHERE MATCH(c.text) AGAINST(%s IN BOOLEAN MODE)
+        ORDER BY score DESC LIMIT %s
+    """, (expr, expr, topk))
+    out = []
+    for i, r in enumerate(rows, 1):
+        out.append({
+            "id": r["id"], "doc_id": r["doc_id"], "chunk_idx": r["chunk_idx"],
+            "disease": r["disease"], "text": r["text"], "title": r["title"],
+            "source": r["source"], "doc_type": r["doc_type"], "pmid": r["pmid"],
+            "journal": r["journal"],
+            "date": r["publish_date"].strftime("%Y-%m-%d") if r["publish_date"] else None,
+            "score": float(r["score"]),
+            "rrf": round(1.0 / (config.RRF_K + i), 6),
+        })
+    vec = nlp.vector_search(" ".join(terms[:4]), topk)
+    have = {o["id"] for o in out}
+    for i, v in enumerate(vec, 1):
+        if v["id"] in have:
+            continue
+        v["rrf"] = round(1.0 / (config.RRF_K + i), 6)
+        out.append(v)
+    return out
+
+
+def bilingual_select(cn_pool, en_pool, n=None, cn_ratio=0.5):
+    """中英双语均衡取证
+
+    中文语料只有 6 篇指南，英文摘要有 4,000+ 篇。直接 RRF 融合时，
+    中文切块能同时命中关键词/向量/图谱三路、票数天然更高，英文证据永远进不了前 8。
+    这里按比例各取一半：中文指南给「规范说法」，英文文献给「研究证据」。
+    """
+    n = n or config.FINAL_TOPK
+    k = max(1, int(round(n * cn_ratio)))
+    out, seen = [], set()
+    for c in cn_pool[:k]:
+        out.append(c)
+        seen.add(c["id"])
+    for c in en_pool:
+        if len(out) >= n:
+            break
+        if c["id"] in seen:
+            continue
+        seen.add(c["id"])
+        out.append(c)
+    for c in cn_pool:                      # 英文不够时用中文回填
+        if len(out) >= n:
+            break
+        if c["id"] in seen:
+            continue
+        seen.add(c["id"])
+        out.append(c)
+    return out
+
+
 def rrf(ranked_lists, k=None, topk=None):
     """Reciprocal Rank Fusion：score = Σ 1/(k + rank)"""
     k = k or config.RRF_K
@@ -207,18 +309,24 @@ def rrf(ranked_lists, k=None, topk=None):
 
 
 def rerank_disease(chunks, hint):
-    """同疾病维度的证据优先
+    """同疾病维度的证据优先，跨疾病的证据降权
 
     RRF 只用了排名，没用到「这条证据属于哪个疾病」。
-    当问题里的实体是疾病时，把同维度的切块加权，避免答糖尿病却引一堆高血压指南。
+    问糖尿病并发症时，高血压指南里恰好提到「糖尿病」的段落会冲上来，
+    读起来就是「答非所问」，所以同维度加权、异维度轻微降权。
     """
     if not hint:
         return chunks
     for c in chunks:
         d = c.get("disease") or ""
-        if d and (hint in d or d in hint):
+        if not d or d == "通用":
+            continue
+        if hint in d or d in hint:
             c["rrf"] = round((c.get("rrf") or 0) * 1.8, 6)
             c["boost"] = "disease_match"
+        else:
+            c["rrf"] = round((c.get("rrf") or 0) * 0.65, 6)
+            c["boost"] = "disease_mismatch"
     return sorted(chunks, key=lambda x: -(x.get("rrf") or 0))
 
 

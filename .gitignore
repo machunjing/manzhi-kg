@@ -21,3 +21,9 @@ shots/
 # 系统文件
 .DS_Store
 Thumbs.db
+
+# 本地运行产物
+backend/.cache/
+backend/.server.log
+_a.json
+*.pyc

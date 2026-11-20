@@ -3,7 +3,7 @@ import { computed, onMounted, ref } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import PageHeader from '@/components/common/PageHeader.vue'
 import StatusTag from '@/components/common/StatusTag.vue'
-import { relations, getEntity } from '@/api'
+import { fetchReviewList, reviewAction } from '@/api'
 
 const queue = ref<any[]>([])
 const activeId = ref('')
@@ -12,10 +12,23 @@ const keyword = ref('')
 const records = ref<{ id: string; action: string; time: string; note: string }[]>([])
 const modified = ref('')
 
-function init() {
-  queue.value = relations
-    .filter((r) => (filter.value ? r.status === filter.value : true))
-    .filter((r) => !keyword.value || r.head.includes(keyword.value) || r.tail.includes(keyword.value))
+const all = ref<any[]>([])
+const loading = ref(false)
+
+async function reload() {
+  loading.value = true
+  try {
+    all.value = await fetchReviewList('', keyword.value)
+  } catch (e: any) {
+    ElMessage.error(e?.message || '审核队列加载失败')
+  } finally {
+    loading.value = false
+  }
+}
+
+async function init() {
+  await reload()
+  queue.value = all.value.filter((r) => (filter.value ? r.status === filter.value : true))
   if (!queue.value.find((r) => r.id === activeId.value)) activeId.value = queue.value[0]?.id || ''
 }
 
@@ -23,39 +36,39 @@ onMounted(init)
 
 const active = computed(() => queue.value.find((r) => r.id === activeId.value) || null)
 
-const headEnt = computed(() => (active.value ? getEntity(active.value.headId) : null))
-const tailEnt = computed(() => (active.value ? getEntity(active.value.tailId) : null))
+const headEnt = computed(() => (active.value ? { name: active.value.head, type: active.value.headType } : null))
+const tailEnt = computed(() => (active.value ? { name: active.value.tail, type: active.value.tailType } : null))
 
 function pick(r: any) {
   activeId.value = r.id
   modified.value = ''
 }
 
-function act(action: string) {
+const ACT_MAP: Record<string, 'approve' | 'reject' | 'hold'> = {
+  审核通过: 'approve',
+  驳回: 'reject',
+  修改后通过: 'approve',
+  暂缓审核: 'hold'
+}
+
+async function act(action: string, note = '') {
   if (!active.value) return
   if (action === '修改后通过' && !modified.value.trim()) {
     return ElMessage.warning('请先在下方填写修改后的关系表述')
   }
-  const statusMap: Record<string, string> = {
-    审核通过: '已审核',
-    驳回: '已驳回',
-    修改后通过: '已审核',
-    暂缓审核: '待审核'
-  }
-  active.value.status = statusMap[action]
-  records.value.unshift({
-    id: active.value.id,
-    action,
-    time: new Date().toLocaleTimeString('zh-CN', { hour12: false }),
-    note: action === '修改后通过' ? modified.value : action === '驳回' ? '证据不足或关系方向错误' : '—'
-  })
-  ElMessage.success(`操作「${action}」已记录，关系状态更新为「${active.value.status}」`)
-  if (filter.value === '待审核' && active.value.status !== '待审核') {
-    const idx = queue.value.findIndex((r) => r.id === active.value.id)
-    if (idx > -1) {
-      queue.value.splice(idx, 1)
-      activeId.value = queue.value[Math.min(idx, queue.value.length - 1)]?.id || ''
-    }
+  const id = active.value.id
+  try {
+    const r: any = await reviewAction(id, ACT_MAP[action], note || modified.value)
+    records.value.unshift({
+      id,
+      action,
+      time: new Date().toLocaleTimeString('zh-CN', { hour12: false }),
+      note: note || modified.value || (action === '驳回' ? '证据不足或关系方向错误' : '—')
+    })
+    ElMessage.success(`操作「${action}」已写入数据库：${r.from} → ${r.to}`)
+    await init()
+  } catch (e: any) {
+    ElMessage.error(e?.message || '审核操作失败')
   }
 }
 
@@ -65,18 +78,17 @@ async function rejectWithReason() {
       inputPlaceholder: '例如：原文仅提及相关性，不支持因果方向',
       inputValidator: (v) => (!!v && v.length >= 4) || '理由不少于 4 个字'
     })
-    act('驳回')
-    records.value[0].note = value
+    await act('驳回', value)
   } catch {
     /* cancelled */
   }
 }
 
 const counts = computed(() => ({
-  待审核: relations.filter((r) => r.status === '待审核').length,
-  已审核: relations.filter((r) => r.status === '已审核').length,
-  已驳回: relations.filter((r) => r.status === '已驳回').length,
-  候选: relations.filter((r) => r.status === '候选').length
+  待审核: all.value.filter((r) => r.status === '待审核').length,
+  已审核: all.value.filter((r) => r.status === '已审核').length,
+  已驳回: all.value.filter((r) => r.status === '已驳回').length,
+  候选: all.value.filter((r) => r.status === '候选').length
 }))
 </script>
 

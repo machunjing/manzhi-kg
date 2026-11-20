@@ -73,13 +73,21 @@ async function send(text?: string) {
   input.value = ''
   scrollToBottom()
 
-  const res = await askQuestion(q)
-  const idx = messages.value.findIndex((m) => m.id === placeholder.id)
-  messages.value[idx] = { ...placeholder, pending: false, result: res }
-  activeResult.value = res
-  evidenceTab.value = 'text'
-  sending.value = false
-  scrollToBottom()
+  try {
+    const res = await askQuestion(q)
+    const idx = messages.value.findIndex((m) => m.id === placeholder.id)
+    messages.value[idx] = { ...placeholder, pending: false, result: res }
+    activeResult.value = res
+    evidenceTab.value = 'text'
+  } catch (e: any) {
+    // 大模型超时或后端异常时，别让气泡一直转圈
+    const idx = messages.value.findIndex((m) => m.id === placeholder.id)
+    if (idx >= 0) messages.value.splice(idx, 1)
+    ElMessage.error(e?.message || '问答服务暂时不可用，请稍后重试')
+  } finally {
+    sending.value = false
+    scrollToBottom()
+  }
 }
 
 function scrollToBottom() {
@@ -120,6 +128,10 @@ function viewEvidence(res: any) {
 const currentAnswer = computed(() => activeResult.value)
 const allChunks = computed(() => activeResult.value?.chunks || [])
 const allCitations = computed(() => activeResult.value?.citations || [])
+
+/** 当前回答用的引擎：真调大模型还是回退图谱模板 */
+const engine = computed(() => activeResult.value?.engine || { mode: 'template', name: '图谱模板' })
+const engineLabel = computed(() => (engine.value.mode === 'llm' ? engine.value.name : '图谱模板'))
 </script>
 
 <template>
@@ -146,8 +158,8 @@ const allCitations = computed(() => activeResult.value?.citations || [])
         </div>
       </div>
       <div class="side-foot">
-        <div class="sf-line">检索：真实语料 + 知识图谱</div>
-        <div class="sf-line">答案：模板生成（未接 LLM）</div>
+        <div class="sf-line">检索：中文指南 + 英文文献 + 知识图谱</div>
+        <div class="sf-line">答案：{{ engineLabel }}</div>
       </div>
     </aside>
 
@@ -161,7 +173,9 @@ const allCitations = computed(() => activeResult.value?.citations || [])
             <div class="hb-desc">基于慢性病知识图谱与检索增强生成技术，为用户提供可追溯的健康知识服务</div>
           </div>
         </div>
-        <el-tag size="small" type="success" effect="light" round>图谱 + 文献检索驱动</el-tag>
+        <el-tag size="small" :type="engine.mode === 'llm' ? 'success' : 'info'" effect="light" round>
+          {{ engine.mode === 'llm' ? engineLabel + ' · 图谱增强生成' : '图谱模板 · 未接大模型' }}
+        </el-tag>
       </div>
 
       <div ref="scrollBox" class="chat-scroll">
@@ -192,7 +206,7 @@ const allCitations = computed(() => activeResult.value?.citations || [])
         <div v-for="m in messages" :key="m.id" class="msg" :class="m.role">
           <div v-if="m.role === 'user'" class="u-row">
             <div class="u-bubble">{{ m.text }}</div>
-            <el-avatar :size="30" class="u-avatar">马</el-avatar>
+            <el-avatar :size="30" class="u-avatar">我</el-avatar>
           </div>
 
           <div v-else class="a-row">
@@ -200,7 +214,7 @@ const allCitations = computed(() => activeResult.value?.citations || [])
             <div class="a-body">
               <div v-if="m.pending" class="thinking">
                 <span class="dot" /><span class="dot" /><span class="dot" />
-                <span class="thinking-text">正在检索知识图谱与文献库…</span>
+                <span class="thinking-text">正在检索知识图谱与文献库，并生成答案…</span>
               </div>
 
               <template v-else-if="m.result">
@@ -211,8 +225,8 @@ const allCitations = computed(() => activeResult.value?.citations || [])
                     <span class="steps-title">检索过程</span>
                     <el-tag size="small" type="info" effect="plain" class="steps-tag">{{ m.result.intent.label }}</el-tag>
                     <span class="steps-sum">
-                      共 {{ m.result.steps.reduce((a: number, s: any) => a + s.ms, 0) }} ms · 意图识别 → 三路检索 → RRF
-                      融合 → 重排序 → 生成
+                      共 {{ m.result.elapsedMs || m.result.steps.reduce((a: number, s: any) => a + s.ms, 0) }} ms ·
+                      {{ m.result.steps.map((s: any) => s.name).join(' → ') }}
                     </span>
                   </div>
                   <div v-show="m.openSteps" class="steps-body">
@@ -301,7 +315,7 @@ const allCitations = computed(() => activeResult.value?.citations || [])
           @keydown.enter.exact.prevent="send()"
         />
         <div class="input-bar">
-          <span class="input-tip">Enter 发送 · Shift + Enter 换行 · 三路召回 + RRF 融合，答案附原文引用</span>
+          <span class="input-tip">Enter 发送 · Shift + Enter 换行 · 四路召回 + RRF 融合，答案附原文引用</span>
           <div class="input-btns">
             <el-button size="small" @click="input = ''">清空</el-button>
             <el-button type="primary" size="small" :loading="sending" @click="send()">

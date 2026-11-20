@@ -31,12 +31,12 @@ const sources = ref([
 ])
 
 const models = [
-  { label: '大语言模型', value: '智谱 GLM-4', note: '用于答案生成，未接入真实 API' },
-  { label: 'Embedding 模型', value: 'BGE-M3', note: '1024 维稠密向量' },
-  { label: 'Reranker 模型', value: 'bge-reranker-large', note: 'Cross-Encoder 精排' },
-  { label: '向量数据库', value: 'Milvus', note: '集合：manzhi_chunks' },
-  { label: '图数据库', value: 'Neo4j', note: '库：manzhi_kg' },
-  { label: '关系数据库', value: 'MySQL 8.0', note: '业务元数据' }
+  { label: '大语言模型', value: '智谱 GLM-4-Flash', note: '答案生成，已接入；无 Key 时回退图谱模板' },
+  { label: '检索表示', value: '字符 2~3-gram TF-IDF', note: '34,309 × 96,431 稀疏矩阵，不依赖分词' },
+  { label: '融合策略', value: 'RRF（k=60）', note: '关键词路 / 向量路 / 图谱路 / 跨语言路' },
+  { label: '全文索引', value: 'MySQL ngram', note: '表 chunks，中文按 2-gram 切分' },
+  { label: '图数据库', value: 'Neo4j 5', note: '32,091 节点 / 288,064 关系' },
+  { label: '关系数据库', value: 'MySQL 8.0', note: '业务元数据与语料主存' }
 ]
 
 const params = reactive({ vectorTopK: 20, rerankTopK: 5, rrfK: 60, chunkSize: 300, chunkOverlap: 50, temperature: 0.2 })
@@ -168,8 +168,9 @@ function resetParams() {
                 <div class="mc-note">{{ m.note }}</div>
               </div>
             </div>
-            <el-alert type="warning" :closable="false" show-icon style="margin-top: 18px">
-              模型配置为只读展示。当前前端原型未接入 GLM-4 / BGE-M3 / Milvus / Neo4j 真实服务，问答结果为预设知识模板生成的模拟回答。
+            <el-alert type="info" :closable="false" show-icon style="margin-top: 18px">
+              以上为实际部署的技术栈。大模型通过后端 <code>backend/.env</code> 中的
+              <code>LLM_API_KEY</code> 配置，Key 不进版本库；未配置或调用失败时，问答自动回退为「图谱事实 + 原文证据」的模板答案，功能不中断。
             </el-alert>
           </div>
         </el-tab-pane>
